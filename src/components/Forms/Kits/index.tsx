@@ -165,66 +165,58 @@ export default function KitsForm() {
 	};
 
 	return (
-		<div className="row">
-			{openToast && (
-				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
-			)}
-			<div className="col-md-3">
-				<div className="card list-height overflow-y-auto pb-0 mb-5">
-					<div className="card-header">
-						<p className="card-title">Kits</p>
+
+		<div className="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+			<div className="card">
+				<div className="row row-bordered g-0">
+					<div className="col-md-3">
+						<h5 className="card-header m-0 me-2 pb-3">Kits</h5>
 					</div>
-					<div className="card-body p-3"></div>
-				</div>
-			</div>
-			<div className="col-md-9">
-				<div className="card list-height overflow-y-auto pb-0 mb-5">
-					<div className="card-header">
-						<p className="card-title">Editar</p>
-						<button type="submit" className="btn btn-primary" onClick={saveKit}>
-							Salvar
-						</button>
-					</div>
-					<hr />
-					<div className="card-body p-3">
-						<form>
-							<div className="row">
-								<div className="mb-3 col-9">
-									<label htmlFor="exampleInputEmail1" className="form-label">
-										Descrição
-									</label>
-									<input
-										type="text"
-										className="form-control"
-										id="description"
-										value={formData.description}
-										onChange={(e) =>
-											setFormData((prev) => ({
-												...prev,
-												[e.target.id]: `${e.target.value}`,
-											}))
-										}
-									/>
-								</div>
-								<div className="mb-3 col-3">
-									<label htmlFor="exampleInputEmail1" className="form-label">
-										Status
-									</label>
-									<input
-										value={formData.status}
-										type="text"
-										className="form-control"
-										id="status"
-										onChange={(e) =>
-											setFormData((prev) => ({
-												...prev,
-												[e.target.id]: `${e.target.value}`,
-											}))
-										}
-									/>
-								</div>
-							</div>
-							<div className="mb-3 d-flex justify-content-between align-items-end gap-5">
+					<div className="col-md-8">
+						<div className="card-body">
+							<div className="list-height pb-0 mb-5">
+								<p className="card-title">Editar</p>
+								<button type="submit" className="btn btn-primary" onClick={saveKit}>
+									Salvar
+								</button>
+								<form>
+									<div className="row">
+										<div className="mb-3 col-9">
+											<label htmlFor="exampleInputEmail1" className="form-label">
+												Descrição
+											</label>
+											<input
+												type="text"
+												className="form-control"
+												id="description"
+												value={formData.description}
+												onChange={(e) =>
+													setFormData((prev) => ({
+														...prev,
+														[e.target.id]: `${e.target.value}`,
+													}))
+												}
+											/>
+										</div>
+										<div className="mb-3 col-3">
+											<label htmlFor="exampleInputEmail1" className="form-label">
+												Status
+											</label>
+											<input
+												value={formData.status}
+												type="text"
+												className="form-control"
+												id="status"
+												onChange={(e) =>
+													setFormData((prev) => ({
+														...prev,
+														[e.target.id]: `${e.target.value}`,
+													}))
+												}
+											/>
+										</div>
+									</div>
+									<div className="mb-3 d-flex justify-content-between align-items-end gap-5">
 								<span className="flex-fill">
 									<label htmlFor="exampleInputEmail1" className="form-label">
 										Materiais
@@ -244,77 +236,87 @@ export default function KitsForm() {
 										))}
 									</select>
 								</span>
-								<button
-									type="button"
-									className="btn btn-primary"
-									onClick={() => handleMaterialList()}
-								>
-									+
-								</button>
-							</div>
-							<table className="w-100">
-								<thead>
-									<tr>
-										<th className="text-start">Kit</th>
-										<th>Status</th>
-										<th>Ações</th>
-									</tr>
-								</thead>
-								<tbody>
-									{listOfMaterials.length > 0 && (
-										<>
-											{listOfMaterials.map((material) => (
-												<div className="mb-3 mt-3">
-													<div className="d-flex justify-content-between align-items-end">
-														<div>{material.description}</div>
-														<div className="d-flex align-items-end gap-5">
-															<span>
-																<label
-																	htmlFor="exampleInputEmail1"
-																	className="form-label"
-																>
-																	Quantidade
-																</label>
-																<input
-																	value={
-																		materialAndQuantity.some(
-																			(mq) => mq.id === material.id
-																		)
-																			? materialAndQuantity.filter(
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={() => handleMaterialList()}
+										>
+											+
+										</button>
+									</div>
+
+									<ul className="p-0 m-0">
+
+									</ul>
+
+										{listOfMaterials.length > 0 && (
+											<>
+												{listOfMaterials.map((material) => (
+
+													<div className="mb-2">
+														<li className="d-flex">
+															<div className="avatar flex-shrink-0 me-3">
+																<span className="avatar-initial rounded bg-label-secondary"><i
+																	className="bx bx-football"></i></span>
+															</div>
+															<div
+																className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+																<div className="me-2">
+																	<h6 className="mb-0">{material.description}</h6>
+																	<small className="text-muted">?Type</small>
+																</div>
+																<div className="user-progress d-flex gap-2">
+
+																	<input
+																		value={
+																			materialAndQuantity.some(
+																				(mq) => mq.id === material.id
+																			)
+																				? materialAndQuantity.filter(
 																					(m) => m.id === material.id
-																			  )[0].quantity
-																			: ''
-																	}
-																	type="text"
-																	className="form-control"
-																	onChange={(e) =>
-																		handleMaterialQuantity(e, `${material.id}`)
-																	}
-																/>
-															</span>
-															<button
-																type="button"
-																className="btn btn-primary"
-																onClick={() =>
-																	deleteKitMaterial(
-																		parseInt(id || ''),
-																		material.id
-																	)
-																}
-															>
-																<BsFillTrashFill />
-															</button>
-														</div>
+																				)[0].quantity
+																				: ''
+																		}
+																		type="text"
+																		className="form-control"
+																		onChange={(e) =>
+																			handleMaterialQuantity(e, `${material.id}`)
+																		}
+																	/>
+																	<button
+																		type="button"
+																		className="btn btn-primary"
+																		onClick={() =>
+																			deleteKitMaterial(
+																				parseInt(id || ''),
+																				material.id
+																			)
+																		}
+																	>
+																		<BsFillTrashFill/>
+																	</button>
+																</div>
+															</div>
+														</li>
+
 													</div>
-												</div>
-											))}
-										</>
-									)}
-								</tbody>
-							</table>
-						</form>
+												))}
+											</>
+										)}
+
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
+			</div>
+
+			{openToast && (
+				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg}/>
+			)}
+
+			<div className="col-md-9">
+
 			</div>
 		</div>
 	);

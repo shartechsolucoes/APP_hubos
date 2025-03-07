@@ -1,8 +1,9 @@
-import { MdHome } from "react-icons/md";
+import {MdHome, MdOutlineSearch} from "react-icons/md";
 
 import { useLocation, useNavigate } from 'react-router';
 import './styles.css';
 import {NavDropdown} from "react-bootstrap";
+import {FaSearch} from "react-icons/fa";
 
 export default function Navbar() {
 	const { pathname } = useLocation();
@@ -42,7 +43,7 @@ export default function Navbar() {
 		}
 	}
 
-	let expand;
+	// let expand;
 	return (
 		<>
 			<nav
@@ -59,7 +60,8 @@ export default function Navbar() {
 				<div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 					<div className="navbar-nav align-items-center">
 						<div className="nav-item d-flex align-items-center">
-							<i className="bx bx-search fs-4 lh-0"></i>
+							<FaSearch />
+
 							<input
 								type="text"
 								className="form-control border-0 shadow-none"
@@ -72,15 +74,7 @@ export default function Navbar() {
 					<ul className="navbar-nav flex-row align-items-center ms-auto">
 
 						<li className="nav-item lh-1 me-3">
-							<a
-								className="github-button"
-								href="https://github.com/themeselection/sneat-html-admin-template-free"
-								data-icon="octicon-star"
-								data-size="large"
-								data-show-count="true"
-								aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-							>Star</a
-							>
+
 						</li>
 
 						<li className="nav-item navbar-dropdown dropdown-user dropdown">
@@ -93,6 +87,7 @@ export default function Navbar() {
 										className="w-px-40 h-auto rounded-circle"/>
 								</div>
 							</a>
+
 							<ul className="dropdown-menu dropdown-menu-end">
 								<li>
 									<a className="dropdown-item" href="#">
