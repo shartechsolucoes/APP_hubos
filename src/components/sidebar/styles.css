@@ -1,112 +1,21 @@
-.sidebar{
-  /*background: #f2f5fc;*/
-  background: #f8f9fa;
-  z-index: 999;
-  border-right: 1px solid #f1f0f0;
+.menu-item a.active:before {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 0.25rem;
+  height: 2.5rem;
+  border-radius: 0.375rem 0 0 0.375rem;
 }
-
-.navbar-light .container{
-  display: block;
+.bg-menu-theme .menu-inner > .menu-item a.active{
+  color: #696cff;
+  background-color: rgba(105, 108, 255, 0.16) !important;
+  font-weight: 600;
 }
-
-.company{
-  border-radius: 0.5rem;
-  border: 1px solid #e1dfdf;
-  padding:0.8rem 1rem;
-  color: #5e6875;
-  margin-bottom: 20px;
-  margin-top: 10px;
+.bg-menu-theme .menu-inner > .menu-item a.active:before {
+  background: #696cff;
+  margin-right: -16px;
 }
-.company h5{
-  font-size: 15px;
-  font-weight: bold;
-}
-.company p{
-  font-size: 11px;
-  color: #5e6875;
-}
-
-.navbar-nav {
-  display: block;
-}
-
-.navbar-brand{
-  padding: 10px 0;
-  font-size: 30px;
-  font-weight: bold;
-  color: #2160fa;
-  display: block;
-}
-.navbar-brand .icon-brand{
-  font-size:30px;
-  margin-top:-5px;
-  margin-right: 5px;
-  color: #000000
-}
-
-@media (max-width: 767px) {
-  .navbar-nav {
-    display: inline;
-  }
-  .navbar-light .container{
-    display: flex;
-  }
-}
-
-.nav-link {
-  align-content: center !important;
-  margin-bottom: 5px;
-  padding: 10px;
-}
-.nav-link span{
-  align-content: center !important;
-  display: block;
-  font-size: 14px;
-  font-weight: 400;
-  color: #34404f;
-  margin-top: 4px !important;
-}
-.nav-link .iconSide{
-  float: left;
-  margin:0 10px 0 5px;
-  font-size: 17px;
-}
-
-.nav-link.active{
-  background: #e5ecf9;
-  border-radius: 0.4rem;
-}
-.nav-link.active span{
-  color: #2160fc;
-}
-.nav-link.active .iconSide{
-  color: #1837fd;
-}
-
-@media (max-width: 1120px) {
-  .navbar-brand .icon-brand{
-    display: none;
-  }
-  .nav-link {
-    align-content: center !important;
-    text-align: center;
-  }
-  .nav-link span{
-    display: none;
-  }
-  .nav-link .iconSide{
-    margin: auto;
-    font-size:25px ;
-  }
-  .company{
-    display: none !important;
-  }
-}
-
-@media (max-width: 767px) {
-  .nav-link span{
-    display: block;
-    text-align: start;
-    margin-left:10px;
-  }
+.menu-vertical .menu-item .menu-toggle::after {
+  inset-inline-end: calc(var(--bs-menu-vertical-link-padding-x) + .3rem);
+  transition: transform .3s;
 }

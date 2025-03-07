@@ -30,18 +30,18 @@ export default function ListItemOrders({
 
 	return (
 		<tr>
-			<td className="text-start title align-content-center">
+			<td data-dt-column="0" className="text-start title align-content-center">
 				<div className="d-flex gap-3 ">
 					<div className="align-content-center" >
 						<p className="title">#{qrcode}</p>
 					</div>
 				</div>
 			</td>
-			<td className="align-content-center">{date}</td>
-			<td className="align-content-center text-start">{address}</td>
-			<td className="align-content-center text-start">{neighborhood}</td>
-			<td className="align-content-center text-start">{city}</td>
-			<td className="align-content-center text-start">
+			<td data-dt-column="1" className="align-content-center">{date}</td>
+			<td data-dt-column="2" className="align-content-center text-start">?kit</td>
+			<td data-dt-column="3" className="align-content-center text-start">{address} {neighborhood}{city}</td>
+
+			<td data-dt-column="5"className="align-content-center text-start">
 				<Status statusOS={status} />
 			</td>
 			<td className="align-content-center">

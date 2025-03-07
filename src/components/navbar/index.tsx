@@ -54,6 +54,7 @@ export default function Navbar() {
 					className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
 					<a className="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
 						<i className="bx bx-menu bx-sm"></i>
+
 					</a>
 				</div>
 
@@ -147,8 +148,8 @@ export default function Navbar() {
 					</ul>
 				</div>
 			</nav>
-			<h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light"></span>{paths(pathname)}
-			</h4>
+			{/*<h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light"></span>{paths(pathname)}*/}
+			{/*</h4>*/}
 
 		</>
 	);
