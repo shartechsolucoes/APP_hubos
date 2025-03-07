@@ -1,0 +1,24 @@
+.navbar-top{
+  padding:10px 20px;
+  background: white;
+  box-shadow: #0000000d 0 1.25rem 1.6875rem;
+}
+
+.search{
+  min-width: 200px;
+}
+.search input{
+  border-radius: 50px;
+  background: #e1dfdf;
+}
+.user{
+  margin-left: 20px;
+  padding: 4px;
+}
+
+.user p, .user a{
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+

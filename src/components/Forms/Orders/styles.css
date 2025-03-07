@@ -1,0 +1,10 @@
+.form-container {
+  overflow-y: auto;
+}
+
+
+@media (max-width: 767px) {
+  .form-container {
+    overflow-y: unset;
+  }
+}

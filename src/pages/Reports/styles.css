@@ -1,0 +1,19 @@
+.report table {
+  border: none;
+  padding: 20px !important;
+}
+
+.report table tr.row-os {
+  border-top: 1px solid black;
+}
+.report td,
+.report th {
+  font-size: 12px;
+  width: auto;
+  padding: 15px 5px !important;
+}
+
+.report .row-os {
+  border-top: 1px solid black;
+  padding: 20px !important;
+}
