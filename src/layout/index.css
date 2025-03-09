@@ -42,7 +42,7 @@
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
     --bs-root-font-size: 16px;
     --bs-body-font-family: var(--bs-font-sans-serif);
-    --bs-body-font-size: 0.9375rem;
+    --bs-body-font-size: 0.8475rem;
     --bs-body-font-weight: 400;
     --bs-body-line-height: 1.53;
     --bs-body-color: #697a8d;
@@ -224,7 +224,7 @@ sup {
 }
 
 a {
-    color: #696cff;
+    color: #053c9a;
     text-decoration: none;
 }
 a:hover {
@@ -5877,6 +5877,11 @@ input:-internal-autofill-selected {
 .bg-label-success {
     background-color: #e8fadf !important;
     color: #71dd37 !important;
+}
+
+.bg-label-finish {
+    background-color: #bbe6fa !important;
+    color: #1299d5 !important;
 }
 
 .border-label-success {
@@ -15669,6 +15674,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
     flex-shrink: 0;
     opacity: 1;
     transition: opacity 0.15s ease-in-out;
+    font-size: 40px;
 }
 
 .app-brand-img-collapsed {

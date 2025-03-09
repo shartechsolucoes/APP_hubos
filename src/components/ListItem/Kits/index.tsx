@@ -1,49 +1,50 @@
-import { BsFillPencilFill, BsFillTrashFill} from 'react-icons/bs';
+import {BsCopy, BsEyeFill, BsFillPencilFill, BsFillTrashFill} from 'react-icons/bs';
 import { Link } from 'react-router';
 import './index.css';
 import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
+import Status from "../../StatusOS";
 
 export default function ListItemOrders({
-	title,
-	id,
-	deleteListItem,
-}: {
+										   title,
+										   id,
+										   deleteListItem,
+									   }: {
 	title?: string;
 	id?: string;
 	deleteListItem?: () => void;
 }) {
 	const { accessLevel } = useAccessLevelStore();
 	return (
-		<tr>
-			<td className="text-start ">
-				<div className="d-flex gap-3 ">
-					{/*<img*/}
-					{/*	alt="John Michael"*/}
-					{/*	src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg"*/}
-					{/*	className="img-fluid img-thumbnail"*/}
-					{/*/>*/}
-					<div className="align-content-center">
-						<p className="title">{title}</p>
-						(2) Parafuso tipo Máquina M16X350 - Mão de obra LED
-					</div>
+		<div className="" style={{borderBottom: "1px solid #f1efef"}}>
+			<div className="row px-4 py-3">
+				<div className="col-sm-10 col-md-10 d-flex justify-content-start align-items-center">
+					<a href="app-ecommerce-order-details.html"><span>{title}</span></a>
 				</div>
-			</td>
-			<td className="align-content-center">
-				<i className="status active"></i>Ativo
-			</td>
-			<td className="align-content-center">
-				{accessLevel === 0 && (
-					<Link to={`form?id=${id}`}>
-						<BsFillPencilFill />
-					</Link>
-				)}
 
-				{accessLevel === 0 && (
-					<a className="" onClick={deleteListItem}>
-						<BsFillTrashFill />
-					</a>
-				)}
-			</td>
-		</tr>
-	);
-}
+				<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">{accessLevel === 2 ||
+					(accessLevel === 0 && (
+						<Link to={`view?id=${id}`}>
+							<BsEyeFill/>
+						</Link>
+					))}
+
+					{accessLevel === 0 && (
+						<Link to={`form?id=${id}`}>
+							<BsFillPencilFill/>
+						</Link>
+					)}
+					{accessLevel === 2 && (
+						<Link to={`view?id=${id}`}>
+							<BsEyeFill />
+						</Link>
+					)}
+					{accessLevel === 0 && (
+						<a className="" onClick={deleteListItem}>
+							<BsFillTrashFill />
+						</a>
+					)}
+				</div>
+			</div>
+		</div>
+		);
+		}

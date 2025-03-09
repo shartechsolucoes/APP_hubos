@@ -96,28 +96,28 @@
 }
 
 .text-primary {
-    color: #696cff !important;
+    color: #0e3780 !important;
 }
 
 .text-body[href]:hover {
-    color: #5f61e6 !important;
+    color: #0e3780 !important;
 }
 
 .bg-primary {
-    background-color: #696cff !important;
+    background-color: #0e3780 !important;
 }
 
 a.bg-primary:hover, a.bg-primary:focus {
-    background-color: #6467f2 !important;
+    background-color: #0e3780 !important;
 }
 
 .dropdown-notifications-item:not(.mark-as-read) .dropdown-notifications-read span {
-    background-color: #696cff;
+    background-color: #0e3780;
 }
 
 .bg-label-primary {
     background-color: #e7e7ff !important;
-    color: #696cff !important;
+    color: #0e3780 !important;
 }
 
 .border-label-primary {
@@ -132,38 +132,38 @@ a.bg-primary:hover, a.bg-primary:focus {
 .pagination li.active > a:not(.page-link),
 .pagination li.active > a:not(.page-link):hover,
 .pagination li.active > a:not(.page-link):focus {
-    border-color: #696cff;
-    background-color: #696cff;
+    border-color: #0e3780;
+    background-color: #0e3780;
     color: #fff;
     box-shadow: 0 0.125rem 0.25rem rgba(105, 108, 255, 0.4);
 }
 
 .progress-bar {
-    background-color: #696cff;
+    background-color: #0e3780;
     color: #fff;
     box-shadow: 0 2px 4px 0 rgba(105, 108, 255, 0.4);
 }
 
 .list-group-item-primary {
-    background-color: #e1e2ff;
+    background-color: #0e3780;
     color: #696cff !important;
 }
 
 a.list-group-item-primary,
 button.list-group-item-primary {
-    color: #696cff;
+    color: #0e3780;
 }
 a.list-group-item-primary:hover, a.list-group-item-primary:focus,
 button.list-group-item-primary:hover,
 button.list-group-item-primary:focus {
     background-color: #d6d7f2;
-    color: #696cff;
+    color: #0e3780;
 }
 a.list-group-item-primary.active,
 button.list-group-item-primary.active {
-    border-color: #696cff;
-    background-color: #696cff;
-    color: #696cff;
+    border-color: #0e3780;
+    background-color: #0e3780;
+    color: v#696cff;
 }
 
 .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
@@ -557,7 +557,7 @@ html[dir=rtl] .border-primary {
 }
 
 a {
-    color: #696cff;
+    color: #0e3780;
 }
 a:hover {
     color: #787bff;

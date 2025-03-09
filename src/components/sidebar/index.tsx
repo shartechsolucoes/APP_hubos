@@ -2,11 +2,8 @@ import {NavLink} from 'react-router';
 import { privateRoutes } from '../../routes/PrivateRoutes';
 import './styles.css';
 import useAccessLevelStore from '../../stores/accessLevelStore';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {
-	MdOutlineLocationCity,
 	MdDashboard,
 	MdSupervisorAccount,
 	MdSubject,
@@ -16,7 +13,7 @@ import {
 	MdDocumentScanner
 
 } from "react-icons/md";
-import {Offcanvas} from "react-bootstrap";
+import {IoIosArrowBack} from "react-icons/io";
 
 export default function Sidebar() {
 	const { accessLevel } = useAccessLevelStore();
@@ -49,24 +46,21 @@ export default function Sidebar() {
 				<Navbar key={expand} expand={expand} className="layout-menu menu-vertical menu bg-menu-theme">
 
 					<div className="app-brand">
-						<a href="index.html" className="app-brand-link">
+						<a href="#" className="app-brand-link">
 							<span className="app-brand-logo demo">
+
 							</span>
 							<span className="app-brand-text demo menu-text fw-bolder ms-2">HUBUS</span>
 						</a>
 
-						<a href="javascript:void(0);"
-						   className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-							<i className="bx bx-chevron-left bx-sm align-middle"></i>
+						<a className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+							<IoIosArrowBack className="bx bx-chevron-left bx-sm align-middle"/>
 						</a>
 					</div>
 					<div className="menu-inner-shadow"></div>
 					<ul className="menu-inner py-1">
-						<li className="company">
-							<a href="index.html" className="menu-link">
-								<i className="menu-icon tf-icons bx bx-home-circle"></i>
-								<div data-i18n="Analytics">Dashboard</div>
-							</a>
+						<li className="menu-item">
+							<h5>Almirante Tamandaré</h5>
 						</li>
 
 						{privateRoutes.map((route) => (

@@ -1,5 +1,3 @@
-import { MdOutlineSearch } from 'react-icons/md';
-import { MdAdd } from 'react-icons/md';
 import ListItemOrders from '../../components/ListItem/Orders';
 import './styles.css';
 
@@ -76,142 +74,145 @@ export default function Orders() {
 
 	return (
 		<>
-			<div>
-				<div className=" pb-0 mb-2">
-						<div className="d-flex justify-content-end align-items-end gap-3">
-							<div className="d-flex flex-column ">
-								<input className="form-control" placeholder="Numero da OS" />
-							</div>
-							<div className="d-flex flex-column ">
-								<input className="form-control" placeholder="Bairro" />
-							</div>
-							<div className=" d-flex flex-column ">
-								<DatePicker
-									className="form-control"
-									locale="pt-BR"
-									dateFormat="dd/MM/yyyy"
-									selected={date.start}
-									onSelect={(value) =>
-										setDate((prev) => ({
-											...prev,
-											start: value ? value : new Date(),
-										}))
-									}
-								/>
-							</div>
-							<div className="d-flex flex-column ">
-								<DatePicker
-									className="form-control"
-									selected={date.end}
-									dateFormat="dd/MM/yyyy"
-									onSelect={(value) =>
-										setDate((prev) => ({
-											...prev,
-											end: value ? value : new Date(),
-										}))
-									}
-								/>
-							</div>
-							<a
-								onClick={toReportPage}
-								className="btn"
-								style={{ height: 'fit-content' }}
+			<div className="col-md-12">
+				<div className="d-flex justify-content-end align-items-end gap-3 my-4">
+					<div className="d-flex flex-column ">
+						<input className="form-control" placeholder="Numero da OS"/>
+					</div>
+					<div className="d-flex flex-column ">
+						<input className="form-control" placeholder="Bairro"/>
+					</div>
+					<div className=" d-flex flex-column ">
+						<DatePicker
+							className="form-control"
+							locale="pt-BR"
+							dateFormat="dd/MM/yyyy"
+							selected={date.start}
+							onSelect={(value) =>
+								setDate((prev) => ({
+									...prev,
+									start: value ? value : new Date(),
+								}))
+							}
+						/>
+					</div>
+					<div className="d-flex flex-column ">
+						<DatePicker
+							className="form-control"
+							selected={date.end}
+							dateFormat="dd/MM/yyyy"
+							onSelect={(value) =>
+								setDate((prev) => ({
+									...prev,
+									end: value ? value : new Date(),
+								}))
+							}
+						/>
+					</div>
+
+					<div className="d-flex flex-column position-relative">
+						<div className="dropdown">
+							<button
+								className="btn btn-secondary dropdown-toggle"
+								type="button"
+								onClick={() => setOpenReportsDropdown(!openReportsDropdown)}
 							>
-								<MdOutlineSearch /> Pesquisar
-							</a>
-							<div className="d-flex flex-column position-relative">
-								<div className="dropdown">
-									<button
-										className="btn btn-secondary dropdown-toggle"
-										type="button"
-										onClick={() => setOpenReportsDropdown(!openReportsDropdown)}
-									>
-										Tipo de Relatório
-									</button>
-									<ul
-										className={`dropdown-menu ${
-											openReportsDropdown ? 'show' : ''
-										}`}
-									>
-										<li>
-											<a className="dropdown-item" onClick={toReportPage}>
-												Ordens
-											</a>
-										</li>
-										<li>
-											<a
-												className="dropdown-item"
-												onClick={toReportMaterialPage}
-											>
-												Materiais utilizados
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<NavLink
-								to="form"
-								className="btn-blue"
-								style={{ height: 'fit-content' }}
+								Relatórios
+							</button>
+							<ul
+								className={`dropdown-menu ${
+									openReportsDropdown ? 'show' : ''
+								}`}
 							>
-								<MdAdd />
-							</NavLink>
-						</div>
-				</div>
-				<div className="card pb-0 mb-5">
-					<table className="w-100">
-						<thead>
-							<tr>
-								<th className="text-start">Numero OS</th>
-								<th>Data</th>
-								<th>Hora</th>
-								<th className="text-start">Usuário</th>
-								<th className="text-start">Endereço</th>
-								<th className="text-start">Bairro</th>
-								<th className="text-start">Cidade/UF</th>
-								<th>Status</th>
-								<th>Ações</th>
-							</tr>
-						</thead>
-						<tbody>
-							{orders.map((order) => (
-								<>
-									<ListItemOrders
-										key={order.id}
-										qrcode={order.qr_code}
-										id={order.id}
-										address={order.address}
-										city={order.city}
-										neighborhood={order.neighborhood}
-										state={order.state}
-										status={order.status}
-										date={order.registerDay}
-										deleteListItem={() => {
-											setDeleteId(order.id);
-											openModal();
-										}}
-										duplicateItem={() => duplicateItem(order.id)}
-									/>
-									<hr />
-								</>
-							))}
-						</tbody>
-					</table>
-					<div className="card-footer">
-						<div className="d-flex justify-content-between align-items-center gap-3">
-							<div className="d-flex ">
-								<p className="">Mostrando 1 a 7 de 15 registros</p>
-							</div>
-							<div className="pagination">
-								<ul className="">
-									<li className="active">1</li>
-									<li>2</li>
-									<li>3</li>
-									<li>4</li>
-								</ul>
-							</div>
+								<li>
+									<a className="dropdown-item" onClick={toReportPage}>
+										Ordens Serviço
+									</a>
+								</li>
+								<li>
+									<a
+										className="dropdown-item"
+										onClick={toReportMaterialPage}
+									>
+										Materiais utilizados
+									</a>
+								</li>
+							</ul>
 						</div>
 					</div>
+					<NavLink
+						to="form"
+						className="btn btn-info"
+						style={{height: 'fit-content'}}
+					>
+						Nova
+					</NavLink>
+				</div>
+				<div className="card pb-0 mb-2">
+
+				{orders.map((order) => (
+					<>
+						<ListItemOrders
+							key={order.id}
+							qrcode={order.qr_code}
+							id={order.id}
+							address={order.address}
+							city={order.city}
+							neighborhood={order.neighborhood}
+							state={order.state}
+							status={order.status}
+							date={order.registerDay}
+							deleteListItem={() => {
+								setDeleteId(order.id);
+								openModal();
+							}}
+							duplicateItem={() => duplicateItem(order.id)}
+						/>
+					</>
+				))}
+				<div className="row mx-3 justify-content-between my-3">
+					<div
+						className="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto">
+						<div className="dt-info" aria-live="polite" id="DataTables_Table_0_info" role="status">Mostrando 1
+							de 5 de 25 registros
+						</div>
+					</div>
+					<div
+						className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
+						<div className="dt-paging">
+							<nav aria-label="pagination">
+								<ul className="pagination">
+									<li className="dt-paging-button page-item active">
+										<button className="page-link" role="link" type="button"
+												aria-controls="DataTables_Table_0" aria-current="page" data-dt-idx="0">1
+										</button>
+									</li>
+									<li className="dt-paging-button page-item">
+										<button className="page-link" role="link" type="button"
+												aria-controls="DataTables_Table_0" data-dt-idx="1">2
+										</button>
+									</li>
+									<li className="dt-paging-button page-item">
+										<button className="page-link" role="link" type="button"
+												aria-controls="DataTables_Table_0" data-dt-idx="2">3
+										</button>
+									</li>
+									<li className="dt-paging-button page-item">
+										<button className="page-link" role="link" type="button"
+												aria-controls="DataTables_Table_0" data-dt-idx="3">4
+										</button>
+									</li>
+									<li className="dt-paging-button page-item">
+										<button className="page-link" role="link" type="button"
+												aria-controls="DataTables_Table_0" data-dt-idx="4">5
+										</button>
+									</li>
+
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
 				</div>
 			</div>
 

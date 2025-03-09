@@ -12,17 +12,17 @@ import { ptBR } from 'date-fns/locale';
 import Status from '../../StatusOS/';
 
 export default function ListItemOrders({
-	id,
-	qrcode,
-    address,
-	neighborhood,
-	city,
-	state,
-	status,
-	date,
-	deleteListItem,
-	duplicateItem,
-}: {
+										   id,
+										   qrcode,
+										   address,
+										   neighborhood,
+										   city,
+										   state,
+										   status,
+										   date,
+										   deleteListItem,
+										   duplicateItem,
+									   }: {
 	qrcode?: string;
 	address?: string;
 	neighborhood?: string;
@@ -38,57 +38,72 @@ export default function ListItemOrders({
 	const formattedDate = date
 		? format(date, 'dd/MM/yy', { locale: ptBR })
 		: '';
-	const formattedTime = date
-		? format(date, 'HH:mm', { locale: ptBR })
-		: '';
+
 	return (
-		<tr>
-			<td className="text-start align-content-center">
-				<div className="d-flex gap-3 ">
-					<div className="align-content-center" >
-						<p className="title">#{qrcode}</p>
+		<>
+			<div className="" style={{borderBottom: "1px solid #f1efef"}}>
+				<div className="row px-4 py-3">
+					<div className="col-sm-4 col-md-1 d-flex justify-content-start align-items-center">
+						<a href="app-ecommerce-order-details.html"><span>#{qrcode}</span></a>
 					</div>
+					<div className="col-sm-4 col-md-1 d-flex justify-content-center align-items-center">
+						<span className="text-truncate d-flex align-items-center text-heading">
+						  {formattedDate}
+						</span>
+
+					</div>
+					<div className="col-sm-6 col-md-2 d-flex justify-content-center align-items-center">
+						<div className="d-flex justify-content-start align-items-center">
+							<div className="avatar-wrapper">
+								<div className="avatar avatar-sm me-3">
+									<span className="avatar-initial rounded-circle bg-label-dark ">ER</span>
+								</div>
+							</div>
+							<div className="d-flex flex-column">
+								<span
+									className="fw-medium">Edson Rodrigues</span>
+							</div>
+						</div>
+					</div>
+
+					<div className="col-md-4 d-flex flex-column justify-content-start align-items-start">
+						<div className="d-flex flex-column">
+							<h6 className="text-nowrap mb-0">{address}</h6>
+							<small className="text-truncate d-none d-sm-block">{neighborhood} - {city}/{state}</small>
+						</div>
+					</div>
+					<div className="col-md-2 d-flex justify-content-center align-items-center"><Status
+						statusOS={status}/></div>
+					<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">{accessLevel === 2 ||
+						(accessLevel === 0 && (
+							<Link to={`view?id=${id}`}>
+								<BsEyeFill/>
+							</Link>
+						))}
+
+						{accessLevel === 0 && (
+							<Link to={`form?id=${id}`}>
+								<BsFillPencilFill/>
+							</Link>
+						)}
+						{accessLevel === 2 && (
+							<Link to={`view?id=${id}`}>
+								<BsEyeFill />
+							</Link>
+						)}
+						{accessLevel === 0 && (
+							<a className="" onClick={deleteListItem}>
+								<BsFillTrashFill />
+							</a>
+						)}
+						{accessLevel === 0 && (
+							<a className="" onClick={duplicateItem}>
+								<BsCopy />
+							</a>
+						)}</div>
 				</div>
-			</td>
-			<td className="align-content-center">{formattedDate}</td>
-			<td className="align-content-center">{formattedTime}</td>
-			<td className="align-content-center text-start">?Usuário</td>
-			<td className="align-content-center text-start">{address}</td>
-			<td className="align-content-center text-start">{neighborhood}</td>
-			<td className="align-content-center text-start">{city}/{state}</td>
-			<td className="align-content-center text-start">
-				<Status statusOS={status} />
-			</td>
-			<td className="align-content-center ">
+			</div>
 
-				{accessLevel === 2 ||
-					(accessLevel === 0 && (
-						<Link to={`view?id=${id}`}>
-							<BsEyeFill />
-						</Link>
-					))}
-
-				{accessLevel === 0 && (
-					<Link to={`form?id=${id}`}>
-						<BsFillPencilFill />
-					</Link>
-				)}
-				{accessLevel === 2 && (
-					<Link to={`view?id=${id}`}>
-						<BsEyeFill />
-					</Link>
-				)}
-				{accessLevel === 0 && (
-					<a className="" onClick={deleteListItem}>
-						<BsFillTrashFill />
-					</a>
-				)}
-				{accessLevel === 0 && (
-					<a className="" onClick={duplicateItem}>
-						<BsCopy />
-					</a>
-				)}
-			</td>
-		</tr>
+		</>
 	);
 }

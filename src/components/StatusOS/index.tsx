@@ -2,29 +2,29 @@ import './styles.css';
 export default function Status({statusOS}: { statusOS?: number }) {
 	if(statusOS == 0){
 		return (
+
 			<>
-				<i className="status open"></i>Aberto
+				<span className="badge bg-label-success text-capitalized"> Aberto </span>
 			</>
 		);
-	}
-	else if (statusOS == 1){
+	} else if (statusOS == 1) {
 		return (
 			<>
-				<i className="status in-work"></i>Em trabalho
+				<span className="badge bg-label-warning" text-capitalized="">Em trabalho</span>
 			</>
 		);
-	}
-	else if (statusOS == 2){
+	} else if (statusOS == 2) {
 		return (
 			<>
-				<i className="status finished"></i>Finalizado
+				<span className="badge bg-label-info" text-capitalized="">Finalizado</span>
+
 			</>
 		);
 	}
 	else{
 		return (
 			<>
-				<i className="status"></i>Finalizado{status}
+				<i className="status"></i>Finalizado
 			</>
 		);
 	}

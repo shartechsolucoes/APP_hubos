@@ -1,4 +1,3 @@
-import { BsFillPlusSquareFill } from 'react-icons/bs';
 import ListItem from '../../components/ListItem/Kits';
 import { NavLink } from 'react-router';
 import { api } from '../../api';
@@ -30,40 +29,28 @@ export default function Kits() {
 	return (
 		<div className="row">
 			<div className="d-flex p-2 pt-0 justify-content-end align-items-center">
-				<NavLink to="form" className="btn">
-					<BsFillPlusSquareFill /> Novo
+				<NavLink to="form" className="btn btn-info">
+					Novo
 				</NavLink>
 			</div>
-			<div className="col-md-8">
+			<div className="col-md-9">
 
 				<div className="card pb-0 mb-5">
-					<table className="w-100">
-						<thead>
-							<tr>
-								<th className="text-start">Kit</th>
-								<th>Status</th>
-								<th>Ações</th>
-							</tr>
-						</thead>
-						<tbody>
-							{kits.map((kit) => (
-								<>
-									<ListItem
-										title={kit.description}
-										id={`${kit.id}`}
-										deleteListItem={() => {
-											setDeleteId(kit.id);
-											openModal();
-										}}
-									/>
-									<hr />
-								</>
-							))}
-						</tbody>
-					</table>
+					{kits.map((kit) => (
+						<>
+							<ListItem
+								title={kit.description}
+								id={`${kit.id}`}
+								deleteListItem={() => {
+									setDeleteId(kit.id);
+									openModal();
+								}}
+							/>
+						</>
+					))}
 				</div>
 			</div>
-			<div className="col-md-4">
+			<div className="col-md-3">
 				<div className="card">
 					<div className="card-body">
 						Grafico de uso de cada kit ultimo Mês

@@ -428,47 +428,52 @@ export default function OrdersForm() {
 							<>
 								{listOfKits.map((kit) => (
 									<div className="mb-3 mt-3">
-										<div className="d-flex justify-content-between align-items-end">
-											<div>{kit.description}</div>
-											<div className="d-flex align-items-end gap-5">
-												<span>
-													<label
-														htmlFor="exampleInputEmail1"
-														className="form-label"
-													>
-														Quantidade
-													</label>
-													<input
-														required
-														value={
-															kitAndQuantity.some((kq) => kq.kit_id === kit.id)
-																? kitAndQuantity.filter(
+										<div className="mb-2">
+											<li className="d-flex">
+												<div className="avatar flex-shrink-0 me-3">
+																<span className="avatar-initial rounded bg-label-secondary"><i
+																	className="bx bx-football"></i></span>
+												</div>
+												<div
+													className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+													<div className="me-2">
+														<h6 className="mb-0">{kit.description}</h6>
+														<small className="d-flex">
+															{kit?.materials?.map((material) => (
+																<small>
+																	{material.material.description} -
+																</small>
+															))}
+														</small>
+													</div>
+													<div className="user-progress d-flex gap-2">
+
+														<input
+															required
+															value={
+																kitAndQuantity.some((kq) => kq.kit_id === kit.id)
+																	? kitAndQuantity.filter(
 																		(k) => k.kit_id === kit.id
-																  )[0].quantity
-																: ''
-														}
-														type="text"
-														className="form-control"
-														onChange={(e) => handleKitQuantity(e, `${kit.id}`)}
-													/>
-												</span>
-												<button
-													type="button"
-													className="btn btn-primary"
-													onClick={() =>
-														deleteKitOrder(kit.id, parseInt(id || ''))
-													}
-												>
-													<BsFillTrashFill />
-												</button>
-											</div>
-										</div>
-										<div className="flex-fill">
-											{/*{kit?.materials?.map((material) => (*/}
-											{/*	<div className="ms-3 my-2">*/}
-											{/*		{material.material.description}*/}
-											{/*	</div>*/}
-											{/*))}*/}
+																	)[0].quantity
+																	: ''
+															}
+															type="text"
+															className="form-control"
+															onChange={(e) => handleKitQuantity(e, `${kit.id}`)}
+														/>
+														<button
+															type="button"
+															className="btn btn-primary"
+															onClick={() =>
+																deleteKitOrder(kit.id, parseInt(id || ''))
+															}
+														>
+															<BsFillTrashFill />
+														</button>
+													</div>
+												</div>
+											</li>
+
 										</div>
 									</div>
 								))}

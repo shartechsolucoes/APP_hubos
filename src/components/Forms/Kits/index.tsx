@@ -172,13 +172,16 @@ export default function KitsForm() {
 					<div className="col-md-3">
 						<h5 className="card-header m-0 me-2 pb-3">Kits</h5>
 					</div>
-					<div className="col-md-8">
+					<div className="col-md-9">
 						<div className="card-body">
 							<div className="list-height pb-0 mb-5">
-								<p className="card-title">Editar</p>
-								<button type="submit" className="btn btn-primary" onClick={saveKit}>
-									Salvar
-								</button>
+								<div className="d-flex justify-content-between">
+									<h5 className="card-title">Editar</h5>
+									<button type="submit" className="btn btn-primary" onClick={saveKit}>
+										Salvar
+									</button>
+								</div>
+								<hr/>
 								<form>
 									<div className="row">
 										<div className="mb-3 col-9">

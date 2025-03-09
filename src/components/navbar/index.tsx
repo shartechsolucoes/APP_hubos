@@ -1,8 +1,5 @@
-import {MdHome, MdOutlineSearch} from "react-icons/md";
-
 import { useLocation, useNavigate } from 'react-router';
 import './styles.css';
-import {NavDropdown} from "react-bootstrap";
 import {FaSearch} from "react-icons/fa";
 
 export default function Navbar() {
@@ -84,7 +81,6 @@ export default function Navbar() {
 								<div className="avatar avatar-online">
 									<img
 										src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg"
-										alt
 										className="w-px-40 h-auto rounded-circle"/>
 								</div>
 							</a>
