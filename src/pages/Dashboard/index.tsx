@@ -242,160 +242,43 @@ export default function Dashboard() {
 							</div>
 						</div>
 					</div>
-					<div className="card-body">
-						{isLoaded && (
-							<GoogleMap
-								mapContainerStyle={containerStyle}
-								center={center}
-								onLoad={onLoad}
-								onUnmount={onUnmount}
-								options={{ gestureHandling: 'greedy' }}
-							>
-								{pins.map((pin, index) => (
-									<Marker
-										position={pin.geo}
-										label={{ text: `${pin.os}`, className: 'pin-label' }}
-										animation={google.maps.Animation.DROP}
-									></Marker>
-								))}
-							</GoogleMap>
-						)}
-					</div>
+
+					{isLoaded && (
+						<GoogleMap
+							mapContainerStyle={containerStyle}
+							center={center}
+							onLoad={onLoad}
+							onUnmount={onUnmount}
+							options={{ gestureHandling: 'greedy' }}
+						>
+							{pins.map((pin, index) => (
+								<Marker
+									position={pin.geo}
+									label={{ text: `${pin.os}`, className: 'pin-label' }}
+									animation={google.maps.Animation.DROP}
+								></Marker>
+							))}
+						</GoogleMap>
+					)}
 				</div>
 			</div>
 			<div className="col-xxl-12 col-lg-6 mt-4">
-			<div className="card mb-6">
-				<div className="mb-4">
-					<div id="DataTables_Table_0_wrapper" className="dt-container dt-bootstrap5 dt-empty-footer">
-						<div className="row card-header border-bottom mx-0 px-3 py-2">
-							<div
-								className="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto">
-								<h5 className="card-title mb-0 text-nowrap text-md-start text-center">Course you are
-									taking</h5></div>
-							<div
-								className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
-								<div className="dt-search"><input type="search" className="form-control"
-																  id="dt-search-0" placeholder="Search Course"
-																  aria-controls="DataTables_Table_0"/><label
-									htmlFor="dt-search-0"></label></div>
-							</div>
-						</div>
-
-
-						<div className="justify-content-between dt-layout-table">
-							<div
-								className="d-md-flex justify-content-between align-items-center col-12 dt-layout-full col-md">
-								<table
-									className="table table-sm datatables-academy-course dataTable dtr-column collapsed"
-									id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info"
-								>
-									<colgroup>
-										<col data-dt-column="0" width="10%"/>
-										<col data-dt-column="1" width="10%"/>
-										<col data-dt-column="2" width="20%"/>
-										<col data-dt-column="3" width="20%"/>
-										<col data-dt-column="4" width="20%"/>
-									</colgroup>
-									<thead>
-									<tr>
-										<th data-dt-column="0" className="control dt-orderable-none">
-											<span className="dt-column-title">OS</span>
-										</th>
-										<th data-dt-column="1" className="control dt-orderable-none">
-											<span className="dt-column-title"> Hora </span>
-										</th>
-										<th data-dt-column="2" className="control dt-orderable-none">
-											<span className="dt-column-title"> Kit </span>
-										</th>
-										<th data-dt-column="3" className="control dt-orderable-none">
-											<span className="dt-column-title"> endereço </span>
-										</th>
-										<th data-dt-column="4" className="control dt-orderable-none">
-											<span className="dt-column-title"> Status </span>
-										</th>
-										<th data-dt-column="5" className="control dt-orderable-none">
-											<span className="dt-column-title"> Ações </span>
-										</th>
-									</tr>
-									</thead>
-									{orders.map((order) => (
-										<>
-											<ListItemOrdersDash
-												key={order.order.id}
-												qrcode={order.order.qr_code}
-												register={order.order.registerDay}
-												id={order.order.id}
-												status={order.order.status}
-												address={order.order.address}
-												neighborhood={order.order.neighborhood}
-												city={order.order.city}
-											/>
-										</>
-									))}
-									<tfoot></tfoot>
-								</table>
-							</div>
-						</div>
-						<div className="row mx-3 justify-content-between">
-							<div
-								className="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto">
-								<div className="dt-info" aria-live="polite" id="DataTables_Table_0_info"
-									 role="status">Showing 1 to 5 of 25 entries
-								</div>
-							</div>
-							<div
-								className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
-								<div className="dt-paging">
-									<nav aria-label="pagination">
-										<ul className="pagination">
-											<li className="dt-paging-button page-item disabled">
-												<button className="page-link previous" role="link" type="button"
-														aria-controls="DataTables_Table_0" aria-disabled="true"
-														aria-label="Previous" data-dt-idx="previous" tabIndex="-1"><i
-													className="icon-base bx bx-chevron-left scaleX-n1-rtl icon-18px"></i>
-												</button>
-											</li>
-											<li className="dt-paging-button page-item active">
-											<button className="page-link" role="link" type="button"
-														aria-controls="DataTables_Table_0" aria-current="page"
-														data-dt-idx="0">1
-												</button>
-											</li>
-											<li className="dt-paging-button page-item">
-												<button className="page-link" role="link" type="button"
-														aria-controls="DataTables_Table_0" data-dt-idx="1">2
-												</button>
-											</li>
-											<li className="dt-paging-button page-item">
-												<button className="page-link" role="link" type="button"
-														aria-controls="DataTables_Table_0" data-dt-idx="2">3
-												</button>
-											</li>
-											<li className="dt-paging-button page-item">
-												<button className="page-link" role="link" type="button"
-														aria-controls="DataTables_Table_0" data-dt-idx="3">4
-												</button>
-											</li>
-											<li className="dt-paging-button page-item">
-												<button className="page-link" role="link" type="button"
-														aria-controls="DataTables_Table_0" data-dt-idx="4">5
-												</button>
-											</li>
-											<li className="dt-paging-button page-item">
-												<button className="page-link next" role="link" type="button"
-														aria-controls="DataTables_Table_0" aria-label="Next"
-														data-dt-idx="next"><i
-													className="icon-base bx bx-chevron-right scaleX-n1-rtl icon-18px"></i>
-												</button>
-											</li>
-										</ul>
-									</nav>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div className="card mb-6">
+							{orders.map((order) => (
+								<>
+									<ListItemOrdersDash
+										key={order.order.id}
+										qrcode={order.order.qr_code}
+										register={order.order.registerDay}
+										id={order.order.id}
+										status={order.order.status}
+										address={order.order.address}
+										neighborhood={order.order.neighborhood}
+										city={order.order.city}
+									/>
+								</>
+							))}
 				</div>
-			</div>
 			</div>
 
 		</>
