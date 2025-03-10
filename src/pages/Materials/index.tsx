@@ -35,17 +35,8 @@ export default function Materials() {
 						<BsFillPlusSquareFill /> Novo
 					</NavLink>
 				</div>
-				<div className="card overflow-y-auto pb-0 mb-5">
-					<table className="w-100">
-						<thead>
-						<tr>
-							<th className="text-start">Material</th>
-							<th>Tipo</th>
-							<th>Status</th>
-							<th>Ações</th>
-						</tr>
-						</thead>
-						<tbody>
+				<div className="card pb-0 mb-5">
+
 						{materials.map((material) => (
 							<>
 								<ListItem
@@ -59,8 +50,6 @@ export default function Materials() {
 								/>
 							</>
 						))}
-						</tbody>
-					</table>
 				</div>
 			</div>
 			<div>
