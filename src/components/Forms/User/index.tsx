@@ -6,6 +6,11 @@ import './user.css';
 
 export default function UserForm() {
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
+	const [passwordData, setPasswordData] = useState<{
+		oldPassword: string;
+		newPassword: string;
+		confirmPassword: string;
+	}>({ oldPassword: '', newPassword: '', confirmPassword: '' });
 	const [passwordError, setPasswordError] = useState(false);
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get('id');
@@ -63,48 +68,84 @@ export default function UserForm() {
 		}
 	}, []);
 
-	useEffect(() => {
-		console.log(formData);
-	}, [formData]);
+	const setNewPassword = async () => {
+		setPasswordError(false);
+		const regex = new RegExp(
+			'^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{6,}$'
+		);
+		console.log(passwordData);
+		console.log(regex.test(passwordData.newPassword));
+		if (
+			(passwordData.newPassword !== passwordData.confirmPassword &&
+				!regex.test(passwordData.newPassword)) ||
+			passwordData.oldPassword === '' ||
+			passwordData.newPassword === ''
+		) {
+			setPasswordError(true);
+			return;
+		}
+
+		console.log('passou');
+		try {
+			await api.put('reset-password', {
+				userId: id,
+				oldPassword: passwordData.oldPassword,
+				newPassword: passwordData.newPassword,
+			});
+		} catch (error) {
+			console.log(error);
+			setPasswordError(true);
+		}
+	};
 
 	return (
 		<>
 			<div className="col-12">
 				<div className="card mb-6">
 					<div className="user-profile-header-banner">
-						<img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/pages/profile-banner.png" alt="Banner image"
-							 className="rounded-top img-fluid"/>
+						<img
+							src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/pages/profile-banner.png"
+							alt="Banner image"
+							className="rounded-top img-fluid"
+						/>
 					</div>
 					<div className="user-profile-header d-flex flex-column flex-lg-row text-sm-start text-center mb-8">
 						<div className="flex-shrink-0 mt-1 mx-sm-0 mx-auto">
-							<img src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg" alt="user image"
-								 className="d-block h-auto ms-0 ms-sm-6 rounded-3 user-profile-img"/>
+							<img
+								src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg"
+								alt="user image"
+								className="d-block h-auto ms-0 ms-sm-6 rounded-3 user-profile-img"
+							/>
 						</div>
 						<div className="flex-grow-1 mt-3 mt-lg-5">
-							<div
-								className="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-4">
+							<div className="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-4">
 								<div className="user-profile-info">
 									<h4 className="mb-2 mt-lg-7">John Doe</h4>
 									<ul className="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4 mt-4">
-										<li className="list-inline-item"><i
-											className="icon-base bx bx-palette me-2 align-top"></i><span
-											className="fw-medium">UX Designer</span></li>
-										<li className="list-inline-item"><i
-											className="icon-base bx bx-map me-2 align-top"></i><span
-											className="fw-medium">Vatican City</span></li>
-										<li className="list-inline-item"><i
-											className="icon-base bx bx-calendar me-2 align-top"></i><span
-											className="fw-medium"> Joined April 2021</span></li>
+										<li className="list-inline-item">
+											<i className="icon-base bx bx-palette me-2 align-top"></i>
+											<span className="fw-medium">UX Designer</span>
+										</li>
+										<li className="list-inline-item">
+											<i className="icon-base bx bx-map me-2 align-top"></i>
+											<span className="fw-medium">Vatican City</span>
+										</li>
+										<li className="list-inline-item">
+											<i className="icon-base bx bx-calendar me-2 align-top"></i>
+											<span className="fw-medium"> Joined April 2021</span>
+										</li>
 									</ul>
 								</div>
-								<a href="javascript:void(0)" className="btn btn-primary mb-1"> <i
-									className="icon-base bx bx-user-check icon-sm me-2"></i>Connected </a>
+								<a href="javascript:void(0)" className="btn btn-primary mb-1">
+									{' '}
+									<i className="icon-base bx bx-user-check icon-sm me-2"></i>
+									Connected{' '}
+								</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
 
 			<div className="row">
 				<div className="col-md-3">
@@ -116,7 +157,6 @@ export default function UserForm() {
 					</div>
 				</div>
 				<div className="col-md-9">
-
 					<div className="card list-height overflow-y-auto p-3 pb-3 mb-3">
 						<div className="card-header">
 							<h3 className="card-title">Informações Basicas</h3>
@@ -286,55 +326,87 @@ export default function UserForm() {
 							</form>
 						</div>
 					</div>
-					<div className="card p-3 pb-3 mb-3">
-					<div className="card-header">
-						<h3 className="card-title">Trocar Senha</h3>
-					</div>
-					<div className="card-body">
-						<div className="mb-3 col-md-12">
-							<label htmlFor="login" className="form-label">
-								Senha
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								id="login"
-								value={formData.login}
-								onChange={(e) =>
-									setFormData((prev) => ({
-										...prev,
-										[e.target.id]: e.target.value,
-									}))
-								}
-							/>
-						</div>
+					{id && (
+						<div className="card p-3 pb-3 mb-3 row">
+							<div className="card-header">
+								<h3 className="card-title">Trocar Senha</h3>
 
-						<div className="mb-3 col-md-12">
-							<label htmlFor="login" className="form-label">
-								Confiração de Senha
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								id="login"
-								value={formData.login}
-								onChange={(e) =>
-									setFormData((prev) => ({
-										...prev,
-										[e.target.id]: e.target.value,
-									}))
-								}
-							/>
-						</div>
-						<p className="card-title">Password requirements</p>
-						<p>Please follow this guide for a strong password</p>
+								<div className="text-end">
+									<p className="fw-bolder">Guia para criação de senha forte</p>
+									<p>Um caractere especial (!@#$%^&*(),./)</p>
+									<p>Uma letra maiúscula</p>
+									<p>Uma letra minuscula</p>
+									<p>Mínimo 6 caracteres</p>
+									<p>Um número (2 são recomendados)</p>
+									<p>Mude com frequencia</p>
+								</div>
+							</div>
+							<div className="card-body">
+								<div className="mb-3 col-md-12">
+									<label htmlFor="login" className="form-label">
+										Antiga Senha
+									</label>
+									<input
+										type="password"
+										className="form-control"
+										id="oldPassword"
+										onChange={(e) =>
+											setPasswordData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									/>
+								</div>
+								<div className="mb-3 col-md-12">
+									<label htmlFor="login" className="form-label">
+										Nova Senha
+									</label>
+									<input
+										type="password"
+										className="form-control"
+										id="newPassword"
+										onChange={(e) =>
+											setPasswordData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									/>
+								</div>
 
-						<p>One special characters</p>
-						<p>Min 6 characters</p>
-						<p>One number (2 are recommended)</p>
-						<p>Change it often</p>
-					</div>
-				</div>
+								<div className="mb-3 col-md-12">
+									<label htmlFor="login" className="form-label">
+										Confirmação de Senha
+									</label>
+									<input
+										type="password"
+										className="form-control"
+										id="confirmPassword"
+										onChange={(e) =>
+											setPasswordData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									/>
+									{passwordError && (
+										<p className="text-danger">
+											Senha não corresponde ou não contempla as regras{' '}
+										</p>
+									)}
+								</div>
+								<button
+									type="button"
+									className="btn btn-primary"
+									id="password"
+									onClick={setNewPassword}
+								>
+									Salvar
+								</button>
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 		</>
