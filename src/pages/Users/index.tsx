@@ -34,35 +34,20 @@ export default function Users() {
 				</NavLink>
 			</div>
 
-			<div className="card list-height overflow-y-auto pb-0 mb-5">
-
-				<table className="w-100">
-					<thead >
-					<tr className="table-header">
-						<th className="text-start">Usuário</th>
-						<th className="align-content-center text-start">User</th>
-						<th>Tipo</th>
-						<th className="align-content-center text-start">Email</th>
-						<th className="align-content-center text-center">Status</th>
-						<th>Ações</th>
-					</tr>
-					</thead>
-					<tbody>
-					{users.map((item, index) => (
-						<>
-							<ListItemUsers
-								key={index}
-								title={item.name}
-								id={item.id}
-								login={item.login}
-								email={item.email}
-								access_level={item.access_level}
-							/>
-							{users.length - 1 !== index && <hr />}
-						</>
-					))}
-					</tbody>
-				</table>
+			<div className="card list-height pb-0 mb-5">
+				{users.map((item, index) => (
+					<>
+						<ListItemUsers
+							key={index}
+							title={item.name}
+							id={item.id}
+							login={item.login}
+							email={item.email}
+							access_level={item.access_level}
+						/>
+						{users.length - 1 !== index}
+					</>
+				))}
 			</div>
 		</div>
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../../../api';
 import { useSearchParams } from 'react-router';
 import InputMask from 'react-input-mask';
+import './user.css';
 
 export default function UserForm() {
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
@@ -115,25 +116,7 @@ export default function UserForm() {
 					</div>
 				</div>
 				<div className="col-md-9">
-					<div className="card list-height overflow-y-auto p-3 pb-3 mb-3">
-						<div className="card-header">
-							<div className="d-flex gap-3">
-								<img
-									alt="John Michael"
-									src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg"
-									className="img-fluid img-thumbnail"
-								/>
-								<div className="align-content-center">
-									<p className="card-title">{formData.name}</p>
-									<p className="title">Administrador</p>
-								</div>
-							</div>
 
-							<button type="submit" className="btn btn-primary">
-								Salvar
-							</button>
-						</div>
-					</div>
 					<div className="card list-height overflow-y-auto p-3 pb-3 mb-3">
 						<div className="card-header">
 							<h3 className="card-title">Informações Basicas</h3>
