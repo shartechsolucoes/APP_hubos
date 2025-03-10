@@ -50,7 +50,7 @@ export default function Sidebar() {
 							<span className="app-brand-logo demo">
 
 							</span>
-							<span className="app-brand-text demo menu-text fw-bolder ms-2">HUBUS</span>
+							<span className="app-brand-text demo menu-text fw-bolder ms-2">HubOS</span>
 						</a>
 
 						<a className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
