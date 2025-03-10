@@ -4,9 +4,27 @@ import {
 	BsTools,
 } from 'react-icons/bs';
 import ListItemOrdersDash from '../../components/ListItem/OrdersDash';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { api } from '../../api';
+import {
+	GoogleMap,
+	Marker,
+	// MarkerF,
+	useJsApiLoader,
+} from '@react-google-maps/api';
+import axios from 'axios';
+// import './styles.css';
+
+const containerStyle = {
+	width: '100%',
+	height: '400px',
+};
+
+const center = {
+	lat: -25.315827,
+	lng: -49.287565,
+};
 
 export default function Dashboard() {
 	const [orders, setOrders] = useState<
@@ -67,10 +85,61 @@ export default function Dashboard() {
 		}));
 	};
 
+	const { isLoaded } = useJsApiLoader({
+		id: 'google-map-script',
+		googleMapsApiKey: 'AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0',
+	});
+
+	const [map, setMap] = useState(null);
+	const [pins, setPins] = useState<{ geo: any; os: string }[]>([]);
+
+	const onLoad = useCallback(
+		(map) => {
+			map.setZoom(12);
+			setMap(map);
+		},
+		[pins]
+	);
+
+	const onUnmount = useCallback(() => {
+		setMap(null);
+	}, [map]);
+
+	const getGeolocation = async () => {
+		const getLocationsOrders = orders.map(async (order) => {
+			const address = `${order.order.address} ${order.order.neighborhood} ${order.order.city}`;
+
+			const formatedAddress = address
+				.replaceAll('  ', ' ')
+				.replaceAll(' ', '%20');
+
+			const response = await axios.get(
+				`https://maps.googleapis.com/maps/api/geocode/json?address=${formatedAddress}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
+			);
+
+			return { geolocation: response.data, os: order.order.qr_code };
+		});
+		const geolocation = await Promise.all(getLocationsOrders);
+
+		const formatedGeo = geolocation.map((loc) => ({
+			geo: loc.geolocation.results[0].geometry.location,
+			os: loc.os,
+		}));
+
+		console.log(formatedGeo);
+
+		setPins(formatedGeo);
+	};
 	useEffect(() => {
 		getOrders();
 		getDashboardData();
 	}, []);
+
+	useEffect(() => {
+		if (orders.length > 0) {
+			getGeolocation();
+		}
+	}, [orders]);
 
 	return (
 		<>
@@ -174,7 +243,23 @@ export default function Dashboard() {
 						</div>
 					</div>
 					<div className="card-body">
-
+						{isLoaded && (
+							<GoogleMap
+								mapContainerStyle={containerStyle}
+								center={center}
+								onLoad={onLoad}
+								onUnmount={onUnmount}
+								options={{ gestureHandling: 'greedy' }}
+							>
+								{pins.map((pin, index) => (
+									<Marker
+										position={pin.geo}
+										label={{ text: `${pin.os}`, className: 'pin-label' }}
+										animation={google.maps.Animation.DROP}
+									></Marker>
+								))}
+							</GoogleMap>
+						)}
 					</div>
 				</div>
 			</div>
