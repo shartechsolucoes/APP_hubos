@@ -80,6 +80,22 @@ export default function Orders() {
 						<input className="form-control" placeholder="Numero da OS"/>
 					</div>
 					<div className="d-flex flex-column ">
+					<select
+						id="status"
+						value=""
+						className="form-control"
+					>
+						<option selected value="">
+							Status
+						</option>
+						<option selected value="0">
+							Aberto
+						</option>
+						<option value="1">Em trabalho</option>
+						<option value="2">Finalizado</option>
+					</select>
+					</div>
+					<div className="d-flex flex-column ">
 						<input className="form-control" placeholder="Bairro"/>
 					</div>
 					<div className=" d-flex flex-column ">
