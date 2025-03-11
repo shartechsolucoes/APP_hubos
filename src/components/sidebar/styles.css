@@ -27,7 +27,9 @@
 .menu-item-w {}
 
 @media (max-width: 767px) {
-
+  .navbar-light{
+    display: none!important;
+  }
   .bg-color {
     background: #fff;
     width: 100vw;
@@ -36,5 +38,6 @@
 
   .menu-item-w {
     width: 100vw !important;
+
   }
 }

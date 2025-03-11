@@ -76,10 +76,10 @@ export default function Orders() {
 		<>
 			<div className="col-md-12">
 				<div className="d-flex justify-content-end align-items-end gap-3 my-4">
-					<div className="d-flex flex-column ">
+					<div className="d-none d-md-flex d-flex flex-column ">
 						<input className="form-control" placeholder="Numero da OS"/>
 					</div>
-					<div className="d-flex flex-column ">
+					<div className="d-none d-md-flex d-flex flex-column ">
 					<select
 						id="status"
 						value=""
@@ -95,10 +95,10 @@ export default function Orders() {
 						<option value="2">Finalizado</option>
 					</select>
 					</div>
-					<div className="d-flex flex-column ">
+					<div className="d-none d-md-flex d-flex flex-column ">
 						<input className="form-control" placeholder="Bairro"/>
 					</div>
-					<div className=" d-flex flex-column ">
+					<div className="d-none d-md-flex d-flex flex-column ">
 						<DatePicker
 							className="form-control"
 							locale="pt-BR"
@@ -112,7 +112,7 @@ export default function Orders() {
 							}
 						/>
 					</div>
-					<div className="d-flex flex-column ">
+					<div className="d-none d-md-flex d-flex flex-column ">
 						<DatePicker
 							className="form-control"
 							selected={date.end}
@@ -126,7 +126,7 @@ export default function Orders() {
 						/>
 					</div>
 
-					<div className="d-flex flex-column position-relative">
+					<div className="d-none d-md-flex d-flex flex-column position-relative">
 						<div className="dropdown">
 							<button
 								className="btn btn-secondary dropdown-toggle"
