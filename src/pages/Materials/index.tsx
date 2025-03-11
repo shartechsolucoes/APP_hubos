@@ -30,9 +30,9 @@ export default function Materials() {
 	return (
 		<>
 			<div>
-				<div className="d-flex p-2 pt-0 justify-content-end align-items-center">
-					<NavLink to="form" className="btn-blue">
-						<BsFillPlusSquareFill /> Novo
+				<div className="d-flex py-4 pt-0 justify-content-end align-items-center">
+					<NavLink to="form" className="btn btn-info">
+						Novo
 					</NavLink>
 				</div>
 				<div className="card pb-0 mb-5">

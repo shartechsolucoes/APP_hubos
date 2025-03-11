@@ -431,8 +431,8 @@ export default function OrdersForm() {
 										<div className="mb-2">
 											<li className="d-flex">
 												<div className="avatar flex-shrink-0 me-3">
-																<span className="avatar-initial rounded bg-label-secondary"><i
-																	className="bx bx-football"></i></span>
+													<span className="avatar-initial rounded bg-label-secondary"><i
+														className="bx bx-football"></i></span>
 												</div>
 												<div
 													className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">

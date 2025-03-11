@@ -69,9 +69,9 @@ export default function OrdersView() {
 					<BsFileEarmarkPdf /> Baixar PDF
 				</button>
 			</div>
-			<div className="card list-height overflow-y-auto p-3 pb-3 mb-5"  ref={contentRef}>
+			<div className="card p-3 pb-3 mb-5"  >
 
-				<div className="card-body">
+				<div className="card-body" ref={contentRef}>
 					<div className="m-3 row">
 						<h1 className="mb-3">Ordem de Serviço #{formData.qr_code}</h1>
 						<h4 className="mt-5">Informações Gerais</h4>

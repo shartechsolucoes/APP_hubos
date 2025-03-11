@@ -135,11 +135,11 @@ export default function Dashboard() {
 		getDashboardData();
 	}, []);
 
-	useEffect(() => {
-		if (orders.length > 0) {
-			getGeolocation();
-		}
-	}, [orders]);
+	// useEffect(() => {
+	// 	if (orders.length > 0) {
+	// 		getGeolocation();
+	// 	}
+	// }, [orders]);
 
 	return (
 		<>
@@ -243,41 +243,41 @@ export default function Dashboard() {
 						</div>
 					</div>
 
-					{isLoaded && (
-						<GoogleMap
-							mapContainerStyle={containerStyle}
-							center={center}
-							onLoad={onLoad}
-							onUnmount={onUnmount}
-							options={{ gestureHandling: 'greedy' }}
-						>
-							{pins.map((pin, index) => (
-								<Marker
-									position={pin.geo}
-									label={{ text: `${pin.os}`, className: 'pin-label' }}
-									animation={google.maps.Animation.DROP}
-								></Marker>
-							))}
-						</GoogleMap>
-					)}
+					{/*{isLoaded && (*/}
+					{/*	<GoogleMap*/}
+					{/*		mapContainerStyle={containerStyle}*/}
+					{/*		center={center}*/}
+					{/*		onLoad={onLoad}*/}
+					{/*		onUnmount={onUnmount}*/}
+					{/*		options={{ gestureHandling: 'greedy' }}*/}
+					{/*	>*/}
+					{/*		{pins.map((pin, index) => (*/}
+					{/*			<Marker*/}
+					{/*				position={pin.geo}*/}
+					{/*				label={{ text: `${pin.os}`, className: 'pin-label' }}*/}
+					{/*				animation={google.maps.Animation.DROP}*/}
+					{/*			></Marker>*/}
+					{/*		))}*/}
+					{/*	</GoogleMap>*/}
+					{/*)}*/}
 				</div>
 			</div>
 			<div className="col-xxl-12 col-lg-6 mt-4">
 				<div className="card mb-6">
-							{orders.map((order) => (
-								<>
-									<ListItemOrdersDash
-										key={order.order.id}
-										qrcode={order.order.qr_code}
-										register={order.order.registerDay}
-										id={order.order.id}
-										status={order.order.status}
-										address={order.order.address}
-										neighborhood={order.order.neighborhood}
-										city={order.order.city}
-									/>
-								</>
-							))}
+					{orders.map((order) => (
+						<>
+							<ListItemOrdersDash
+								key={order.order.id}
+								qrcode={order.order.qr_code}
+								register={order.order.registerDay}
+								id={order.order.id}
+								status={order.order.status}
+								address={order.order.address}
+								neighborhood={order.order.neighborhood}
+								city={order.order.city}
+							/>
+						</>
+					))}
 				</div>
 			</div>
 

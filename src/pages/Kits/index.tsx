@@ -27,8 +27,8 @@ export default function Kits() {
 		getKits();
 	}, []);
 	return (
-		<div className="row">
-			<div className="d-flex p-2 pt-0 justify-content-end align-items-center">
+		<>
+			<div className="d-flex py-4 pt-0 justify-content-end align-items-center">
 				<NavLink to="form" className="btn btn-info">
 					Novo
 				</NavLink>
@@ -66,6 +66,6 @@ export default function Kits() {
 					toggleSave={() => deleteItem(deleteId)}
 				/>
 			</div>
-		</div>
+		</>
 	);
 }

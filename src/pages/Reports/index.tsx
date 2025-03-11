@@ -69,7 +69,7 @@ export default function Report() {
 				</button>
 			</div>
 			<div className="card">
-				<div ref={contentRef} className="report">
+				<div ref={contentRef} className="report m-5">
 					<div className="d-flex gap-4 mb-4">
 						<img
 							alt="logo da prefeitura"

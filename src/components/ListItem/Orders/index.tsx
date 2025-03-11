@@ -50,9 +50,13 @@ export default function ListItemOrders({
 						<span className="text-truncate d-flex align-items-center text-heading">
 						  {formattedDate}
 						</span>
-
 					</div>
-					<div className="col-sm-6 col-md-2 d-flex justify-content-center align-items-center">
+					<div className="col-sm-4 col-md-2 d-flex justify-content-center align-items-center">
+						<span className="text-truncate d-flex align-items-center text-heading">
+						  KIT
+						</span>
+					</div>
+					<div className="col-sm-6 col-md-3 d-flex justify-content-start align-items-center">
 						<div className="d-flex justify-content-start align-items-center">
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3">
@@ -66,15 +70,15 @@ export default function ListItemOrders({
 						</div>
 					</div>
 
-					<div className="col-md-4 d-flex flex-column justify-content-start align-items-start">
+					<div className="col-md-3 d-flex flex-column justify-content-start align-items-start">
 						<div className="d-flex flex-column">
 							<h6 className="text-nowrap mb-0">{address}</h6>
 							<small className="text-truncate d-none d-sm-block">{neighborhood} - {city}/{state}</small>
 						</div>
 					</div>
-					<div className="col-md-2 d-flex justify-content-center align-items-center"><Status
+					<div className="col-md-1 d-flex justify-content-center align-items-center"><Status
 						statusOS={status}/></div>
-					<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">{accessLevel === 2 ||
+					<div className="col-md-1 d-flex justify-content-end align-items-center gap-3">{accessLevel === 2 ||
 						(accessLevel === 0 && (
 							<Link to={`view?id=${id}`}>
 								<BsEyeFill/>
