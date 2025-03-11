@@ -6,15 +6,35 @@
   height: 2.5rem;
   border-radius: 0.375rem 0 0 0.375rem;
 }
-.bg-menu-theme .menu-inner > .menu-item a.active{
+
+.bg-menu-theme .menu-inner>.menu-item a.active {
   color: #0e3780;
   background-color: rgba(79, 130, 214, 0.18) !important;
   font-weight: 600;
 }
-.bg-menu-theme .menu-inner > .menu-item a.active:before {
+
+.bg-menu-theme .menu-inner>.menu-item a.active:before {
   background: #0e3780;
   margin-right: -16px;
 }
+
 .menu-vertical .menu-item .menu-toggle::after {
   transition: transform .3s;
+}
+
+.bg-color {}
+
+.menu-item-w {}
+
+@media (max-width: 767px) {
+
+  .bg-color {
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .menu-item-w {
+    width: 100vw !important;
+  }
 }
