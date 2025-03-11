@@ -24,7 +24,7 @@ export default function ListItemOrders({
 			case 1:
 				return 'Administrativo';
 			case 2:
-				return 'Usuário';
+				return 'Funcionário';
 			case 3:
 				return 'Externo';
 			default:
