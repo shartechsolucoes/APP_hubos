@@ -57,8 +57,11 @@ export default function Navbar() {
 				id="layout-navbar"
 			>
 				<div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-					<a className="nav-item nav-link px-0 me-xl-4" onClick={toggleMenu}>
-						<i className="bx bx-menu bx-sm">
+					<a
+						className="nav-item nav-link px-0 me-xl-4 d-xl-none"
+						onClick={toggleMenu}
+					>
+						<i className="bx bx-menu bx-sm ">
 							<IoMenu />
 						</i>
 					</a>

@@ -69,7 +69,7 @@ export default function Sidebar() {
 							</span>
 						</a>
 
-						<a className="close-toggle" onClick={toggleMenu}>
+						<a className="close-toggle d-xl-none" onClick={toggleMenu}>
 							<IoIosArrowBack />
 						</a>
 					</div>
