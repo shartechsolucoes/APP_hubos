@@ -69,7 +69,7 @@ export default function Sidebar() {
 							</span>
 						</a>
 
-						<a onClick={toggleMenu} style={{ position: 'fixed', right: 0 }}>
+						<a className="close-toggle" onClick={toggleMenu}>
 							<IoIosArrowBack />
 						</a>
 					</div>
@@ -88,6 +88,7 @@ export default function Sidebar() {
 												className="menu-link menu-toggle"
 												aria-current="page"
 												to={route.path}
+												onClick={toggleMenu}
 											>
 												{icons(route.icon)}
 												<div data-i18n="User interface">{route.name}</div>
