@@ -22,14 +22,32 @@
   transition: transform .3s;
 }
 
-.bg-color {}
-
-.menu-item-w {}
-
 @media (max-width: 767px) {
-  .navbar-light{
-    display: none!important;
+
+  .navbar-toggle {
+    transform: translate(var(--menu-position)) !important;
+    transition: .5s !important;
+    flex-wrap: nowrap !important;
+    flex-direction: column;
+
   }
+
+
+  .navbar-toggle .app-brand {
+    /* transform: translate(80vw) !important; */
+    height: 5em;
+  }
+
+  .navbar-toggle .menu-inner {
+    padding-top: 5em !important;
+  }
+
+  .menu-vertical {
+    width: 100vw !important;
+  }
+
+
+
   .bg-color {
     background: #fff;
     width: 100vw;
@@ -40,4 +58,6 @@
     width: 100vw !important;
 
   }
+
+
 }
