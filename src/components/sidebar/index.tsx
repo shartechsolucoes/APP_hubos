@@ -45,6 +45,13 @@ export default function Sidebar() {
 		}
 	}
 
+	const toggleMenu = () => {
+		const r = document.documentElement;
+		r.style.cssText = '--menu-position: -100vw;';
+		// 	const r = document.getElementsByClassName('menu')[0];
+		// r.classList.add('navbar-toggle');
+	};
+
 	return (
 		<>
 			{['md'].map((expand) => (
@@ -52,7 +59,7 @@ export default function Sidebar() {
 				<Navbar
 					key={expand}
 					expand={expand}
-					className="layout-menu menu-vertical menu bg-menu-theme"
+					className="layout-menu menu-vertical menu bg-menu-theme navbar-toggle"
 				>
 					<div className="app-brand">
 						<a href="#" className="app-brand-link">
@@ -62,8 +69,8 @@ export default function Sidebar() {
 							</span>
 						</a>
 
-						<a className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-							<IoIosArrowBack className="bx bx-chevron-left bx-sm align-middle" />
+						<a className="close-toggle d-xl-none" onClick={toggleMenu}>
+							<IoIosArrowBack />
 						</a>
 					</div>
 					<div className="menu-inner-shadow"></div>
@@ -81,6 +88,7 @@ export default function Sidebar() {
 												className="menu-link menu-toggle"
 												aria-current="page"
 												to={route.path}
+												onClick={toggleMenu}
 											>
 												{icons(route.icon)}
 												<div data-i18n="User interface">{route.name}</div>
