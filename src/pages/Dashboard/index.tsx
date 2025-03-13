@@ -134,7 +134,7 @@ export default function Dashboard() {
 		getOrders();
 		getDashboardData();
 	}, []);
-
+	//
 	// useEffect(() => {
 	// 	if (orders.length > 0) {
 	// 		getGeolocation();
@@ -243,23 +243,23 @@ export default function Dashboard() {
 						</div>
 					</div>
 
-					{/*{isLoaded && (*/}
-					{/*	<GoogleMap*/}
-					{/*		mapContainerStyle={containerStyle}*/}
-					{/*		center={center}*/}
-					{/*		onLoad={onLoad}*/}
-					{/*		onUnmount={onUnmount}*/}
-					{/*		options={{ gestureHandling: 'greedy' }}*/}
-					{/*	>*/}
-					{/*		{pins.map((pin, index) => (*/}
-					{/*			<Marker*/}
-					{/*				position={pin.geo}*/}
-					{/*				label={{ text: `${pin.os}`, className: 'pin-label' }}*/}
-					{/*				animation={google.maps.Animation.DROP}*/}
-					{/*			></Marker>*/}
-					{/*		))}*/}
-					{/*	</GoogleMap>*/}
-					{/*)}*/}
+					{isLoaded && (
+						<GoogleMap
+							mapContainerStyle={containerStyle}
+							center={center}
+							onLoad={onLoad}
+							onUnmount={onUnmount}
+							options={{ gestureHandling: 'greedy' }}
+						>
+							{pins.map((pin, index) => (
+								<Marker
+									position={pin.geo}
+									label={{ text: `${pin.os}`, className: 'pin-label' }}
+									animation={google.maps.Animation.DROP}
+								></Marker>
+							))}
+						</GoogleMap>
+					)}
 				</div>
 			</div>
 			<div className="col-xxl-12 col-lg-6 mt-4">
