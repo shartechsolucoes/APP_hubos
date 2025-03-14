@@ -29,6 +29,7 @@ export default function Orders() {
 		start: new Date(),
 		end: new Date(),
 	});
+	const [totalOrders, setTotalOrders] = useState(0);
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
 	const route = useNavigate();
@@ -37,9 +38,12 @@ export default function Orders() {
 		const newDate = format(date.start, 'yyyy-MM-dd');
 		console.log(newDate);
 	}, [date]);
-	const getOrders = async () => {
-		const response = await api.get('orders');
+
+	const getOrders = async (page?: number) => {
+		const response = await api.get('orders', { params: { page } });
 		setOrders(response.data.orders);
+		console.log(response.data.count);
+		setTotalOrders(response.data.count.total);
 	};
 
 	const toReportPage = () => {
@@ -77,26 +81,22 @@ export default function Orders() {
 			<div className="col-md-12">
 				<div className="d-flex justify-content-end align-items-end gap-3 my-4">
 					<div className="d-none d-md-flex d-flex flex-column ">
-						<input className="form-control" placeholder="Numero da OS"/>
+						<input className="form-control" placeholder="Numero da OS" />
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
-					<select
-						id="status"
-						value=""
-						className="form-control"
-					>
-						<option selected value="">
-							Status
-						</option>
-						<option selected value="0">
-							Aberto
-						</option>
-						<option value="1">Em trabalho</option>
-						<option value="2">Finalizado</option>
-					</select>
+						<select id="status" value="" className="form-control">
+							<option selected value="">
+								Status
+							</option>
+							<option selected value="0">
+								Aberto
+							</option>
+							<option value="1">Em trabalho</option>
+							<option value="2">Finalizado</option>
+						</select>
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
-						<input className="form-control" placeholder="Bairro"/>
+						<input className="form-control" placeholder="Bairro" />
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
 						<DatePicker
@@ -136,9 +136,7 @@ export default function Orders() {
 								Relatórios
 							</button>
 							<ul
-								className={`dropdown-menu ${
-									openReportsDropdown ? 'show' : ''
-								}`}
+								className={`dropdown-menu ${openReportsDropdown ? 'show' : ''}`}
 							>
 								<li>
 									<a className="dropdown-item" onClick={toReportPage}>
@@ -146,10 +144,7 @@ export default function Orders() {
 									</a>
 								</li>
 								<li>
-									<a
-										className="dropdown-item"
-										onClick={toReportMaterialPage}
-									>
+									<a className="dropdown-item" onClick={toReportMaterialPage}>
 										Materiais utilizados
 									</a>
 								</li>
@@ -159,76 +154,70 @@ export default function Orders() {
 					<NavLink
 						to="form"
 						className="btn btn-info"
-						style={{height: 'fit-content'}}
+						style={{ height: 'fit-content' }}
 					>
 						Nova
 					</NavLink>
 				</div>
 				<div className="card pb-0 mb-2">
-
-				{orders.map((order) => (
-					<>
-						<ListItemOrders
-							key={order.id}
-							qrcode={order.qr_code}
-							id={order.id}
-							address={order.address}
-							city={order.city}
-							neighborhood={order.neighborhood}
-							state={order.state}
-							status={order.status}
-							date={order.registerDay}
-							deleteListItem={() => {
-								setDeleteId(order.id);
-								openModal();
-							}}
-							duplicateItem={() => duplicateItem(order.id)}
-						/>
-					</>
-				))}
-				<div className="row mx-3 justify-content-between my-3">
-					<div
-						className="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto">
-						<div className="dt-info" aria-live="polite" id="DataTables_Table_0_info" role="status">Mostrando 1
-							de 5 de 25 registros
+					{orders.map((order) => (
+						<>
+							<ListItemOrders
+								key={order.id}
+								qrcode={order.qr_code}
+								id={order.id}
+								address={order.address}
+								city={order.city}
+								neighborhood={order.neighborhood}
+								state={order.state}
+								status={order.status}
+								date={order.registerDay}
+								deleteListItem={() => {
+									setDeleteId(order.id);
+									openModal();
+								}}
+								duplicateItem={() => duplicateItem(order.id)}
+							/>
+						</>
+					))}
+					<div className="row mx-3 justify-content-between my-3">
+						<div className="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto">
+							<div
+								className="dt-info"
+								aria-live="polite"
+								id="DataTables_Table_0_info"
+								role="status"
+							>
+								Mostrando {1} de {Math.ceil(totalOrders / 10)} de {totalOrders}{' '}
+								registros
+							</div>
+						</div>
+						<div className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
+							<div className="dt-paging">
+								<nav aria-label="pagination">
+									<ul className="pagination">
+										{[...Array(Math.ceil(totalOrders / 10))].map(
+											(page, index) => (
+												<li className="dt-paging-button page-item active">
+													<button
+														className="page-link"
+														role="link"
+														type="button"
+														aria-controls="DataTables_Table_0"
+														aria-current="page"
+														data-dt-idx="0"
+														onClick={() => getOrders(index)}
+													>
+														{index}
+													</button>
+												</li>
+											)
+										)}
+									</ul>
+								</nav>
+							</div>
 						</div>
 					</div>
-					<div
-						className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
-						<div className="dt-paging">
-							<nav aria-label="pagination">
-								<ul className="pagination">
-									<li className="dt-paging-button page-item active">
-										<button className="page-link" role="link" type="button"
-												aria-controls="DataTables_Table_0" aria-current="page" data-dt-idx="0">1
-										</button>
-									</li>
-									<li className="dt-paging-button page-item">
-										<button className="page-link" role="link" type="button"
-												aria-controls="DataTables_Table_0" data-dt-idx="1">2
-										</button>
-									</li>
-									<li className="dt-paging-button page-item">
-										<button className="page-link" role="link" type="button"
-												aria-controls="DataTables_Table_0" data-dt-idx="2">3
-										</button>
-									</li>
-									<li className="dt-paging-button page-item">
-										<button className="page-link" role="link" type="button"
-												aria-controls="DataTables_Table_0" data-dt-idx="3">4
-										</button>
-									</li>
-									<li className="dt-paging-button page-item">
-										<button className="page-link" role="link" type="button"
-												aria-controls="DataTables_Table_0" data-dt-idx="4">5
-										</button>
-									</li>
-
-								</ul>
-							</nav>
-						</div>
-					</div>
-				</div>
 				</div>
 			</div>
 
