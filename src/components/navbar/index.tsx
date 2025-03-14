@@ -1,46 +1,8 @@
-import { useLocation, useNavigate } from 'react-router';
 import './styles.css';
 import { FaSearch } from 'react-icons/fa';
 import { IoMenu } from 'react-icons/io5';
-import { useEffect } from 'react';
 
 export default function Navbar() {
-	const { pathname } = useLocation();
-
-	const navigate = useNavigate();
-
-	const exit = async () => {
-		await localStorage.clear();
-		navigate('/login');
-	};
-
-	function paths(path: string) {
-		console.log(pathname);
-		switch (path) {
-			case '/':
-				return 'Dashboard';
-			case '/orders':
-				return 'Ordem de serviço';
-			case '/orders/form':
-				return 'Ordem de serviço';
-			case '/orders/view':
-				return 'Ordem de serviço';
-			case '/orders/report':
-				return 'Relatório ordem de serviço';
-			case '/kits':
-				return 'Kits';
-			case '/tags':
-				return 'Etiquetas';
-			case '/materials':
-				return 'Materiais';
-			case '/users':
-				return 'Usuários';
-			case '/version':
-				return 'Versão do Sistema';
-			default:
-				return '';
-		}
-	}
 
 	const toggleMenu = () => {
 		const r = document.documentElement;
@@ -109,7 +71,6 @@ export default function Navbar() {
 												<div className="avatar avatar-online">
 													<img
 														src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg"
-														alt
 														className="w-px-40 h-auto rounded-circle"
 													/>
 												</div>

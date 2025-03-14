@@ -197,7 +197,7 @@ export default function Orders() {
 								<nav aria-label="pagination">
 									<ul className="pagination">
 										{[...Array(Math.ceil(totalOrders / 10))].map(
-											(page, index) => (
+											(_page, index) => (
 												<li className="dt-paging-button page-item active">
 													<button
 														className="page-link"

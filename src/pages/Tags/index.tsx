@@ -66,8 +66,9 @@ export default function tags() {
 							<ListItem
 								group={material.group}
 								id={material.id}
-								title={material.description}
-							/>
+								title={material.description} deleteItem={function (): void {
+								throw new Error('Function not implemented.');
+							}}							/>
 						</>
 					))}
 				</div>
