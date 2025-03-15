@@ -9,6 +9,7 @@ import useModalStore from '../../stores/modalStore';
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import Pagination from '../../components/Pagination';
 
 export default function Orders() {
 	const { openModal, closeModal } = useModalStore((state) => state);
@@ -30,16 +31,19 @@ export default function Orders() {
 		end: new Date(),
 	});
 	const [totalOrders, setTotalOrders] = useState(0);
+	const [currentPage, setCurrentPage] = useState(0);
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
 	const route = useNavigate();
+	const totalPages = Math.ceil(totalOrders / 10);
 
 	useEffect(() => {
 		const newDate = format(date.start, 'yyyy-MM-dd');
 		console.log(newDate);
 	}, [date]);
 
-	const getOrders = async (page?: number) => {
+	const getOrders = async (page = 0) => {
+		setCurrentPage(page);
 		const response = await api.get('orders', { params: { page } });
 		setOrders(response.data.orders);
 		console.log(response.data.count);
@@ -180,44 +184,12 @@ export default function Orders() {
 							/>
 						</>
 					))}
-					<div className="row mx-3 justify-content-between my-3">
-						<div className="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto">
-							<div
-								className="dt-info"
-								aria-live="polite"
-								id="DataTables_Table_0_info"
-								role="status"
-							>
-								Mostrando {1} de {Math.ceil(totalOrders / 10)} de {totalOrders}{' '}
-								registros
-							</div>
-						</div>
-						<div className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
-							<div className="dt-paging">
-								<nav aria-label="pagination">
-									<ul className="pagination">
-										{[...Array(Math.ceil(totalOrders / 10))].map(
-											(page, index) => (
-												<li className="dt-paging-button page-item active">
-													<button
-														className="page-link"
-														role="link"
-														type="button"
-														aria-controls="DataTables_Table_0"
-														aria-current="page"
-														data-dt-idx="0"
-														onClick={() => getOrders(index)}
-													>
-														{index}
-													</button>
-												</li>
-											)
-										)}
-									</ul>
-								</nav>
-							</div>
-						</div>
-					</div>
+					<Pagination
+						currentPage={currentPage}
+						totalItems={totalOrders}
+						totalPages={totalPages}
+						toggleList={(value) => getOrders(value)}
+					/>
 				</div>
 			</div>
 

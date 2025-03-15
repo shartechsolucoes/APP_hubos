@@ -1,19 +1,22 @@
 .list-height {
   max-height: 80dvh;
 }
-.text-os{
+
+.text-os {
   font-size: 20px;
   font-weight: 700;
-  color:#566a7f;
+  color: #566a7f;
 }
 
-.text-date{
+.text-date {
   font-weight: 500;
   color: #566a7f;
 }
 
+
+
 @media (max-width: 767px) {
-  .text-date{
+  .text-date {
     font-weight: 500;
     color: white;
     background: #566a7f;
