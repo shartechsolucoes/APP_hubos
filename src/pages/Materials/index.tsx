@@ -1,4 +1,3 @@
-import { BsFillPlusSquareFill } from 'react-icons/bs';
 import ListItem from '../../components/ListItem/Materials';
 import './styles.css';
 import { NavLink } from 'react-router';

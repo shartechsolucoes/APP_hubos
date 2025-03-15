@@ -2,7 +2,6 @@ import { BsEyeFill, BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
 import { Link } from 'react-router';
 import './index.css';
 import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
-import Status from "../../StatusOS";
 
 export default function ListItemOrders({
 										   title,
@@ -45,8 +44,7 @@ export default function ListItemOrders({
 					</div>
 					<div className="col-md-2 d-flex justify-content-center align-items-center">Medida</div>
 
-					<div className="col-md-1 d-flex justify-content-center align-items-center"><Status
-						statusOS={status}/></div>
+					<div className="col-md-1 d-flex justify-content-center align-items-center"></div>
 					<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">
 						{accessLevel === 0 && (
 							<Link to={`form?id=${id}`}>

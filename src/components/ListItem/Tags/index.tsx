@@ -2,12 +2,9 @@ import { BsEyeFill, BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
 import { Link } from 'react-router';
 import './index.css';
 import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
-import Status from "../../StatusOS";
 
 export default function ListItemOrders({
-		   title,
 		   id,
-		   group,
 		   deleteItem,
 	   }: {
 	title?: string;
