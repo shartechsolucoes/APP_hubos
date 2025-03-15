@@ -13,7 +13,7 @@ import {
 	// MarkerF,
 	useJsApiLoader,
 } from '@react-google-maps/api';
-import axios from 'axios';
+// import axios from 'axios';
 // import './styles.css';
 
 const containerStyle = {
@@ -91,45 +91,42 @@ export default function Dashboard() {
 	});
 
 	const [map, setMap] = useState(null);
-	const [pins, setPins] = useState<{ geo: any; os: string }[]>([]);
+	// const [pins, setPins] = useState<{ geo: any; os: string }[]>([]);
 
-	const onLoad = useCallback(
-		(map) => {
-			map.setZoom(12);
-			setMap(map);
-		},
-		[pins]
-	);
+	const onLoad = useCallback((map: any) => {
+		map.setZoom(12);
+		setMap(map);
+	}, []);
 
 	const onUnmount = useCallback(() => {
 		setMap(null);
 	}, [map]);
 
-	const getGeolocation = async () => {
-		const getLocationsOrders = orders.map(async (order) => {
-			const address = `${order.order.address} ${order.order.neighborhood} ${order.order.city}`;
+	// const getGeolocation = async () => {
+	// 	const getLocationsOrders = orders.map(async (order) => {
+	// 		const address = `${order.order.address} ${order.order.neighborhood} ${order.order.city}`;
 
-			const formatedAddress = address
-				.replaceAll('  ', ' ')
-				.replaceAll(' ', '%20');
+	// 		const formatedAddress = address
+	// 			.replaceAll('  ', ' ')
+	// 			.replaceAll(' ', '%20');
 
-			const response = await axios.get(
-				`https://maps.googleapis.com/maps/api/geocode/json?address=${formatedAddress}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
-			);
+	// 		const response = await axios.get(
+	// 			`https://maps.googleapis.com/maps/api/geocode/json?address=${formatedAddress}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
+	// 		);
 
-			return { geolocation: response.data, os: order.order.qr_code };
-		});
-		const geolocation = await Promise.all(getLocationsOrders);
+	// 		return { geolocation: response.data, os: order.order.qr_code };
+	// 	});
+	// 	const geolocation = await Promise.all(getLocationsOrders);
 
-		const formatedGeo = geolocation.map((loc) => ({
-			geo: loc.geolocation.results[0].geometry.location,
-			os: loc.os,
-		}));
+	// 	const formatedGeo = geolocation.map((loc) => ({
+	// 		geo: loc.geolocation.results[0].geometry.location,
+	// 		os: loc.os,
+	// 	}));
 
-		console.log(formatedGeo);
+	// 	console.log(formatedGeo);
 
-		setPins(formatedGeo);
-	};
+	// 	setPins(formatedGeo);
+	// };
 	useEffect(() => {
 		getOrders();
 		getDashboardData();
@@ -267,6 +264,7 @@ export default function Dashboard() {
 						>
 							{orders.map((order, index) => (
 								<Marker
+									key={index}
 									position={{
 										lat: parseFloat(order.order.lat),
 										lng: parseFloat(order.order.long),
