@@ -15,20 +15,18 @@ export default function Orders() {
 	const { openModal, closeModal } = useModalStore((state) => state);
 	const [orders, setOrders] = useState<
 		Array<{
-			order: {
-				status: number;
-				active: boolean;
-				address: string;
-				city: string;
-				id: number;
-				lat: string;
-				long: string;
-				neighborhood: string;
-				observations: string;
-				qr_code: string;
-				registerDay: Date;
-				state: string;
-			};
+			status: number;
+			active: boolean;
+			address: string;
+			city: string;
+			id: number;
+			lat: string;
+			long: string;
+			neighborhood: string;
+			observations: string;
+			qr_code: string;
+			registerDay: Date;
+			state: string;
 			ordersKits: {
 				kit_id: number;
 				quantity: string;
@@ -183,21 +181,21 @@ export default function Orders() {
 					{orders.map((order) => (
 						<>
 							<ListItemOrders
-								key={order.order.id}
-								qrcode={order?.order?.qr_code}
-								id={order.order?.id}
-								address={order.order?.address}
-								city={order.order?.city}
-								neighborhood={order.order?.neighborhood}
-								state={order.order?.state}
-								status={order.order?.status}
-								date={order.order?.registerDay}
-								// kit={order.ordersKits[0].kit.description ?? ''}
+								key={order.id}
+								qrcode={order?.qr_code}
+								id={order.id}
+								address={order.address}
+								city={order.city}
+								neighborhood={order.neighborhood}
+								state={order.state}
+								status={order.status}
+								date={order.registerDay}
+								kit={order.ordersKits[0].kit.description ?? ''}
 								deleteListItem={() => {
-									setDeleteId(order.order?.id);
+									setDeleteId(order.id);
 									openModal();
 								}}
-								duplicateItem={() => duplicateItem(order.order.id)}
+								duplicateItem={() => duplicateItem(order.id)}
 							/>
 						</>
 					))}
