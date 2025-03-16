@@ -293,6 +293,7 @@ export default function Dashboard() {
 								address={order.order.address}
 								neighborhood={order.order.neighborhood}
 								city={order.order.city}
+								kit={order?.ordersKits[0]?.kit?.description || ''}
 							/>
 						</>
 					))}

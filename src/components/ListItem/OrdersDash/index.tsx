@@ -14,7 +14,8 @@ export default function ListItemOrders({
 	   neighborhood,
 	   city,
 	   register,
-	   status
+	   status,
+	   kit,
    }: {
 	qrcode?: string,
 	address?: string,
@@ -23,10 +24,11 @@ export default function ListItemOrders({
 	register?: string,
 	state?: string,
 	id?: string | number,
-	status?: number
+	status?: number,
+	kit?: string
 }) {
 	const { accessLevel } = useAccessLevelStore();
-	const date  = register ? format(register, "HH:mm:ss", {locale:ptBR} ): '';
+	// const date  = register ? format(register, "HH:mm:ss", {locale:ptBR} ): '';
 
 	return (
 		<>
@@ -37,7 +39,7 @@ export default function ListItemOrders({
 					</div>
 					<div className="col-sm-4 col-md-1 d-flex justify-content-center align-items-center">
 						<span className="text-truncate d-flex align-items-center text-heading">
-						  {date}
+						  {kit}
 						</span>
 
 					</div>
