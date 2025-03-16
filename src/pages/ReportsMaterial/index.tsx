@@ -56,7 +56,7 @@ export default function ReportMaterial() {
 				</button>
 			</div>
 			<div className="card">
-				<div ref={contentRef} className="report">
+				<div ref={contentRef} className="report  p-4">
 					<div className="d-flex gap-4 mb-4">
 						<img
 							alt="logo da prefeitura"
@@ -82,7 +82,7 @@ export default function ReportMaterial() {
 						<tr>
 							<th>Código</th>
 							<th>Descrição</th>
-							<th>Quantidade</th>
+							<th>QTD</th>
 						</tr>
 						{orders.map((order) => (
 							<>

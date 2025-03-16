@@ -69,7 +69,7 @@ export default function Report() {
 				</button>
 			</div>
 			<div className="card">
-				<div ref={contentRef} className="report m-5">
+				<div ref={contentRef} className="report m-4">
 					<div className="d-flex gap-4 mb-4">
 						<img
 							alt="logo da prefeitura"
@@ -80,16 +80,19 @@ export default function Report() {
 						/>
 						<span className="flex-fill text-center">
 							<h2 className="m-3 mt-5 fw-bolder">Serviços Realizados</h2>
-							{ <p>
-								Data de: {formattedURl(start)} Data Até: {formattedURl(end)}
-							</p> }
+							{
+								<p>
+									Data de: {formattedURl(start)} Data Até: {formattedURl(end)}
+								</p>
+							}
 						</span>
 						<p className="m-4">{today}</p>
 					</div>
 
+
 					<table className="table table-striped">
 						<tr>
-							<th>Nº da OS</th>
+							<th>Nº OS</th>
 							<th>Kist(s)</th>
 							<th>Latitude</th>
 							<th>Longitude</th>
