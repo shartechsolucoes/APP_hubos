@@ -31,11 +31,15 @@ export default function Orders() {
 		end: new Date(),
 	});
 	const [totalOrders, setTotalOrders] = useState(0);
+	const [activeOrders, setActiveOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
 	const route = useNavigate();
-	const totalPages = Math.ceil(totalOrders / 10);
+	const totalPages =
+		(totalOrders / 10) % 1 > 0.5
+			? Math.ceil(totalOrders / 10)
+			: Math.floor(totalOrders / 10);
 
 	useEffect(() => {
 		const newDate = format(date.start, 'yyyy-MM-dd');
@@ -48,6 +52,7 @@ export default function Orders() {
 		setOrders(response.data.orders);
 		console.log(response.data.count);
 		setTotalOrders(response.data.count.total);
+		setActiveOrders(response.data.count.actives);
 	};
 
 	const toReportPage = () => {
@@ -186,7 +191,7 @@ export default function Orders() {
 					))}
 					<Pagination
 						currentPage={currentPage}
-						totalItems={totalOrders}
+						totalItems={activeOrders}
 						totalPages={totalPages}
 						toggleList={(value) => getOrders(value)}
 					/>

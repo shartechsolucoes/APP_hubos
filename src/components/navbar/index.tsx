@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import './styles.css';
 import { FaSearch } from 'react-icons/fa';
 import { IoMenu } from 'react-icons/io5';
+import { useNavigate } from 'react-router';
 
 export default function Navbar() {
-
+	const navigate = useNavigate();
+	const [toggleDropdown, setToggleDropdown] = useState(false);
 	const toggleMenu = () => {
 		const r = document.documentElement;
 		r.style.cssText = '--menu-position: 0vw;';
@@ -12,6 +15,11 @@ export default function Navbar() {
 	};
 
 	// let expand;
+
+	const logOut = () => {
+		localStorage.removeItem('token');
+		navigate('/login');
+	};
 	return (
 		<>
 			<nav
@@ -52,8 +60,8 @@ export default function Navbar() {
 						<li className="nav-item navbar-dropdown dropdown-user dropdown">
 							<a
 								className="nav-link dropdown-toggle hide-arrow"
-								href="javascript:void(0);"
 								data-bs-toggle="dropdown"
+								onClick={() => setToggleDropdown((prev) => !prev)}
 							>
 								<div className="avatar avatar-online">
 									<img
@@ -63,8 +71,12 @@ export default function Navbar() {
 								</div>
 							</a>
 
-							<ul className="dropdown-menu dropdown-menu-end">
-								<li>
+							<ul
+								className={`dropdown-menu dropdown-menu-end drop-menu ${
+									toggleDropdown && 'show'
+								}`}
+							>
+								{/* <li>
 									<a className="dropdown-item" href="#">
 										<div className="d-flex">
 											<div className="flex-shrink-0 me-3">
@@ -110,11 +122,11 @@ export default function Navbar() {
 								</li>
 								<li>
 									<div className="dropdown-divider"></div>
-								</li>
+								</li> */}
 								<li>
-									<a className="dropdown-item" href="auth-login-basic.html">
+									<a className="dropdown-item" onClick={logOut}>
 										<i className="bx bx-power-off me-2"></i>
-										<span className="align-middle">Log Out</span>
+										<span className="align-middle">Sair</span>
 									</a>
 								</li>
 							</ul>
