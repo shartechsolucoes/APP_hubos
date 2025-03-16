@@ -12,27 +12,29 @@ import { ptBR } from 'date-fns/locale';
 import Status from '../../StatusOS/';
 
 export default function ListItemOrders({
-										   id,
-										   qrcode,
-										   address,
-										   neighborhood,
-										   city,
-										   state,
-										   status,
-										   date,
-										   deleteListItem,
-										   duplicateItem,
-									   }: {
-	qrcode?: string;
-	address?: string;
-	neighborhood?: string;
-	city?: string;
-	state?: string;
-	status: number;
-	id?: string | number;
-	date: Date;
-	deleteListItem?: () => void;
-	duplicateItem?: () => void;
+						   id,
+						   qrcode,
+						   address,
+						   neighborhood,
+						   city,
+						   state,
+						   status,
+						   date,
+						   deleteListItem,
+						   duplicateItem,
+						   kit
+					   }: {
+	qrcode?: string,
+	address?: string,
+	neighborhood?: string,
+	city?: string,
+	state?: string,
+	status: number,
+	id?: string | number,
+	date: Date,
+	deleteListItem?: () => void,
+	duplicateItem?: () => void,
+	kit?: string
 }) {
 	const { accessLevel } = useAccessLevelStore();
 	const formattedDate = date
@@ -53,7 +55,7 @@ export default function ListItemOrders({
 					</div>
 					<div className="d-none d-md-flex col-sm-6 col-md-2 d-flex justify-content-center align-items-center">
 						<span className="text-truncate d-flex align-items-center text-heading">
-						  KIT
+						  {kit}
 						</span>
 					</div>
 					<div className="d-none d-md-flex col-md-2 d-flex justify-content-start align-items-center">
