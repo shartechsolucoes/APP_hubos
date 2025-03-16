@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Pagination from '../../components/Pagination';
 import Spinner from '../../components/Spiner';
+import { useDebounce } from '../../hooks/useDebounce';
 
 export default function Orders() {
 	const { openModal, closeModal } = useModalStore((state) => state);
@@ -44,6 +45,9 @@ export default function Orders() {
 	const [activeOrders, setActiveOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const [searchOS, setSearchOS] = useState('');
+	const [searchStatus, setSearchStatus] = useState('');
+	const [searchNeighborhood, setSearchNeighborhood] = useState('');
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
 	const route = useNavigate();
@@ -51,6 +55,12 @@ export default function Orders() {
 		(totalOrders / 10) % 1 > 0.5
 			? Math.ceil(totalOrders / 10)
 			: Math.floor(totalOrders / 10);
+
+	const debounceOS = useDebounce({ cb: searchOS, delay: 1000 });
+	const debounceNeighborhood = useDebounce({
+		cb: searchNeighborhood,
+		delay: 1000,
+	});
 
 	useEffect(() => {
 		const newDate = format(date.start, 'yyyy-MM-dd');
@@ -61,7 +71,14 @@ export default function Orders() {
 		setLoading(true);
 		setCurrentPage(page);
 		try {
-			const response = await api.get('orders', { params: { page } });
+			const response = await api.get('orders', {
+				params: {
+					page,
+					os: debounceOS,
+					status: searchStatus,
+					neighborhood: debounceNeighborhood,
+				},
+			});
 			setOrders(response.data.orders);
 			setTotalOrders(response.data.count.total);
 			setActiveOrders(response.data.count.actives);
@@ -89,7 +106,11 @@ export default function Orders() {
 	};
 	useEffect(() => {
 		getOrders();
-	}, []);
+	}, [debounceNeighborhood, debounceOS, searchStatus]);
+
+	useEffect(() => {
+		console.log(debounceNeighborhood, debounceOS, searchStatus);
+	}, [debounceNeighborhood, debounceOS, searchStatus]);
 
 	const deleteItem = async (delItem: unknown) => {
 		await api.delete(`/order/${delItem}`);
@@ -107,22 +128,35 @@ export default function Orders() {
 			<div className="col-md-12">
 				<div className="d-flex justify-content-end align-items-end gap-3 my-4">
 					<div className="d-none d-md-flex d-flex flex-column ">
-						<input className="form-control" placeholder="Numero da OS" />
+						<input
+							className="form-control"
+							placeholder="Numero da OS"
+							value={searchOS}
+							onChange={(e) => setSearchOS(e.target.value)}
+						/>
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
-						<select id="status" value="" className="form-control">
-							<option selected value="">
+						<select
+							id="status"
+							value={searchStatus}
+							className="form-control"
+							onChange={(e) => setSearchStatus(e.target.value)}
+						>
+							<option selected disabled value="">
 								Status
 							</option>
-							<option selected value="0">
-								Aberto
-							</option>
+							<option value="0">Aberto</option>
 							<option value="1">Em trabalho</option>
 							<option value="2">Finalizado</option>
 						</select>
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
-						<input className="form-control" placeholder="Bairro" />
+						<input
+							className="form-control"
+							placeholder="Bairro"
+							value={searchNeighborhood}
+							onChange={(e) => setSearchNeighborhood(e.target.value)}
+						/>
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
 						<DatePicker
