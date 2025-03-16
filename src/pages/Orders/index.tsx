@@ -11,7 +11,6 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Pagination from '../../components/Pagination';
 import Spinner from '../../components/Spiner';
-import { useDebounce } from '../../hooks/useDebounce';
 
 export default function Orders() {
 	const { openModal, closeModal } = useModalStore((state) => state);
@@ -37,9 +36,9 @@ export default function Orders() {
 		}>
 	>([]);
 	const [deleteId, setDeleteId] = useState<unknown>(null);
-	const [date, setDate] = useState<{ start: Date; end: Date }>({
-		start: new Date(),
-		end: new Date(),
+	const [date, setDate] = useState<{ start: Date | null; end: Date | null }>({
+		start: null,
+		end: null,
 	});
 	const [totalOrders, setTotalOrders] = useState(0);
 	const [activeOrders, setActiveOrders] = useState(0);
@@ -50,22 +49,14 @@ export default function Orders() {
 	const [searchNeighborhood, setSearchNeighborhood] = useState('');
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
+
 	const route = useNavigate();
 	const totalPages =
-		(totalOrders / 10) % 1 > 0.5
+		totalOrders < 10
+			? 1
+			: (totalOrders / 10) % 1 > 0.5
 			? Math.ceil(totalOrders / 10)
 			: Math.floor(totalOrders / 10);
-
-	const debounceOS = useDebounce({ cb: searchOS, delay: 1000 });
-	const debounceNeighborhood = useDebounce({
-		cb: searchNeighborhood,
-		delay: 1000,
-	});
-
-	useEffect(() => {
-		const newDate = format(date.start, 'yyyy-MM-dd');
-		console.log(newDate);
-	}, [date]);
 
 	const getOrders = async (page = 0) => {
 		setLoading(true);
@@ -74,9 +65,19 @@ export default function Orders() {
 			const response = await api.get('orders', {
 				params: {
 					page,
-					os: debounceOS,
+					os: searchOS,
 					status: searchStatus,
-					neighborhood: debounceNeighborhood,
+					neighborhood: searchNeighborhood,
+					dateStart: date.start
+						? format(date.start, 'yyyy-MM-dd', {
+								locale: ptBR,
+						  })
+						: '',
+					dateEnd: date.end
+						? format(date.end, 'yyyy-MM-dd', {
+								locale: ptBR,
+						  })
+						: '',
 				},
 			});
 			setOrders(response.data.orders);
@@ -91,26 +92,22 @@ export default function Orders() {
 
 	const toReportPage = () => {
 		route(
-			`report?start=${format(date.start, 'yyyy-MM-dd', {
+			`report?start=${format(date.start || '', 'yyyy-MM-dd', {
 				locale: ptBR,
-			})}&end=${format(date.end, 'yyyy-MM-dd', { locale: ptBR })}`
+			})}&end=${format(date.end || '', 'yyyy-MM-dd', { locale: ptBR })}`
 		);
 	};
 
 	const toReportMaterialPage = () => {
 		route(
-			`report-materials?start=${format(date.start, 'yyyy-MM-dd', {
+			`report-materials?start=${format(date.start || '', 'yyyy-MM-dd', {
 				locale: ptBR,
-			})}&end=${format(date.end, 'yyyy-MM-dd', { locale: ptBR })}`
+			})}&end=${format(date.end || '', 'yyyy-MM-dd', { locale: ptBR })}`
 		);
 	};
 	useEffect(() => {
 		getOrders();
-	}, [debounceNeighborhood, debounceOS, searchStatus]);
-
-	useEffect(() => {
-		console.log(debounceNeighborhood, debounceOS, searchStatus);
-	}, [debounceNeighborhood, debounceOS, searchStatus]);
+	}, []);
 
 	const deleteItem = async (delItem: unknown) => {
 		await api.delete(`/order/${delItem}`);
@@ -160,6 +157,7 @@ export default function Orders() {
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
 						<DatePicker
+							placeholderText="Data Inicial"
 							className="form-control"
 							locale="pt-BR"
 							dateFormat="dd/MM/yyyy"
@@ -167,24 +165,32 @@ export default function Orders() {
 							onSelect={(value) =>
 								setDate((prev) => ({
 									...prev,
-									start: value ? value : new Date(),
+									start: value,
 								}))
 							}
 						/>
 					</div>
 					<div className="d-none d-md-flex d-flex flex-column ">
 						<DatePicker
+							placeholderText="Data Final"
 							className="form-control"
 							selected={date.end}
 							dateFormat="dd/MM/yyyy"
 							onSelect={(value) =>
 								setDate((prev) => ({
 									...prev,
-									end: value ? value : new Date(),
+									end: value,
 								}))
 							}
 						/>
 					</div>
+					<a
+						onClick={() => getOrders()}
+						className=" d-none d-md-flex d-flex flex-column btn btn-info"
+						style={{ height: 'fit-content' }}
+					>
+						Pesquisar
+					</a>
 
 					<div className="d-none d-md-flex d-flex flex-column position-relative">
 						<div className="dropdown">
