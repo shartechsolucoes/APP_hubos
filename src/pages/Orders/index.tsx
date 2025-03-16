@@ -10,6 +10,7 @@ import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Pagination from '../../components/Pagination';
+import Spinner from '../../components/Spiner';
 
 export default function Orders() {
 	const { openModal, closeModal } = useModalStore((state) => state);
@@ -42,6 +43,7 @@ export default function Orders() {
 	const [totalOrders, setTotalOrders] = useState(0);
 	const [activeOrders, setActiveOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
+	const [loading, setLoading] = useState(true);
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
 	const route = useNavigate();
@@ -56,12 +58,18 @@ export default function Orders() {
 	}, [date]);
 
 	const getOrders = async (page = 0) => {
+		setLoading(true);
 		setCurrentPage(page);
-		const response = await api.get('orders', { params: { page } });
-		setOrders(response.data.orders);
-		console.log(response.data.count);
-		setTotalOrders(response.data.count.total);
-		setActiveOrders(response.data.count.actives);
+		try {
+			const response = await api.get('orders', { params: { page } });
+			setOrders(response.data.orders);
+			setTotalOrders(response.data.count.total);
+			setActiveOrders(response.data.count.actives);
+			setLoading(false);
+		} catch (error) {
+			console.error(error);
+			setLoading(false);
+		}
 	};
 
 	const toReportPage = () => {
@@ -177,37 +185,48 @@ export default function Orders() {
 						Nova
 					</NavLink>
 				</div>
-				<div className="card pb-0 mb-2">
-					{orders.map((order) => (
+				{/* //corrigir estilo */}
+				<div
+					className="card pb-0 mb-2 position-relative"
+					style={{ minHeight: '8em' }}
+				>
+					{loading ? (
+						<div className="d-flex justify-content-center mt-5">
+							<Spinner />
+						</div>
+					) : (
 						<>
-							<ListItemOrders
-								key={order.id}
-								qrcode={order?.qr_code}
-								id={order.id}
-								address={order.address}
-								city={order.city}
-								neighborhood={order.neighborhood}
-								state={order.state}
-								status={order.status}
-								date={order.registerDay}
-								kit={order.ordersKits[0].kit.description ?? ''}
-								deleteListItem={() => {
-									setDeleteId(order.id);
-									openModal();
-								}}
-								duplicateItem={() => duplicateItem(order.id)}
+							{orders.map((order) => (
+								<>
+									<ListItemOrders
+										key={order.id}
+										qrcode={order?.qr_code}
+										id={order.id}
+										address={order.address}
+										city={order.city}
+										neighborhood={order.neighborhood}
+										state={order.state}
+										status={order.status}
+										date={order.registerDay}
+										kit={order.ordersKits[0].kit.description ?? ''}
+										deleteListItem={() => {
+											setDeleteId(order.id);
+											openModal();
+										}}
+										duplicateItem={() => duplicateItem(order.id)}
+									/>
+								</>
+							))}
+							<Pagination
+								currentPage={currentPage}
+								totalItems={activeOrders}
+								totalPages={totalPages}
+								toggleList={(value) => getOrders(value)}
 							/>
 						</>
-					))}
-					<Pagination
-						currentPage={currentPage}
-						totalItems={activeOrders}
-						totalPages={totalPages}
-						toggleList={(value) => getOrders(value)}
-					/>
+					)}
 				</div>
 			</div>
-
 			<div>
 				<Modal
 					cancelCopy="Cancelar"
