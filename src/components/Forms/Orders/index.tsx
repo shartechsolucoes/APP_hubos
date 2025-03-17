@@ -44,6 +44,8 @@ export default function OrdersForm() {
 
 	// define the function that finds the users geolocation
 	const getUserLocation = () => {
+		console.log('getting location ');
+
 		// if geolocation is supported by the users browser
 		if (navigator.geolocation) {
 			// get the current users location
@@ -51,6 +53,7 @@ export default function OrdersForm() {
 				(position) => {
 					// save the geolocation coordinates in two variables
 					const { latitude, longitude } = position.coords;
+					console.log(position.coords);
 					// update the value of userlocation variable
 					setUserLocation({ latitude, longitude });
 				},
@@ -211,10 +214,11 @@ export default function OrdersForm() {
 	};
 
 	useEffect(() => {
-		if (formData.qr_code?.length >= 1 && !formData.address && !id) {
+		if (!id && userLocation?.latitude && userLocation?.longitude) {
+			console.log('get qr code ');
 			getLocation();
 		}
-	}, [formData.qr_code]);
+	}, [userLocation?.latitude, userLocation?.longitude]);
 
 	const getLocation = async () => {
 		const response = await axios.get(
@@ -237,7 +241,10 @@ export default function OrdersForm() {
 			<div className="card-body row">
 				{openQR && (
 					<QRCodeScanner
-						closeQR={() => setOpenQR(!openQR)}
+						closeQR={() => {
+							setOpenQR(!openQR);
+							getUserLocation();
+						}}
 						handleValue={(value) =>
 							setFormData((prev) => ({
 								...prev,
