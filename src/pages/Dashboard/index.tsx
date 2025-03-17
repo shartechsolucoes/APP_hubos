@@ -82,7 +82,10 @@ export default function Dashboard() {
 			`/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}&page=${page}`
 		);
 		setOrders(response.data.orders);
-		setTotalItems((prev) => ({ ...prev, dayOrder: response.data.length }));
+		setTotalItems((prev) => ({
+			...prev,
+			dayOrder: response.data.orders.length,
+		}));
 		setTotalOrders(response.data.count.total);
 		setActiveOrders(response.data.count.actives);
 		console.log(response.data.length);
