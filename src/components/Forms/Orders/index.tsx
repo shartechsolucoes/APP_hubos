@@ -83,6 +83,8 @@ export default function OrdersForm() {
 
 	useEffect(() => {
 		getUserLocation();
+	}, []);
+	useEffect(() => {
 		if (kits.length === 0) {
 			getKits();
 		}
@@ -209,19 +211,18 @@ export default function OrdersForm() {
 	};
 
 	useEffect(() => {
-		if (formData.qr_code?.length > 0 && formData.qr_code?.length < 2) {
+		if (formData.qr_code?.length >= 1 && !formData.address && !id) {
 			getLocation();
 		}
 	}, [formData.qr_code]);
 
-	const getLocation = async (value?: string) => {
+	const getLocation = async () => {
 		const response = await axios.get(
 			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLocation?.latitude},${userLocation?.longitude}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
 		);
 		const addressResult = response.data.results[0];
 		setFormData((prev) => ({
 			...prev,
-			qr_code: value,
 			address: `${addressResult.address_components[1].short_name} n.º:  ${addressResult.address_components[0].short_name}`,
 			neighborhood: addressResult.address_components[2].short_name,
 			city: addressResult.address_components[3].short_name,
@@ -237,7 +238,12 @@ export default function OrdersForm() {
 				{openQR && (
 					<QRCodeScanner
 						closeQR={() => setOpenQR(!openQR)}
-						handleValue={(value) => getLocation(value)}
+						handleValue={(value) =>
+							setFormData((prev) => ({
+								...prev,
+								qr_code: value,
+							}))
+						}
 					/>
 				)}
 				<form onSubmit={saveOrder}>
