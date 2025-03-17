@@ -8,8 +8,10 @@ import axios from 'axios';
 import './styles.css';
 import Toast from '../../Toast';
 import { estadosBrasileiros } from './data';
+import useAccessLevelStore from '../../../stores/accessLevelStore';
 
 export default function OrdersForm() {
+	const { userId } = useAccessLevelStore();
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get('id');
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
@@ -126,7 +128,9 @@ export default function OrdersForm() {
 
 	const saveOrder = async (e: any) => {
 		setSaving(true);
+
 		e.preventDefault();
+		console.log(userId);
 		const {
 			address,
 			neighborhood,
@@ -172,6 +176,7 @@ export default function OrdersForm() {
 					qr_code,
 					ordersKits: kitAndQuantity,
 					protocolNumber,
+					userId,
 				});
 				setSuccess(true);
 				setOpenToast(true);
@@ -431,35 +436,36 @@ export default function OrdersForm() {
 										<div className="mb-2">
 											<li className="d-flex">
 												<div className="avatar flex-shrink-0 me-3">
-													<span className="avatar-initial rounded bg-label-secondary"><i
-														className="bx bx-football"></i></span>
+													<span className="avatar-initial rounded bg-label-secondary">
+														<i className="bx bx-football"></i>
+													</span>
 												</div>
-												<div
-													className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+												<div className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
 													<div className="me-2">
 														<h6 className="mb-0">{kit.description}</h6>
 														<small className="d-flex">
 															{kit?.materials?.map((material) => (
-																<small>
-																	{material.material.description} -
-																</small>
+																<small>{material.material.description} -</small>
 															))}
 														</small>
 													</div>
 													<div className="user-progress d-flex gap-2">
-
 														<input
 															required
 															value={
-																kitAndQuantity.some((kq) => kq.kit_id === kit.id)
+																kitAndQuantity.some(
+																	(kq) => kq.kit_id === kit.id
+																)
 																	? kitAndQuantity.filter(
-																		(k) => k.kit_id === kit.id
-																	)[0].quantity
+																			(k) => k.kit_id === kit.id
+																	  )[0].quantity
 																	: ''
 															}
 															type="text"
 															className="form-control"
-															onChange={(e) => handleKitQuantity(e, `${kit.id}`)}
+															onChange={(e) =>
+																handleKitQuantity(e, `${kit.id}`)
+															}
 														/>
 														<button
 															type="button"
@@ -473,7 +479,6 @@ export default function OrdersForm() {
 													</div>
 												</div>
 											</li>
-
 										</div>
 									</div>
 								))}

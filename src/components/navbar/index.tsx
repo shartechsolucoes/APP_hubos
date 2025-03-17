@@ -3,9 +3,11 @@ import './styles.css';
 import { FaSearch } from 'react-icons/fa';
 import { IoMenu } from 'react-icons/io5';
 import { useNavigate } from 'react-router';
+import useAccessLevelStore from '../../stores/accessLevelStore';
 
 export default function Navbar() {
 	const navigate = useNavigate();
+	const { userName } = useAccessLevelStore();
 	const [toggleDropdown, setToggleDropdown] = useState(false);
 	const toggleMenu = () => {
 		const r = document.documentElement;
@@ -123,6 +125,15 @@ export default function Navbar() {
 								<li>
 									<div className="dropdown-divider"></div>
 								</li> */}
+								<li>
+									<div className="dropdown-item">
+										<i className="bx bx-power-off me-2"></i>
+										<span className="align-middle">{userName}</span>
+									</div>
+								</li>
+								<li>
+									<div className="dropdown-divider"></div>
+								</li>
 								<li>
 									<a className="dropdown-item" onClick={logOut}>
 										<i className="bx bx-power-off me-2"></i>

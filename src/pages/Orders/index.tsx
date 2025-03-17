@@ -33,6 +33,9 @@ export default function Orders() {
 				quantity: string;
 				kit: { description: string };
 			}[];
+			user: {
+				name: string;
+			};
 		}>
 	>([]);
 	const [deleteId, setDeleteId] = useState<unknown>(null);
@@ -248,12 +251,13 @@ export default function Orders() {
 										state={order.state}
 										status={order.status}
 										date={order.registerDay}
-										kit={order.ordersKits[0].kit.description ?? ''}
+										kit={order?.ordersKits[0]?.kit?.description ?? ''}
 										deleteListItem={() => {
 											setDeleteId(order.id);
 											openModal();
 										}}
 										duplicateItem={() => duplicateItem(order.id)}
+										userName={order.user.name}
 									/>
 								</>
 							))}

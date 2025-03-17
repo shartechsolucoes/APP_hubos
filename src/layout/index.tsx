@@ -9,18 +9,25 @@ import useAccessLevelStore from '../stores/accessLevelStore';
 
 export default function Layout() {
 	const navigate = useNavigate();
-	const { handleAccessLevel } = useAccessLevelStore();
+	const { handleAccessLevel, handleUserName, handleUserId } =
+		useAccessLevelStore();
 	const [token, setToken] = useState(localStorage.getItem('token') || '');
 	const [level, setLevel] = useState(localStorage.getItem('accessLevel') || '');
+	const [name, setName] = useState(localStorage.getItem('userName') || '');
+	const [id, setId] = useState(localStorage.getItem('userId') || '');
 
 	useEffect(() => {
 		setToken(localStorage.getItem('token') || '');
 		setLevel(localStorage.getItem('accessLevel') || '');
+		setName(localStorage.getItem('userName') || '');
+		setId(localStorage.getItem('userId') || '');
 		if (!token) {
 			navigate('/login');
 		}
 
 		handleAccessLevel(parseInt(level || ''));
+		handleUserName(name);
+		handleUserId(id);
 	}, []);
 
 	return (
@@ -29,13 +36,13 @@ export default function Layout() {
 				<>
 					<div className="layout-wrapper layout-content-navbar">
 						<div className="layout-container">
-							<Sidebar/>
+							<Sidebar />
 							<div className="layout-page">
-								<Navbar/>
+								<Navbar />
 								<div className="content-wrapper">
 									<div className="container-xxl flex-grow-1 container-p-y">
 										<div className="row">
-											<Outlet/>
+											<Outlet />
 										</div>
 									</div>
 								</div>

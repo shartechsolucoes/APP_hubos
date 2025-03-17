@@ -10,7 +10,8 @@ function Login() {
 	const [formData, setFormData] = useState<{ login: string; password: string }>(
 		{ login: '', password: '' }
 	);
-	const { handleAccessLevel } = useAccessLevelStore();
+	const { handleAccessLevel, handleUserName, handleUserId } =
+		useAccessLevelStore();
 
 	const handleLogin = async (e: any) => {
 		try {
@@ -20,7 +21,11 @@ function Login() {
 			const { token } = response.data;
 			localStorage.setItem('token', token);
 			localStorage.setItem('accessLevel', response.data.access_level);
+			localStorage.setItem('userName', response.data.userName);
+			localStorage.setItem('userId', response.data.userId);
 			handleAccessLevel(response.data.access_level);
+			handleUserName(response.data.userName);
+			handleUserId(response.data.userId);
 			navigate('/');
 			setError(false);
 		} catch (error) {
