@@ -14,6 +14,7 @@ export default function ListItemOrders({
 
 	status,
 	kit,
+	userName,
 }: {
 	qrcode?: string;
 	address?: string;
@@ -24,8 +25,19 @@ export default function ListItemOrders({
 	id?: string | number;
 	status?: number;
 	kit?: string;
+	userName?: string;
 }) {
 	const { accessLevel } = useAccessLevelStore();
+	function pegarPrimeirasLetras(completeName = '') {
+		if (!completeName) {
+			return '';
+		}
+		if (!completeName.includes(' ')) {
+			return completeName[0];
+		}
+		const [primeiroNome, sobrenome] = completeName.split(' ');
+		return primeiroNome[0] + sobrenome[0];
+	}
 	// const date  = register ? format(register, "HH:mm:ss", {locale:ptBR} ): '';
 
 	return (
@@ -47,12 +59,12 @@ export default function ListItemOrders({
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3">
 									<span className="avatar-initial rounded-circle bg-label-dark ">
-										ER
+										{pegarPrimeirasLetras(userName)}
 									</span>
 								</div>
 							</div>
 							<div className="d-flex flex-column">
-								<span className="fw-medium">Edson Rodrigues</span>
+								<span className="fw-medium">{userName}</span>
 							</div>
 						</div>
 					</div>

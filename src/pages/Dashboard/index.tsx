@@ -29,25 +29,24 @@ const center = {
 export default function Dashboard() {
 	const [orders, setOrders] = useState<
 		Array<{
-			order: {
-				status: number;
-				active: boolean;
-				address: string;
-				city: string;
-				id: number;
-				lat: string;
-				long: string;
-				neighborhood: string;
-				observations: string;
-				qr_code: string;
-				registerDay: string;
-				state: number;
-			};
+			status: number;
+			active: boolean;
+			address: string;
+			city: string;
+			id: number;
+			lat: string;
+			long: string;
+			neighborhood: string;
+			observations: string;
+			qr_code: string;
+			registerDay: string;
+			state: number;
 			ordersKits: {
 				kit_id: number;
 				quantity: string;
 				kit: { description: string };
 			}[];
+			user: { name: string };
 		}>
 	>([]);
 
@@ -67,9 +66,9 @@ export default function Dashboard() {
 		const today = new Date();
 		const formattedDate = format(today, 'yyyy-MM-dd');
 		const response = await api.get(
-			`/orders/report?start=${formattedDate}&end=${formattedDate}`
+			`/orders?start=${formattedDate}&end=${formattedDate}`
 		);
-		setOrders(response.data);
+		setOrders(response.data.orders);
 		setTotalItems((prev) => ({ ...prev, dayOrder: response.data.length }));
 		console.log(response.data.length);
 	};
@@ -104,7 +103,7 @@ export default function Dashboard() {
 
 	// const getGeolocation = async () => {
 	// 	const getLocationsOrders = orders.map(async (order) => {
-	// 		const address = `${order.order.address} ${order.order.neighborhood} ${order.order.city}`;
+	// 		const address = `${order.address} ${order.neighborhood} ${order.city}`;
 
 	// 		const formatedAddress = address
 	// 			.replaceAll('  ', ' ')
@@ -114,7 +113,7 @@ export default function Dashboard() {
 	// 			`https://maps.googleapis.com/maps/api/geocode/json?address=${formatedAddress}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
 	// 		);
 
-	// 		return { geolocation: response.data, os: order.order.qr_code };
+	// 		return { geolocation: response.data, os: order.qr_code };
 	// 	});
 	// 	const geolocation = await Promise.all(getLocationsOrders);
 
@@ -266,11 +265,11 @@ export default function Dashboard() {
 								<Marker
 									key={index}
 									position={{
-										lat: parseFloat(order.order.lat),
-										lng: parseFloat(order.order.long),
+										lat: parseFloat(order.lat),
+										lng: parseFloat(order.long),
 									}}
 									label={{
-										text: `${order.order.qr_code}`,
+										text: `${order.qr_code}`,
 										className: 'pin-label',
 									}}
 									animation={google.maps.Animation.DROP}
@@ -285,15 +284,16 @@ export default function Dashboard() {
 					{orders.map((order) => (
 						<>
 							<ListItemOrdersDash
-								key={order.order.id}
-								qrcode={order.order.qr_code}
-								register={order.order.registerDay}
-								id={order.order.id}
-								status={order.order.status}
-								address={order.order.address}
-								neighborhood={order.order.neighborhood}
-								city={order.order.city}
+								key={order.id}
+								qrcode={order.qr_code}
+								register={order.registerDay}
+								id={order.id}
+								status={order.status}
+								address={order.address}
+								neighborhood={order.neighborhood}
+								city={order.city}
 								kit={order?.ordersKits[0]?.kit?.description || ''}
+								userName={order.user.name}
 							/>
 						</>
 					))}
