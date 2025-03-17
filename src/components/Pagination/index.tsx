@@ -26,7 +26,7 @@ export default function Pagination({
 				</div>
 			</div>
 			<div className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
-				{totalPages > 10 && (
+				{totalPages > 1 && (
 					<div className="dt-paging">
 						<nav aria-label="pagination">
 							<ul className="pagination">

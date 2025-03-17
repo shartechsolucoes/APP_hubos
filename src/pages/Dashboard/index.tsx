@@ -13,6 +13,7 @@ import {
 	// MarkerF,
 	useJsApiLoader,
 } from '@react-google-maps/api';
+import Pagination from '../../components/Pagination';
 // import axios from 'axios';
 // import './styles.css';
 
@@ -50,6 +51,10 @@ export default function Dashboard() {
 		}>
 	>([]);
 
+	const [currentPage, setCurrentPage] = useState(0);
+	const [totalOrders, setTotalOrders] = useState(0);
+	const [activeOrders, setActiveOrders] = useState(0);
+
 	const [totalItems, setTotalItems] = useState<{
 		dayOrder: number;
 		order: number;
@@ -62,14 +67,24 @@ export default function Dashboard() {
 		kit: 0,
 	});
 
-	const getOrders = async () => {
+	const totalPages =
+		totalOrders < 10
+			? 1
+			: (totalOrders / 10) % 1 > 0.5
+			? Math.ceil(totalOrders / 10)
+			: Math.floor(totalOrders / 10);
+
+	const getOrders = async (page = 0) => {
+		setCurrentPage(page);
 		const today = new Date();
 		const formattedDate = format(today, 'yyyy-MM-dd');
 		const response = await api.get(
-			`/orders?start=${formattedDate}&end=${formattedDate}`
+			`/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}&page=${page}`
 		);
 		setOrders(response.data.orders);
 		setTotalItems((prev) => ({ ...prev, dayOrder: response.data.length }));
+		setTotalOrders(response.data.count.total);
+		setActiveOrders(response.data.count.actives);
 		console.log(response.data.length);
 	};
 
@@ -297,6 +312,13 @@ export default function Dashboard() {
 							/>
 						</>
 					))}
+
+					<Pagination
+						currentPage={currentPage}
+						totalItems={activeOrders}
+						totalPages={totalPages}
+						toggleList={(value) => getOrders(value)}
+					/>
 				</div>
 			</div>
 		</>
