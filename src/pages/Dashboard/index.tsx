@@ -243,32 +243,6 @@ export default function Dashboard() {
 						<div className="card-title mb-0">
 							<h5 className="m-0 me-2">Maps</h5>
 						</div>
-						<div className="dropdown">
-							<button
-								className="btn p-0"
-								type="button"
-								id="deliveryExceptions"
-								data-bs-toggle="dropdown"
-								aria-haspopup="true"
-								aria-expanded="false"
-							>
-								botão
-							</button>
-							<div
-								className="dropdown-menu dropdown-menu-end"
-								aria-labelledby="deliveryExceptions"
-							>
-								<a className="dropdown-item" href="javascript:void(0);">
-									Select All
-								</a>
-								<a className="dropdown-item" href="javascript:void(0);">
-									Refresh
-								</a>
-								<a className="dropdown-item" href="javascript:void(0);">
-									Share
-								</a>
-							</div>
-						</div>
 					</div>
 
 					{isLoaded && (
