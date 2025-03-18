@@ -32,7 +32,6 @@ export default function QRCodeScanner({
 				}}
 				onScan={(result) => handlerQr(result[0].rawValue)}
 			/>
-			;
 		</div>
 	);
 }

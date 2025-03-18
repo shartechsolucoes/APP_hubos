@@ -34,6 +34,7 @@ export default function OrdersForm() {
 	const [success, setSuccess] = useState(true);
 	const [openToast, setOpenToast] = useState(false);
 	const [isSaving, setSaving] = useState(false);
+	const [addressError, setAddressError] = useState(false);
 
 	const [userLocation, setUserLocation] = useState<{
 		latitude: number;
@@ -84,9 +85,9 @@ export default function OrdersForm() {
 		setFormData(response.data);
 	};
 
-	useEffect(() => {
-		getUserLocation();
-	}, []);
+	// useEffect(() => {
+	// 	getUserLocation();
+	// }, []);
 	useEffect(() => {
 		if (kits.length === 0) {
 			getKits();
@@ -221,18 +222,22 @@ export default function OrdersForm() {
 	}, [userLocation?.latitude, userLocation?.longitude]);
 
 	const getLocation = async () => {
-		const response = await axios.get(
-			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLocation?.latitude},${userLocation?.longitude}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
-		);
-		const addressResult = response.data.results[0];
-		setFormData((prev) => ({
-			...prev,
-			address: `${addressResult.address_components[1].short_name} n.º:  ${addressResult.address_components[0].short_name}`,
-			neighborhood: addressResult.address_components[2].short_name,
-			city: addressResult.address_components[3].short_name,
-			state: addressResult.address_components[4].short_name,
-		}));
-		// https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=YOUR_API_KEY
+		try {
+			const response = await axios.get(
+				`https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLocation?.latitude},${userLocation?.longitude}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
+			);
+			const addressResult = response.data.results[0];
+			setFormData((prev) => ({
+				...prev,
+				address: `${addressResult.address_components[1].short_name} n.º:  ${addressResult.address_components[0].short_name}`,
+				neighborhood: addressResult.address_components[2].short_name,
+				city: addressResult.address_components[3].short_name,
+				state: addressResult.address_components[4].short_name,
+			}));
+		} catch (error) {
+			setAddressError(true);
+			console.error(error);
+		}
 	};
 
 	return (
@@ -319,7 +324,13 @@ export default function OrdersForm() {
 								<option value="2">Finalizado</option>
 							</select>
 						</div>
-						<div className="mb-3">
+						{addressError && (
+							<div className="mb-3 alert alert-danger">
+								Tivemos um problema ao tentar achar sua localização, por favor
+								insira manualmente
+							</div>
+						)}
+						<div className="mb-3 ">
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								Endereço
 							</label>
