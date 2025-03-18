@@ -14,6 +14,7 @@ import {
 	useJsApiLoader,
 } from '@react-google-maps/api';
 import Pagination from '../../components/Pagination';
+import {Link} from "react-router";
 // import axios from 'axios';
 // import './styles.css';
 
@@ -163,7 +164,7 @@ export default function Dashboard() {
 						<div className="d-flex align-items-center mb-2">
 							<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
-									<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									<Link to={`orders`}><BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" /></Link>
 								</span>
 							</div>
 							<h4 className="mb-0">{totalItems.dayOrder}</h4>
@@ -183,7 +184,7 @@ export default function Dashboard() {
 						<div className="d-flex align-items-center mb-2">
 							<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
-									<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									<Link to={`orders`}><BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" /></Link>
 								</span>
 							</div>
 							<h4 className="mb-0">{totalItems.order}</h4>
@@ -203,7 +204,7 @@ export default function Dashboard() {
 						<div className="d-flex align-items-center mb-2">
 							<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
-									<BsTools className="icon-base bx bxs-truck icon-lg" />
+									<Link to={`kits`}><BsTools className="icon-base bx bxs-truck icon-lg" /></Link>
 								</span>
 							</div>
 							<h4 className="mb-0">{totalItems.kit}</h4>
@@ -223,7 +224,7 @@ export default function Dashboard() {
 						<div className="d-flex align-items-center mb-2">
 							<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
-									<BsPersonBadgeFill className="icon-base bx bxs-truck icon-lg" />
+									<Link to={`users`}><BsPersonBadgeFill className="icon-base bx bxs-truck icon-lg" /></Link>
 								</span>
 							</div>
 							<h4 className="mb-0">{totalItems.user}</h4>
