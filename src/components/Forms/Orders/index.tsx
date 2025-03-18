@@ -45,6 +45,11 @@ export default function OrdersForm() {
 
 	// define the function that finds the users geolocation
 	const getUserLocation = () => {
+		const options = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0,
+		};
 		console.log('getting location ');
 
 		// if geolocation is supported by the users browser
@@ -61,7 +66,8 @@ export default function OrdersForm() {
 				// if there was an error getting the users location
 				(error) => {
 					console.error('Error getting user location:', error);
-				}
+				},
+				options
 			);
 		}
 		// if geolocation is not supported by the users browser
