@@ -75,8 +75,9 @@ export default function Sidebar() {
 					</div>
 					<div className="menu-inner-shadow"></div>
 					<ul className="menu-inner py-1 pt-5 bg-color">
-						{/*<li className="menu-item">*/}
+						{/*<li className="menu-item bosta">*/}
 						{/*	<h5>Almirante Tamandaré</h5>*/}
+						{/*	<p>Prefeitura da cidade</p>*/}
 						{/*</li>*/}
 
 						{privateRoutes.map((route) => (

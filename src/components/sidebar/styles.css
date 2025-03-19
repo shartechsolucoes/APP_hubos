@@ -22,8 +22,6 @@
   transition: transform .3s;
 }
 
-
-
 @media (width >=1200px) {
   :root {
     --menu-position: 100vw

@@ -1,4 +1,4 @@
-import { BsEyeFill, BsFillPencilFill } from 'react-icons/bs';
+import { BsFillPencilFill } from 'react-icons/bs';
 import { Link } from 'react-router';
 import './index.css';
 import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
@@ -72,12 +72,7 @@ export default function ListItemOrders({
 						</div>
 					</div>
 					<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">
-						{accessLevel === 2 ||
-							(accessLevel === 0 && (
-								<Link to={`view?id=${id}`}>
-									<BsEyeFill />
-								</Link>
-							))}
+
 						{accessLevel === 0 && (
 							<Link to={`form?id=${id}`}>
 								<BsFillPencilFill />

@@ -3,6 +3,7 @@ import {
 	BsPersonBadgeFill,
 	BsTools,
 } from 'react-icons/bs';
+import './styles.css';
 import ListItemOrdersDash from '../../components/ListItem/OrdersDash';
 import { useCallback, useEffect, useState } from 'react';
 import { format } from 'date-fns';
@@ -15,6 +16,7 @@ import {
 } from '@react-google-maps/api';
 import Pagination from '../../components/Pagination';
 import {Link} from "react-router";
+import useAccessLevelStore from "../../stores/accessLevelStore.ts";
 // import axios from 'axios';
 // import './styles.css';
 
@@ -29,6 +31,7 @@ const center = {
 };
 
 export default function Dashboard() {
+	const { accessLevel } = useAccessLevelStore();
 	const [orders, setOrders] = useState<
 		Array<{
 			status: number;
@@ -42,7 +45,7 @@ export default function Dashboard() {
 			observations: string;
 			qr_code: string;
 			registerDay: string;
-			state: number;
+			state: string;
 			ordersKits: {
 				kit_id: number;
 				quantity: string;
@@ -72,8 +75,8 @@ export default function Dashboard() {
 		totalOrders < 10
 			? 1
 			: (totalOrders / 10) % 1 > 0.5
-			? Math.ceil(totalOrders / 10)
-			: Math.floor(totalOrders / 10);
+				? Math.ceil(totalOrders / 10)
+				: Math.floor(totalOrders / 10);
 
 	const getOrders = async (page = 0) => {
 		setCurrentPage(page);
@@ -158,7 +161,11 @@ export default function Dashboard() {
 
 	return (
 		<>
-			<div className="col-lg-3 col-sm-6">
+
+			<div className="d-block d-sm-none col-sm-6">
+				<Link to={`orders/form`} className="btn btn-info w-100 mb-3">Criar nova OS</Link>
+			</div>
+			<div className="col-lg-3 col-md-3 col-sm-12">
 				<div className="card card-border-shadow-primary h-100">
 					<div className="card-body">
 						<div className="d-flex align-items-center mb-2">
@@ -178,7 +185,7 @@ export default function Dashboard() {
 				</div>
 			</div>
 
-			<div className="col-lg-3 col-sm-6 d-none d-md-block">
+			<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
 				<div className="card card-border-shadow-primary h-100">
 					<div className="card-body">
 						<div className="d-flex align-items-center mb-2">
@@ -197,48 +204,55 @@ export default function Dashboard() {
 					</div>
 				</div>
 			</div>
-
-			<div className="col-lg-3 col-sm-6 d-none d-md-block">
-				<div className="card card-border-shadow-primary h-100">
-					<div className="card-body">
-						<div className="d-flex align-items-center mb-2">
-							<div className="avatar me-4">
+			{(accessLevel === 2 || accessLevel === 0) && (
+				<>
+					<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
+						<div className="card card-border-shadow-primary h-100">
+							<div className="card-body">
+								<div className="d-flex align-items-center mb-2">
+									<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
 									<Link to={`kits`}><BsTools className="icon-base bx bxs-truck icon-lg" /></Link>
 								</span>
+									</div>
+									<h4 className="mb-0">
+										{totalItems.kit}</h4>
+								</div>
+								<p className="mb-2">Kist's Cadastrados</p>
+								{/*<p className="mb-0">*/}
+								{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
+								{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
+								{/*</p>*/}
 							</div>
-							<h4 className="mb-0">{totalItems.kit}</h4>
 						</div>
-						<p className="mb-2">Kist's Cadastrados</p>
-						{/*<p className="mb-0">*/}
-						{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
-						{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
-						{/*</p>*/}
 					</div>
-				</div>
-			</div>
 
-			<div className="col-lg-3 col-sm-6 d-none d-md-block">
-				<div className="card card-border-shadow-primary h-100">
-					<div className="card-body">
-						<div className="d-flex align-items-center mb-2">
-							<div className="avatar me-4">
+					<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
+						<div className="card card-border-shadow-primary h-100">
+							<div className="card-body">
+								<div className="d-flex align-items-center mb-2">
+									<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
 									<Link to={`users`}><BsPersonBadgeFill className="icon-base bx bxs-truck icon-lg" /></Link>
 								</span>
-							</div>
-							<h4 className="mb-0">{totalItems.user}</h4>
-						</div>
-						<p className="mb-2">Usuários Ativos</p>
-						{/*<p className="mb-0">*/}
-						{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
-						{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
-						{/*</p>*/}
-					</div>
-				</div>
-			</div>
+									</div>
+									<h4 className="mb-0">
 
-			<div className="col-xxl-12 col-lg-6 mt-4">
+										{totalItems.user}
+
+									</h4>
+								</div>
+								<p className="mb-2">Usuários Ativos</p>
+								{/*<p className="mb-0">*/}
+								{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
+								{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
+								{/*</p>*/}
+							</div>
+						</div>
+					</div>
+				</>
+			)}
+			<div className="col-xxl-12 col-lg-12 mt-4">
 				<div className="card h-100">
 					<div className="card-header d-flex align-items-center justify-content-between">
 						<div className="card-title mb-0">
@@ -262,7 +276,7 @@ export default function Dashboard() {
 										lng: parseFloat(order.long),
 									}}
 									label={{
-										text: `${order.qr_code}`,
+										text: `OS: ${order.qr_code}`,
 										className: 'pin-label',
 									}}
 									animation={google.maps.Animation.DROP}
@@ -272,7 +286,7 @@ export default function Dashboard() {
 					)}
 				</div>
 			</div>
-			<div className="col-xxl-12 col-lg-6 mt-4">
+			<div className="col-xxl-12 col-lg-12 mt-4">
 				<div className="card mb-6">
 					{orders.map((order) => (
 						<>
@@ -285,6 +299,7 @@ export default function Dashboard() {
 								address={order.address}
 								neighborhood={order.neighborhood}
 								city={order.city}
+								state={order.state}
 								kit={order?.ordersKits[0]?.kit?.description || ''}
 								userName={order.user.name}
 							/>

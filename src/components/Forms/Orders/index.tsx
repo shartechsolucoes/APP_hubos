@@ -314,7 +314,7 @@ export default function OrdersForm() {
 							</label>
 							<select
 								id="status"
-								value={`${formData.status}`}
+								value="2"
 								className="form-control"
 								onChange={(e) =>
 									setFormData((prev) => ({
@@ -323,11 +323,11 @@ export default function OrdersForm() {
 									}))
 								}
 							>
-								<option selected value="0">
+								<option value="0">
 									Aberto
 								</option>
 								<option value="1">Em trabalho</option>
-								<option value="2">Finalizado</option>
+								<option selected value="2">Finalizado</option>
 							</select>
 						</div>
 						{addressError && (

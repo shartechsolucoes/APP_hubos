@@ -101,7 +101,7 @@ export const privateRoutes = [
 		path: '/users',
 		icon: 'users',
 		component: Users,
-		access: [0, 1],
+		access: [0],
 		children: [
 			{
 				name: 'Novo usuário',
@@ -116,6 +116,6 @@ export const privateRoutes = [
 		path: '/version',
 		icon: 'version',
 		component: Version,
-		access: [0, 1, 2],
+		access: [0],
 	},
 ];

@@ -11,7 +11,7 @@ export default function ListItemOrders({
 	qrcode,
 	neighborhood,
 	city,
-
+	state,
 	status,
 	kit,
 	userName,
@@ -44,17 +44,17 @@ export default function ListItemOrders({
 		<>
 			<div className="" style={{ borderBottom: '1px solid #f1efef' }}>
 				<div className="row px-4 py-3">
-					<div className="col-sm-4 col-md-1 d-flex justify-content-start align-items-center">
-						<a href="app-ecommerce-order-details.html">
-							<span>#{qrcode}</span>
+					<div className="col-6 col-sm-6 col-md-1 d-flex justify-content-start align-items-center">
+						<a href="">
+							<span className="text-os">#{qrcode}</span>
 						</a>
 					</div>
-					<div className="col-sm-4 col-md-1 d-flex justify-content-center align-items-center">
+					<div className="d-none d-md-flex col-sm-6 col-md-2 d-flex justify-content-center align-items-center">
 						<span className="text-truncate d-flex align-items-center text-heading">
 							{kit}
 						</span>
 					</div>
-					<div className="col-sm-6 col-md-2 d-flex justify-content-center align-items-center">
+					<div className="d-none d-md-flex col-md-2 d-flex justify-content-start align-items-center">
 						<div className="d-flex justify-content-start align-items-center">
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3">
@@ -69,17 +69,18 @@ export default function ListItemOrders({
 						</div>
 					</div>
 
-					<div className="col-md-4 d-flex flex-column justify-content-start align-items-start">
+					<div className="col-sm-12 col-md-4 d-flex flex-column justify-content-start align-items-start">
 						<div className="d-flex flex-column">
-							<h6 className="text-nowrap mb-0">{address}</h6>
-							<small className="text-truncate d-none d-sm-block">
-								{neighborhood} - {city}/
+							<h6 className=" mb-0">{address}</h6>
+							<small className="text-truncate">
+								{neighborhood} - {city}/{state}
 							</small>
 						</div>
 					</div>
-					<div className="col-md-2 d-flex justify-content-center align-items-center">
+					<div className="d-none d-md-flex col-md-1 d-flex justify-content-center align-items-center">
 						<Status statusOS={status} />
 					</div>
+
 					<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">
 						{accessLevel === 2 ||
 							(accessLevel === 0 && (

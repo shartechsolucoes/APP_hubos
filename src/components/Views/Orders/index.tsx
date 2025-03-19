@@ -5,8 +5,10 @@ import {format} from "date-fns";
 import {ptBR} from "date-fns/locale";
 import {BsFileEarmarkPdf} from "react-icons/bs";
 import { useReactToPrint } from 'react-to-print';
+import useAccessLevelStore from "../../../stores/accessLevelStore.ts";
 
 export default function OrdersView() {
+	const { accessLevel } = useAccessLevelStore();
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
 	const [listOfKits, setListOfKits] = useState<
 		Array<{
@@ -82,10 +84,11 @@ export default function OrdersView() {
 						<div className="col-md-4 mt-2">
 							<strong>Data:</strong> {registerDay}
 						</div>
+						{(accessLevel === 2 || accessLevel === 0) && (
 						<div className="col-md-4 mt-2">
 							<strong>Hora:</strong> {registerTime}
 						</div>
-
+							)}
 						<h4 className="mt-5">Endereço</h4>
 						<hr/>
 						<div className="col-md-6 mt-2">

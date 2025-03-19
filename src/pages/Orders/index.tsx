@@ -1,7 +1,7 @@
 import ListItemOrders from '../../components/ListItem/Orders';
 import './styles.css';
 
-import { NavLink, useNavigate } from 'react-router';
+import {Link, useNavigate} from 'react-router';
 import { useEffect, useState } from 'react';
 import { api } from '../../api';
 import Modal from '../../components/Modal';
@@ -11,8 +11,10 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Pagination from '../../components/Pagination';
 import Spinner from '../../components/Spiner';
+import useAccessLevelStore from "../../stores/accessLevelStore.ts";
 
 export default function Orders() {
+	const { accessLevel } = useAccessLevelStore();
 	const { openModal, closeModal } = useModalStore((state) => state);
 	const [orders, setOrders] = useState<
 		Array<{
@@ -195,6 +197,7 @@ export default function Orders() {
 						Pesquisar
 					</a>
 
+					{accessLevel === 0 && (
 					<div className="d-none d-md-flex d-flex flex-column position-relative">
 						<div className="dropdown">
 							<button
@@ -220,13 +223,17 @@ export default function Orders() {
 							</ul>
 						</div>
 					</div>
-					<NavLink
-						to="form"
-						className="btn btn-info"
-						style={{ height: 'fit-content' }}
-					>
-						Nova
-					</NavLink>
+					)}
+
+					{(accessLevel === 2 || accessLevel === 0) && (
+						<Link
+							to="form"
+							className="btn btn-info"
+							style={{ height: 'fit-content' }}
+						>
+							Nova
+						</Link>
+					)}
 				</div>
 				{/* //corrigir estilo */}
 				<div
