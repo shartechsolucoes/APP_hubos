@@ -266,7 +266,7 @@ export default function Dashboard() {
 							center={center}
 							onLoad={onLoad}
 							onUnmount={onUnmount}
-							options={{ gestureHandling: 'greedy' }}
+							options={{ gestureHandling: 'greedy',disableDefaultUI: true }}
 						>
 							{orders.map((order, index) => (
 								<Marker
@@ -279,7 +279,7 @@ export default function Dashboard() {
 										text: `OS: ${order.qr_code}`,
 										className: 'pin-label',
 									}}
-									animation={google.maps.Animation.DROP}
+									// animation={google.maps.Animation.DROP}
 								></Marker>
 							))}
 						</GoogleMap>
