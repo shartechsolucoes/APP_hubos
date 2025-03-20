@@ -280,7 +280,7 @@ export default function Dashboard() {
 										lng: parseFloat(order.long),
 									}}
 									label={{
-										text: `OS: ${order.qr_code}`,
+										text: `OS:${order.qr_code}`,
 										className: 'pin-label',
 									}}
 									// animation={google.maps.Animation.DROP}

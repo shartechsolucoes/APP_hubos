@@ -1,9 +1,10 @@
 .pin-label {
   background-color: #4285F4;
+  border: 1px solid #f8f8f8;
   border-radius: 8px;
   color: #FFFFFF!important;
-  font-size: 14px;
-  padding: 10px 15px;
+  font-size: 11px!important;
+  padding: 9px 12px;
   position: relative;
 }
 

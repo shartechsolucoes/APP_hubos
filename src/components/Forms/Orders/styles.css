@@ -1,7 +1,10 @@
 .form-container {
   overflow-y: auto;
 }
-
+.qrcode{
+  padding: 1px!important;
+  margin:0px
+}
 
 @media (max-width: 767px) {
   .form-container {

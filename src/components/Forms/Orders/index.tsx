@@ -283,14 +283,15 @@ export default function OrdersForm() {
 								}
 							/>
 						</div>
+						<div className="mb-3 col-1 col-md-1">
 						<button
 							type="button"
 							onClick={() => setOpenQR(!openQR)}
-							className=" icons align-self-center"
-							style={{ height: '40px', width: '40px', fontSize: '36px' }}
+							className="align-self-center btn btn-primary"
 						>
 							<BsQrCode />
 						</button>
+						</div>
 						<div className="mb-3 col-6 col-md-6">
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								Número do Protocolo
