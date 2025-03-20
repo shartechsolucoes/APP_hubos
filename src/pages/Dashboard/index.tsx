@@ -15,8 +15,8 @@ import {
 	useJsApiLoader,
 } from '@react-google-maps/api';
 import Pagination from '../../components/Pagination';
-import {Link} from "react-router";
-import useAccessLevelStore from "../../stores/accessLevelStore.ts";
+import { Link } from 'react-router';
+import useAccessLevelStore from '../../stores/accessLevelStore.ts';
 // import axios from 'axios';
 // import './styles.css';
 
@@ -75,8 +75,8 @@ export default function Dashboard() {
 		totalOrders < 10
 			? 1
 			: (totalOrders / 10) % 1 > 0.5
-				? Math.ceil(totalOrders / 10)
-				: Math.floor(totalOrders / 10);
+			? Math.ceil(totalOrders / 10)
+			: Math.floor(totalOrders / 10);
 
 	const getOrders = async (page = 0) => {
 		setCurrentPage(page);
@@ -88,7 +88,7 @@ export default function Dashboard() {
 		setOrders(response.data.orders);
 		setTotalItems((prev) => ({
 			...prev,
-			dayOrder: response.data.orders.length,
+			dayOrder: response.data.count.actives,
 		}));
 		setTotalOrders(response.data.count.total);
 		setActiveOrders(response.data.count.actives);
@@ -161,9 +161,10 @@ export default function Dashboard() {
 
 	return (
 		<>
-
 			<div className="d-block d-sm-none col-sm-6">
-				<Link to={`orders/form`} className="btn btn-info w-100 mb-3">Criar nova OS</Link>
+				<Link to={`orders/form`} className="btn btn-info w-100 mb-3">
+					Criar nova OS
+				</Link>
 			</div>
 			<div className="col-lg-3 col-md-3 col-sm-12">
 				<div className="card card-border-shadow-primary h-100">
@@ -171,7 +172,9 @@ export default function Dashboard() {
 						<div className="d-flex align-items-center mb-2">
 							<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
-									<Link to={`orders`}><BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" /></Link>
+									<Link to={`orders`}>
+										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									</Link>
 								</span>
 							</div>
 							<h4 className="mb-0">{totalItems.dayOrder}</h4>
@@ -191,7 +194,9 @@ export default function Dashboard() {
 						<div className="d-flex align-items-center mb-2">
 							<div className="avatar me-4">
 								<span className="avatar-initial rounded bg-label-primary">
-									<Link to={`orders`}><BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" /></Link>
+									<Link to={`orders`}>
+										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									</Link>
 								</span>
 							</div>
 							<h4 className="mb-0">{totalItems.order}</h4>
@@ -211,12 +216,13 @@ export default function Dashboard() {
 							<div className="card-body">
 								<div className="d-flex align-items-center mb-2">
 									<div className="avatar me-4">
-								<span className="avatar-initial rounded bg-label-primary">
-									<Link to={`kits`}><BsTools className="icon-base bx bxs-truck icon-lg" /></Link>
-								</span>
+										<span className="avatar-initial rounded bg-label-primary">
+											<Link to={`kits`}>
+												<BsTools className="icon-base bx bxs-truck icon-lg" />
+											</Link>
+										</span>
 									</div>
-									<h4 className="mb-0">
-										{totalItems.kit}</h4>
+									<h4 className="mb-0">{totalItems.kit}</h4>
 								</div>
 								<p className="mb-2">Kist's Cadastrados</p>
 								{/*<p className="mb-0">*/}
@@ -232,15 +238,13 @@ export default function Dashboard() {
 							<div className="card-body">
 								<div className="d-flex align-items-center mb-2">
 									<div className="avatar me-4">
-								<span className="avatar-initial rounded bg-label-primary">
-									<Link to={`users`}><BsPersonBadgeFill className="icon-base bx bxs-truck icon-lg" /></Link>
-								</span>
+										<span className="avatar-initial rounded bg-label-primary">
+											<Link to={`users`}>
+												<BsPersonBadgeFill className="icon-base bx bxs-truck icon-lg" />
+											</Link>
+										</span>
 									</div>
-									<h4 className="mb-0">
-
-										{totalItems.user}
-
-									</h4>
+									<h4 className="mb-0">{totalItems.user}</h4>
 								</div>
 								<p className="mb-2">Usuários Ativos</p>
 								{/*<p className="mb-0">*/}
@@ -266,7 +270,7 @@ export default function Dashboard() {
 							center={center}
 							onLoad={onLoad}
 							onUnmount={onUnmount}
-							options={{ gestureHandling: 'greedy',disableDefaultUI: true }}
+							options={{ gestureHandling: 'greedy', disableDefaultUI: true }}
 						>
 							{orders.map((order, index) => (
 								<Marker
