@@ -1,7 +1,7 @@
 import ListItemOrders from '../../components/ListItem/Orders';
 import './styles.css';
 
-import {Link, useNavigate} from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { api } from '../../api';
 import Modal from '../../components/Modal';
@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import Pagination from '../../components/Pagination';
 import Spinner from '../../components/Spiner';
-import useAccessLevelStore from "../../stores/accessLevelStore.ts";
+import useAccessLevelStore from '../../stores/accessLevelStore.ts';
 
 export default function Orders() {
 	const { accessLevel } = useAccessLevelStore();
@@ -45,7 +45,6 @@ export default function Orders() {
 		start: null,
 		end: null,
 	});
-	const [totalOrders, setTotalOrders] = useState(0);
 	const [activeOrders, setActiveOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [loading, setLoading] = useState(true);
@@ -57,11 +56,11 @@ export default function Orders() {
 
 	const route = useNavigate();
 	const totalPages =
-		totalOrders < 10
+		activeOrders < 10
 			? 1
-			: (totalOrders / 10) % 1 > 0.5
-			? Math.ceil(totalOrders / 10)
-			: Math.floor(totalOrders / 10);
+			: (activeOrders / 10) % 1 > 0.5
+			? Math.ceil(activeOrders / 10)
+			: Math.floor(activeOrders / 10);
 
 	const getOrders = async (page = 0) => {
 		setLoading(true);
@@ -86,7 +85,6 @@ export default function Orders() {
 				},
 			});
 			setOrders(response.data.orders);
-			setTotalOrders(response.data.count.total);
 			setActiveOrders(response.data.count.actives);
 			setLoading(false);
 		} catch (error) {
@@ -198,31 +196,33 @@ export default function Orders() {
 					</a>
 
 					{accessLevel === 0 && (
-					<div className="d-none d-md-flex d-flex flex-column position-relative">
-						<div className="dropdown">
-							<button
-								className="btn btn-secondary dropdown-toggle"
-								type="button"
-								onClick={() => setOpenReportsDropdown(!openReportsDropdown)}
-							>
-								Relatórios
-							</button>
-							<ul
-								className={`dropdown-menu ${openReportsDropdown ? 'show' : ''}`}
-							>
-								<li>
-									<a className="dropdown-item" onClick={toReportPage}>
-										Ordens Serviço
-									</a>
-								</li>
-								<li>
-									<a className="dropdown-item" onClick={toReportMaterialPage}>
-										Materiais utilizados
-									</a>
-								</li>
-							</ul>
+						<div className="d-none d-md-flex d-flex flex-column position-relative">
+							<div className="dropdown">
+								<button
+									className="btn btn-secondary dropdown-toggle"
+									type="button"
+									onClick={() => setOpenReportsDropdown(!openReportsDropdown)}
+								>
+									Relatórios
+								</button>
+								<ul
+									className={`dropdown-menu ${
+										openReportsDropdown ? 'show' : ''
+									}`}
+								>
+									<li>
+										<a className="dropdown-item" onClick={toReportPage}>
+											Ordens Serviço
+										</a>
+									</li>
+									<li>
+										<a className="dropdown-item" onClick={toReportMaterialPage}>
+											Materiais utilizados
+										</a>
+									</li>
+								</ul>
+							</div>
 						</div>
-					</div>
 					)}
 
 					{(accessLevel === 2 || accessLevel === 0) && (

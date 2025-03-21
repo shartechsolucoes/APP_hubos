@@ -83,12 +83,12 @@ export default function Dashboard() {
 		const today = new Date();
 		const formattedDate = format(today, 'yyyy-MM-dd');
 		const response = await api.get(
-			`/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}&page=${page}`
+			`/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}`
 		);
 		setOrders(response.data.orders);
 		setTotalItems((prev) => ({
 			...prev,
-			dayOrder: response.data.count.actives,
+			dayOrder: response.data.count.total,
 		}));
 		setTotalOrders(response.data.count.total);
 		setActiveOrders(response.data.count.actives);
@@ -112,7 +112,6 @@ export default function Dashboard() {
 	});
 
 	const [map, setMap] = useState(null);
-	// const [pins, setPins] = useState<{ geo: any; os: string }[]>([]);
 
 	const onLoad = useCallback((map: any) => {
 		map.setZoom(12);
@@ -123,41 +122,10 @@ export default function Dashboard() {
 		setMap(null);
 	}, [map]);
 
-	// const getGeolocation = async () => {
-	// 	const getLocationsOrders = orders.map(async (order) => {
-	// 		const address = `${order.address} ${order.neighborhood} ${order.city}`;
-
-	// 		const formatedAddress = address
-	// 			.replaceAll('  ', ' ')
-	// 			.replaceAll(' ', '%20');
-
-	// 		const response = await axios.get(
-	// 			`https://maps.googleapis.com/maps/api/geocode/json?address=${formatedAddress}&key=AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0`
-	// 		);
-
-	// 		return { geolocation: response.data, os: order.qr_code };
-	// 	});
-	// 	const geolocation = await Promise.all(getLocationsOrders);
-
-	// 	const formatedGeo = geolocation.map((loc) => ({
-	// 		geo: loc.geolocation.results[0].geometry.location,
-	// 		os: loc.os,
-	// 	}));
-
-	// 	console.log(formatedGeo);
-
-	// 	setPins(formatedGeo);
-	// };
 	useEffect(() => {
 		getOrders();
 		getDashboardData();
 	}, []);
-	//
-	// useEffect(() => {
-	// 	if (orders.length > 0) {
-	// 		getGeolocation();
-	// 	}
-	// }, [orders]);
 
 	return (
 		<>
@@ -180,10 +148,6 @@ export default function Dashboard() {
 							<h4 className="mb-0">{totalItems.dayOrder}</h4>
 						</div>
 						<p className="mb-2">Ordem de Serviços Hoje</p>
-						{/*<p className="mb-0">*/}
-						{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
-						{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
-						{/*</p>*/}
 					</div>
 				</div>
 			</div>
@@ -202,10 +166,6 @@ export default function Dashboard() {
 							<h4 className="mb-0">{totalItems.order}</h4>
 						</div>
 						<p className="mb-2">Ordem de Serviços - Total</p>
-						{/*<p className="mb-0">*/}
-						{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
-						{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
-						{/*</p>*/}
 					</div>
 				</div>
 			</div>
@@ -225,10 +185,6 @@ export default function Dashboard() {
 									<h4 className="mb-0">{totalItems.kit}</h4>
 								</div>
 								<p className="mb-2">Kist's Cadastrados</p>
-								{/*<p className="mb-0">*/}
-								{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
-								{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
-								{/*</p>*/}
 							</div>
 						</div>
 					</div>
@@ -247,10 +203,6 @@ export default function Dashboard() {
 									<h4 className="mb-0">{totalItems.user}</h4>
 								</div>
 								<p className="mb-2">Usuários Ativos</p>
-								{/*<p className="mb-0">*/}
-								{/*	<span className="text-heading fw-medium me-2">?+18.2%</span>*/}
-								{/*	<span className="text-body-secondary">Maior que ontem</span>*/}
-								{/*</p>*/}
 							</div>
 						</div>
 					</div>
@@ -283,7 +235,6 @@ export default function Dashboard() {
 										text: `OS:${order.qr_code}`,
 										className: 'pin-label',
 									}}
-									// animation={google.maps.Animation.DROP}
 								></Marker>
 							))}
 						</GoogleMap>
@@ -309,13 +260,6 @@ export default function Dashboard() {
 							/>
 						</>
 					))}
-
-					<Pagination
-						currentPage={currentPage}
-						totalItems={activeOrders}
-						totalPages={totalPages}
-						toggleList={(value) => getOrders(value)}
-					/>
 				</div>
 			</div>
 		</>
