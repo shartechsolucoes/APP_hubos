@@ -14,7 +14,6 @@ import {
 	// MarkerF,
 	useJsApiLoader,
 } from '@react-google-maps/api';
-import Pagination from '../../components/Pagination';
 import { Link } from 'react-router';
 import useAccessLevelStore from '../../stores/accessLevelStore.ts';
 // import axios from 'axios';
@@ -55,10 +54,6 @@ export default function Dashboard() {
 		}>
 	>([]);
 
-	const [currentPage, setCurrentPage] = useState(0);
-	const [totalOrders, setTotalOrders] = useState(0);
-	const [activeOrders, setActiveOrders] = useState(0);
-
 	const [totalItems, setTotalItems] = useState<{
 		dayOrder: number;
 		order: number;
@@ -71,15 +66,7 @@ export default function Dashboard() {
 		kit: 0,
 	});
 
-	const totalPages =
-		totalOrders < 10
-			? 1
-			: (totalOrders / 10) % 1 > 0.5
-			? Math.ceil(totalOrders / 10)
-			: Math.floor(totalOrders / 10);
-
-	const getOrders = async (page = 0) => {
-		setCurrentPage(page);
+	const getOrders = async () => {
 		const today = new Date();
 		const formattedDate = format(today, 'yyyy-MM-dd');
 		const response = await api.get(
@@ -90,9 +77,6 @@ export default function Dashboard() {
 			...prev,
 			dayOrder: response.data.count.total,
 		}));
-		setTotalOrders(response.data.count.total);
-		setActiveOrders(response.data.count.actives);
-		console.log(response.data.length);
 	};
 
 	const getDashboardData = async () => {
