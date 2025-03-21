@@ -46,6 +46,7 @@ export default function Orders() {
 		end: null,
 	});
 	const [activeOrders, setActiveOrders] = useState(0);
+	const [totalOrders, setTotalOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [searchOS, setSearchOS] = useState('');
@@ -56,11 +57,11 @@ export default function Orders() {
 
 	const route = useNavigate();
 	const totalPages =
-		activeOrders < 10
+		totalOrders < 10
 			? 1
-			: (activeOrders / 10) % 1 > 0.5
-			? Math.ceil(activeOrders / 10)
-			: Math.floor(activeOrders / 10);
+			: (totalOrders / 10) % 1 > 0.5
+			? Math.ceil(totalOrders / 10)
+			: Math.floor(totalOrders / 10);
 
 	const getOrders = async (page = 0) => {
 		setLoading(true);
@@ -86,6 +87,7 @@ export default function Orders() {
 			});
 			setOrders(response.data.orders);
 			setActiveOrders(response.data.count.actives);
+			setTotalOrders(response.data.count.total);
 			setLoading(false);
 		} catch (error) {
 			console.error(error);
@@ -270,7 +272,7 @@ export default function Orders() {
 							))}
 							<Pagination
 								currentPage={currentPage}
-								totalItems={activeOrders}
+								totalItems={totalOrders}
 								totalPages={totalPages}
 								toggleList={(value) => getOrders(value)}
 							/>
