@@ -35,65 +35,65 @@ function Login() {
 	};
 
 	return (
-		<div className="login flex row align-items-center justify-content-center">
-			<h2 className="logo d-none d-md-block">
-				<b>HUB</b>OS
-			</h2>
-			<div className="col-md-6 col-lg-4 col-xl-3 col-sm-6 h-30 box">
-				<div className="m-3 h-30 card overflow-hidden p-5">
-					<h2 className="text-center p-2 d-block d-md-none">
-						<b>HUB</b>OS
-					</h2>
-					<h2 className="text-center p-2">
-						<b>Login</b>
-					</h2>
-					<p className="m-0 mb-5 text-center">Bem vindo de volta.</p>
+		<>
 
-					<div className="h-100 w-100 d-flex">
-						<form className="w-100" onSubmit={handleLogin}>
-							<div className="mb-3">
-								<input
-									type="text"
-									className="form-control"
-									id="login"
-									placeholder="Seu usuário"
-									onChange={(e) =>
-										setFormData((prev) => ({
-											...prev,
-											[e.target.id]: e.target.value,
-										}))
-									}
-								/>
+			<div className="container-xxl">
+				<div className="authentication-wrapper authentication-basic container-p-y">
+					<div className="authentication-inner">
+						<div className="card">
+							<div className="card-body">
+								<div className="mt-2 mb-4 text-center">
+										<img src="/public/assets/logo.png" className="w-50 justify-content-center m-auto"/>
+								</div>
+								<h4 className="mb-4 text-center">Bem vindo de volta! 👋</h4>
+								{/*<p className="mb-4">Please sign-in to your account and start the adventure</p>*/}
+								<form className="w-100" onSubmit={handleLogin}>
+									<div className="mb-3">
+										<label htmlFor="email" className="form-label">Usuário</label>
+										<input
+											type="text"
+											className="form-control"
+											id="login"
+											placeholder="Seu usuário"
+											onChange={(e) =>
+												setFormData((prev) => ({
+													...prev,
+													[e.target.id]: e.target.value,
+												}))
+											}
+										/>
+									</div>
+									<div className="mb-3">
+										<label htmlFor="email" className="form-label">Senha</label>
+										<input
+											type="password"
+											className="form-control"
+											id="password"
+											placeholder="Sua senha"
+											onChange={(e) =>
+												setFormData((prev) => ({
+													...prev,
+													[e.target.id]: e.target.value,
+												}))
+											}
+										/>
+										<div className="msg-error">{error && 'Login ou Senha errado'}</div>
+									</div>
+									<div className="mb-3 d-flex w-100 justify-content-between align-items-center">
+										<button type="submit" className="btn btn-primary d-grid w-100">
+											Entrar
+										</button>
+									</div>
+								</form>
 							</div>
-							<div className="mb-3">
-								<input
-									type="password"
-									className="form-control"
-									id="password"
-									placeholder="Sua senha"
-									onChange={(e) =>
-										setFormData((prev) => ({
-											...prev,
-											[e.target.id]: e.target.value,
-										}))
-									}
-								/>
-								{error && 'Login ou Senha errado'}
-							</div>
-							<div className="mb-3 d-flex w-100 justify-content-between align-items-center">
-								<button type="submit" className="btn w-100">
-									Entrar
-								</button>
-							</div>
-						</form>
+						</div>
 					</div>
 				</div>
-				<p className="text-end shartech">
-					Desenvolvido por <strong>Shartech</strong>
-				</p>
 			</div>
-		</div>
-	);
+		</>
+
+	)
+		;
 }
 
 export default Login;

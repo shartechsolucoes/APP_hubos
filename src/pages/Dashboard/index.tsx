@@ -98,7 +98,7 @@ export default function Dashboard() {
 	const [map, setMap] = useState(null);
 
 	const onLoad = useCallback((map: any) => {
-		map.setZoom(12);
+		map.setZoom(13);
 		setMap(map);
 	}, []);
 

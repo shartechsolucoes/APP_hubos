@@ -64,8 +64,8 @@ export default function Sidebar() {
 					<div className="app-brand">
 						<a href="#" className="app-brand-link">
 							<span className="app-brand-logo demo"></span>
-							<span className="app-brand-text demo menu-text fw-bolder ms-2">
-								HubOS
+							<span className="app-brand-text demo menu-text fw-bolder ms-2 mt-3">
+								<img src="/public/assets/logo.png" className="w-25"/>
 							</span>
 						</a>
 

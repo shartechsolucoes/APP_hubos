@@ -8,13 +8,13 @@
 }
 
 .bg-menu-theme .menu-inner>.menu-item a.active {
-  color: #0e3780;
+  color: #7a7ada;
   background-color: rgba(79, 130, 214, 0.18) !important;
   font-weight: 600;
 }
 
 .bg-menu-theme .menu-inner>.menu-item a.active:before {
-  background: #0e3780;
+  background: #9999fd;
   margin-right: -16px;
 }
 
