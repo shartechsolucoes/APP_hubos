@@ -45,7 +45,7 @@ export default function Orders() {
 		start: null,
 		end: null,
 	});
-	const [activeOrders, setActiveOrders] = useState(0);
+
 	const [totalOrders, setTotalOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [loading, setLoading] = useState(true);
@@ -86,7 +86,6 @@ export default function Orders() {
 				},
 			});
 			setOrders(response.data.orders);
-			setActiveOrders(response.data.count.actives);
 			setTotalOrders(response.data.count.total);
 			setLoading(false);
 		} catch (error) {

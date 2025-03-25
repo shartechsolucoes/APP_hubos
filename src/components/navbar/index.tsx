@@ -7,7 +7,7 @@ import useAccessLevelStore from '../../stores/accessLevelStore';
 
 export default function Navbar() {
 	const navigate = useNavigate();
-	const { userName } = useAccessLevelStore();
+	const { userName, userAvatar } = useAccessLevelStore();
 	const [toggleDropdown, setToggleDropdown] = useState(false);
 	const toggleMenu = () => {
 		const r = document.documentElement;
@@ -59,17 +59,17 @@ export default function Navbar() {
 					<ul className="navbar-nav flex-row align-items-center ms-auto">
 						<li className="nav-item lh-1 me-3"></li>
 
-						<li className="nav-item navbar-dropdown dropdown-user dropdown">
+						<li className="nav-item navbar-dropdown dropdown-user dropdown ">
 							<a
-								className="nav-link dropdown-toggle hide-arrow"
+								className="nav-link dropdown-toggle hide-arrow "
 								data-bs-toggle="dropdown"
 								onClick={() => setToggleDropdown((prev) => !prev)}
 							>
-								<div className="avatar avatar-online">
-									<img
-										src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg"
-										className="w-px-40 h-auto rounded-circle"
-									/>
+								<div
+									className="avatar rounded-circle"
+									style={{ overflow: 'hidden' }}
+								>
+									<img src={userAvatar} className="w-px-40 h-auto " />
 								</div>
 							</a>
 
