@@ -9,7 +9,8 @@ export default function SideInfo({
 	formData: any;
 	id: string;
 }) {
-	const { userId, handleUserAvatar, updateNavAvatar } = useAccessLevelStore();
+	const { userId, handleUserAvatar, updateNavAvatar, getAvatar } =
+		useAccessLevelStore();
 	const [avatar, setAvatar] = useState('');
 	function access(access_level: number | undefined) {
 		switch (access_level) {
@@ -40,10 +41,12 @@ export default function SideInfo({
 		if (id === userId) {
 			handleUserAvatar(response.data.file);
 		}
-		updateNavAvatar();
-		setAvatar(response.data.file);
 
-		console.log(response.data);
+		updateNavAvatar();
+		if (!id) {
+			getAvatar(response.data.file);
+		}
+		setAvatar(response.data.file);
 	};
 
 	return (

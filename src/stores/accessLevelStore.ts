@@ -5,11 +5,13 @@ type AccessLevel = {
 	userName: string;
 	userId: string;
 	userAvatar: string;
+	avatar: string;
 	handleAccessLevel: (level: number) => void;
 	handleUserName: (name: string) => void;
 	handleUserId: (id: string) => void;
 	handleUserAvatar: (avatar: string) => void;
 	updateNavAvatar: () => void;
+	getAvatar: (avatar: string) => void;
 };
 
 const useAccessLevelStore = create<AccessLevel>((set) => ({
@@ -19,6 +21,7 @@ const useAccessLevelStore = create<AccessLevel>((set) => ({
 	userAvatar: localStorage.getItem('userAvatar')
 		? `${import.meta.env.VITE_API_URL}${localStorage.getItem('userAvatar')}`
 		: '',
+	avatar: '',
 	handleAccessLevel: (level) => set({ accessLevel: level }),
 	handleUserName: (name) => set({ userName: name }),
 	handleUserId: (id) => set({ userId: id }),
@@ -32,6 +35,9 @@ const useAccessLevelStore = create<AccessLevel>((set) => ({
 				'userAvatar'
 			)}`,
 		});
+	},
+	getAvatar: (avatar) => {
+		set({ avatar });
 	},
 }));
 

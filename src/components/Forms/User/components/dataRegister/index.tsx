@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../../../../api';
 import InputMask from 'react-input-mask';
+import { useNavigate } from 'react-router';
+import useAccessLevelStore from '../../../../../stores/accessLevelStore';
 
 export default function DataRegister({
 	id,
@@ -13,7 +15,8 @@ export default function DataRegister({
 }) {
 	const [passwordError, setPasswordError] = useState(false);
 	const [formData, setFormData] = useState<{ [key: string]: any }>(userData);
-
+	const route = useNavigate();
+	const { avatar } = useAccessLevelStore();
 	const handleUser = async (e: any) => {
 		setPasswordError(false);
 		e.preventDefault();
@@ -49,6 +52,7 @@ export default function DataRegister({
 					city,
 					status,
 				});
+				updateData();
 			} else {
 				await api.post('/user', {
 					access_level,
@@ -62,9 +66,10 @@ export default function DataRegister({
 					state,
 					city,
 					status,
+					picture: avatar,
 				});
+				route('/users');
 			}
-			updateData();
 		} catch (error) {
 			console.error(error);
 		}
