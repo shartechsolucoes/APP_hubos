@@ -38,6 +38,9 @@ export default function DataRegister({
 			setPasswordError(true);
 			return;
 		}
+		if (!validateEmail(email)) {
+			return;
+		}
 		try {
 			if (id) {
 				await api.put(`/user/${id}`, {
@@ -75,6 +78,12 @@ export default function DataRegister({
 		}
 	};
 
+	const validateEmail = (email) => {
+		const emailRegex =
+			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return String(email).toLowerCase().match(emailRegex);
+	};
+
 	useEffect(() => {
 		setFormData(userData);
 	}, [userData]);
@@ -92,6 +101,7 @@ export default function DataRegister({
 							type="text"
 							className="form-control"
 							id="name"
+							required
 							value={formData.name}
 							onChange={(e) =>
 								setFormData((prev) => ({
@@ -107,6 +117,7 @@ export default function DataRegister({
 							Email
 						</label>
 						<input
+							required
 							type="text"
 							className="form-control"
 							id="email"
@@ -118,12 +129,17 @@ export default function DataRegister({
 								}))
 							}
 						/>
+
+						{formData.email && !validateEmail(formData.email) && (
+							<p className="text-danger mb-0">O email, não é valido</p>
+						)}
 					</div>
 					<div className="mb-3 col-md-6">
 						<label htmlFor="email" className="form-label">
 							Telefone
 						</label>
 						<InputMask
+							required
 							mask="(99) 99999-9999"
 							placeholder="(00) 00000-0000"
 							className="form-control"
@@ -143,11 +159,17 @@ export default function DataRegister({
 							Status
 						</label>
 						<select
+							name="status"
+							required
 							className="form-select"
 							aria-label="Default select example"
 							id="status"
 							value={
-								formData.status === true || formData.status === '0' ? 0 : 1
+								formData.status
+									? formData.status === true || formData.status === '0'
+										? 0
+										: 1
+									: ''
 							}
 							onChange={(e) =>
 								setFormData((prev) => ({
@@ -168,6 +190,7 @@ export default function DataRegister({
 							Login
 						</label>
 						<input
+							required
 							type="text"
 							className="form-control"
 							id="login"
@@ -186,6 +209,8 @@ export default function DataRegister({
 							Tipo de usuário
 						</label>
 						<select
+							required
+							name="access_level"
 							className="form-select"
 							aria-label="Default select example"
 							id="access_level"
@@ -197,7 +222,7 @@ export default function DataRegister({
 								}))
 							}
 						>
-							<option selected disabled>
+							<option selected disabled value="">
 								Acessos
 							</option>
 							<option value="0">Administrador</option>
@@ -208,11 +233,12 @@ export default function DataRegister({
 					</div>
 					{!id && (
 						<>
-							<div className="mb-3 col-md-2">
+							<div className="mb-3 col-md-3">
 								<label htmlFor="password" className="form-label">
 									Senha
 								</label>
 								<input
+									required
 									type="password"
 									className="form-control"
 									id="password"
@@ -224,11 +250,12 @@ export default function DataRegister({
 									}
 								/>
 							</div>
-							<div className="mb-3 col-md-2">
+							<div className="mb-3 col-md-3">
 								<label htmlFor="password" className="form-label">
 									Confirmar Senha
 								</label>
 								<input
+									required
 									type="password"
 									className="form-control"
 									id="confirmPassword"
@@ -239,7 +266,9 @@ export default function DataRegister({
 										}))
 									}
 								/>
-								{passwordError && 'As senhas são diferentes'}
+								{passwordError && (
+									<p className="text-danger mb-0">As senhas são diferentes</p>
+								)}
 							</div>
 						</>
 					)}
@@ -249,6 +278,7 @@ export default function DataRegister({
 							Endereço
 						</label>
 						<input
+							required
 							type="text"
 							className="form-control"
 							id="address"
@@ -266,6 +296,7 @@ export default function DataRegister({
 							Bairro
 						</label>
 						<input
+							required
 							type="text"
 							className="form-control"
 							id="neighborhood"
@@ -283,6 +314,7 @@ export default function DataRegister({
 							Cidade
 						</label>
 						<input
+							required
 							type="text"
 							className="form-control"
 							id="city"
@@ -300,6 +332,7 @@ export default function DataRegister({
 							Estado
 						</label>
 						<input
+							required
 							type="text"
 							className="form-control"
 							id="state"
