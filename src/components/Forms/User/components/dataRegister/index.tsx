@@ -165,7 +165,7 @@ export default function DataRegister({
 							aria-label="Default select example"
 							id="status"
 							value={
-								formData.status
+								formData.status !== ''
 									? formData.status === true || formData.status === '0'
 										? 0
 										: 1
