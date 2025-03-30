@@ -13,7 +13,12 @@ export default function Kits() {
 	);
 
 	const getKits = async () => {
-		const response = await api.get('kits');
+		const response = await api.get('kits', {
+			params: {
+				name: searchKits,
+				material: searchMaterials,
+			},
+		});
 		setKits(response.data);
 	};
 
@@ -23,18 +28,43 @@ export default function Kits() {
 		closeModal();
 	};
 
+	const [searchKits, setSearchKits] = useState('');
+	const [searchMaterials, setSearchMaterials] = useState('');
 	useEffect(() => {
 		getKits();
 	}, []);
 	return (
 		<>
-			<div className="d-flex py-4 pt-0 justify-content-end align-items-center">
+			<div className="d-flex py-4 pt-0 gap-4 justify-content-end align-items-center">
+				<div className="d-none d-md-flex d-flex flex-column ">
+					<input
+						className="form-control"
+						placeholder="Nome do Kit"
+						value={searchKits}
+						onChange={(e) => setSearchKits(e.target.value)}
+					/>
+				</div>
+				<div className="d-none d-md-flex d-flex flex-column ">
+					<input
+						className="form-control"
+						placeholder="Nome do Material"
+						value={searchMaterials}
+						onChange={(e) => setSearchMaterials(e.target.value)}
+					/>
+				</div>
+				<a
+					onClick={() => getKits()}
+					className=" d-none d-md-flex d-flex flex-column btn btn-info"
+					style={{ height: 'fit-content' }}
+				>
+					Pesquisar
+				</a>
+
 				<NavLink to="form" className="btn btn-info">
 					Novo
 				</NavLink>
 			</div>
 			<div className="col-md-9">
-
 				<div className="card pb-0 mb-5">
 					{kits.map((kit) => (
 						<>
@@ -52,9 +82,7 @@ export default function Kits() {
 			</div>
 			<div className="col-md-3">
 				<div className="card">
-					<div className="card-body">
-						Grafico de uso de cada kit ultimo Mês
-					</div>
+					<div className="card-body">Grafico de uso de cada kit ultimo Mês</div>
 				</div>
 			</div>
 			<div>
