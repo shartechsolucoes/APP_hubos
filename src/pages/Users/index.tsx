@@ -5,13 +5,15 @@ import { useEffect, useState } from 'react';
 import './index.css';
 
 export default function Users() {
-	const [users, setUsers] = useState<Array<{
-		name: string;
-		id: string;
-		login: string;
-		access_level: number;
-		email: string;
-	}>>([]);
+	const [users, setUsers] = useState<
+		Array<{
+			name: string;
+			id: string;
+			login: string;
+			access_level: number;
+			email: string;
+		}>
+	>([]);
 
 	const getUsers = async () => {
 		try {
@@ -28,12 +30,16 @@ export default function Users() {
 	return (
 		<div>
 			<div className="d-flex pt-0 justify-content-end align-items-center my-4">
-				<NavLink to="form" className="btn btn-info" style={{height: 'fit-content'}}>
+				<NavLink
+					to="form"
+					className="btn btn-info"
+					style={{ height: 'fit-content' }}
+				>
 					Novo
 				</NavLink>
 			</div>
 
-			<div className="card list-height pb-0 mb-5">
+			<div className="card list-height pb-0 mb-5 overflow-x-hidden overflow-y-scroll">
 				{users.map((item, index) => (
 					<>
 						<ListItemUsers
@@ -49,6 +55,5 @@ export default function Users() {
 				))}
 			</div>
 		</div>
-
 	);
 }

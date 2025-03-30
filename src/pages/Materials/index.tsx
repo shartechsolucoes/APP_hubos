@@ -12,9 +12,14 @@ export default function Materials() {
 	>([]);
 	const [deleteId, setDeleteId] = useState<number | null>(null);
 	const { openModal, closeModal } = useModalStore((state) => state);
+	const [searchMaterial, setSearchMaterial] = useState('');
 
 	const getMaterials = async () => {
-		const response = await api.get('materials');
+		const response = await api.get('materials', {
+			params: {
+				name: searchMaterial,
+			},
+		});
 		setMaterials(response.data);
 	};
 
@@ -26,29 +31,44 @@ export default function Materials() {
 	useEffect(() => {
 		getMaterials();
 	}, []);
+
 	return (
 		<>
 			<div>
-				<div className="d-flex py-4 pt-0 justify-content-end align-items-center">
+				<div className="d-flex py-4 gap-4 pt-0 justify-content-end align-items-center">
+					<div className="d-none d-md-flex d-flex flex-column ">
+						<input
+							className="form-control"
+							placeholder="Nome do material"
+							value={searchMaterial}
+							onChange={(e) => setSearchMaterial(e.target.value)}
+						/>
+					</div>
+					<a
+						onClick={() => getMaterials()}
+						className=" d-none d-md-flex d-flex flex-column btn btn-info"
+						style={{ height: 'fit-content' }}
+					>
+						Pesquisar
+					</a>
 					<NavLink to="form" className="btn btn-info">
 						Novo
 					</NavLink>
 				</div>
 				<div className="card pb-0 mb-5">
-
-						{materials.map((material) => (
-							<>
-								<ListItem
-									group={material.group}
-									id={material.id}
-									title={material.description}
-									deleteItem={() => {
-										setDeleteId(material.id);
-										openModal();
-									}}
-								/>
-							</>
-						))}
+					{materials.map((material) => (
+						<>
+							<ListItem
+								group={material.group}
+								id={material.id}
+								title={material.description}
+								deleteItem={() => {
+									setDeleteId(material.id);
+									openModal();
+								}}
+							/>
+						</>
+					))}
 				</div>
 			</div>
 			<div>
