@@ -3,6 +3,7 @@ import './index.css';
 import { useEffect, useState } from 'react';
 import { api } from '../../api';
 import Pagination from '../../components/Pagination';
+import QRCode from 'react-qr-code';
 
 export default function Tags() {
 	const [tags, setTags] = useState<
@@ -106,10 +107,19 @@ export default function Tags() {
 							<p className="card-title">Etiqueta</p>
 							<a href="#">Imprimir</a>
 						</div>
-						<div className="card-body">
+						<div className="card-body d-flex gap-4 flex-wrap">
 							{printTagList.map((tl) => (
-								<div key={tl} className="tag-qr">
-									{tl}
+								<div
+									key={tl}
+									className="tag-qr position-relative flex-grow-1"
+									style={{ maxHeight: '150px', maxWidth: '150px' }}
+								>
+									<QRCode
+										size={256}
+										style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
+										value={tl}
+										viewBox={`0 0 24 24`}
+									/>
 								</div>
 							))}
 						</div>
