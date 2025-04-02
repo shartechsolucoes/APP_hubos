@@ -1,24 +1,18 @@
-import { BsEyeFill, BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
-import { Link } from 'react-router';
 import './index.css';
-import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
 
 export default function ListItemOrders({
-	id,
 	title,
 	used,
-	deleteItem,
+
 	selectItem,
 }: {
 	title?: string;
-	id?: number;
+
 	group?: string;
 	used?: boolean;
 	deleteItem: () => void;
 	selectItem: (e: string) => void;
 }) {
-	const { accessLevel } = useAccessLevelStore();
-
 	return (
 		<>
 			<div className="" style={{ borderBottom: '1px solid #f1efef' }}>
