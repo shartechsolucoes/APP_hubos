@@ -2,21 +2,63 @@ import ListItem from '../../components/ListItem/Tags';
 import './index.css';
 import { useEffect, useState } from 'react';
 import { api } from '../../api';
+import Pagination from '../../components/Pagination';
 
-export default function tags() {
-	const [materials, setMaterials] = useState<
-		Array<{ id: number; description: string; group: string }>
+export default function Tags() {
+	const [tags, setTags] = useState<
+		Array<{ id: number; referenceCode: string; qr_code: string }>
 	>([]);
 
-	const getMaterials = async () => {
-		const response = await api.get('materials');
-		setMaterials(response.data);
+	const [tagsInput, setTagsInput] = useState<{ start: string; end: string }>({
+		start: '',
+		end: '',
+	});
+	const [page, setPage] = useState(3);
+	const [waitingTag, setWaitingTag] = useState(false);
+	const [printTagList, setPrintTagList] = useState<string[]>([]);
+
+	const getTags = async () => {
+		const response = await api.get('tags', { params: { page } });
+		setTags(response.data);
+	};
+
+	const generateTags = async () => {
+		setWaitingTag(true);
+		try {
+			const response = await api.post(
+				'tags',
+				{},
+				{
+					params: { start: tagsInput.start, end: tagsInput.end },
+				}
+			);
+			response.data();
+			console.log(response.data);
+			getTags();
+			setWaitingTag(false);
+		} catch (error) {
+			console.error(error);
+			setWaitingTag(false);
+		}
+	};
+
+	const setInList = (tag: string) => {
+		const hasTag = printTagList.some((t) => t === tag);
+		if (hasTag) {
+			const slicedList = printTagList;
+			slicedList.splice(slicedList.indexOf(tag), 1);
+			console.log(slicedList);
+			setPrintTagList((prevState) => prevState.filter((item) => item !== tag));
+		} else {
+			setPrintTagList((prev) => [...prev, tag]);
+		}
 	};
 
 	useEffect(() => {
-		getMaterials();
+		getTags();
 	}, []);
-	return(
+
+	return (
 		<>
 			<div className="row">
 				<div className="col-3">
@@ -24,25 +66,37 @@ export default function tags() {
 						<div className="card-header">
 							<p className="card-title">Gerar Etiqueta</p>
 						</div>
-						<div className="card-body">
-							<div className="mb-3 col-9">
+						<div className="card-body d-grid">
+							<div className="mb-3 ">
 								<input
-									value= ''
+									value={tagsInput.start}
 									type="text"
 									placeholder="Inicio"
 									className="form-control"
-									id="Valor"
+									onChange={(e) =>
+										setTagsInput((prev) => ({ ...prev, start: e.target.value }))
+									}
 								/>
 							</div>
-							<div className="mb-3 col-9">
+							<div className="mb-3 ">
 								<input
-									value= ''
+									value={tagsInput.end}
 									type="text"
 									placeholder="Fim"
 									className="form-control"
-									id="Valor"
+									onChange={(e) =>
+										setTagsInput((prev) => ({ ...prev, end: e.target.value }))
+									}
 								/>
 							</div>
+							<button
+								disabled={waitingTag}
+								type="button"
+								className="btn btn-primary"
+								onClick={generateTags}
+							>
+								Gerar
+							</button>
 						</div>
 					</div>
 				</div>
@@ -53,24 +107,30 @@ export default function tags() {
 							<a href="#">Imprimir</a>
 						</div>
 						<div className="card-body">
-							<div className="tag-qr">
-
-							</div>
+							{printTagList.map((tl) => (
+								<div key={tl} className="tag-qr">
+									{tl}
+								</div>
+							))}
 						</div>
-
 					</div>
 				</div>
 				<div className="card list-height">
-					{materials.map((material) => (
+					{tags.map((tag) => (
 						<>
 							<ListItem
-								group={material.group}
-								id={material.id}
-								title={material.description} deleteItem={function (): void {
-								throw new Error('Function not implemented.');
-							}}							/>
+								key={tag.id}
+								id={tag.id}
+								title={tag.referenceCode}
+								used={!!tag.qr_code}
+								deleteItem={function (): void {
+									throw new Error('Function not implemented.');
+								}}
+								selectItem={(e) => setInList(e)}
+							/>
 						</>
 					))}
+					<Pagination currentPage={page} toggleList={(p) => setPage(p)} />
 				</div>
 			</div>
 		</>
