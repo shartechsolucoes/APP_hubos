@@ -2,7 +2,7 @@ import ListItem from '../../components/ListItem/Tags';
 import './index.css';
 import { useEffect, useState } from 'react';
 import { api } from '../../api';
-// import Pagination from '../../components/Pagination';
+import Pagination from '../../components/Pagination';
 import QRCode from 'react-qr-code';
 
 export default function Tags() {
@@ -14,13 +14,22 @@ export default function Tags() {
 		start: '',
 		end: '',
 	});
-	// const [page, setPage] = useState(3);
+	const [page, setPage] = useState(0);
+	const [totalItems, setTotalItems] = useState(0);
 	const [waitingTag, setWaitingTag] = useState(false);
 	const [printTagList, setPrintTagList] = useState<string[]>([]);
 
+	const totalPages =
+		totalItems < 10
+			? 1
+			: (totalItems / 10) % 1 > 0.5
+			? Math.ceil(totalItems / 10)
+			: Math.floor(totalItems / 10);
+
 	const getTags = async () => {
-		const response = await api.get('tags', { params: { page: 3 } });
-		setTags(response.data);
+		const response = await api.get('tags', { params: { page } });
+		setTags(response.data.items);
+		setTotalItems(response.data.total);
 	};
 
 	const generateTags = async () => {
@@ -57,7 +66,7 @@ export default function Tags() {
 
 	useEffect(() => {
 		getTags();
-	}, []);
+	}, [page]);
 
 	return (
 		<>
@@ -139,7 +148,12 @@ export default function Tags() {
 							/>
 						</>
 					))}
-					{/* <Pagination currentPage={page} toggleList={(p) => setPage(p)} /> */}
+					<Pagination
+						totalPages={totalPages}
+						totalItems={totalItems}
+						currentPage={page}
+						toggleList={(p) => setPage(p)}
+					/>
 				</div>
 			</div>
 		</>
