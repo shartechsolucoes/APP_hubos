@@ -33,8 +33,8 @@ export default function Tags() {
 					params: { start: tagsInput.start, end: tagsInput.end },
 				}
 			);
-			response.data();
-			console.log(response.data);
+			const arrayList = response.data.map((tg) => tg.referenceCode);
+			setPrintTagList((prevState) => [...prevState, ...arrayList]);
 			getTags();
 			setWaitingTag(false);
 		} catch (error) {
