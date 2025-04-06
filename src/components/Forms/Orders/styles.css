@@ -1,9 +1,19 @@
 .form-container {
   overflow-y: auto;
 }
-.qrcode{
-  padding: 1px!important;
-  margin:0px
+
+.qrcode {
+  padding: 1px !important;
+  margin: 0px
+}
+
+
+.align-qr-code {
+  display: flex;
+  justify-content: center;
+  align-content: end;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 @media (max-width: 767px) {

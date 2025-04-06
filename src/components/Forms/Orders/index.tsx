@@ -9,6 +9,7 @@ import './styles.css';
 import Toast from '../../Toast';
 import { estadosBrasileiros } from './data';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
+import Image from '../Image';
 
 export default function OrdersForm() {
 	const { userId } = useAccessLevelStore();
@@ -30,6 +31,11 @@ export default function OrdersForm() {
 	const [kitAndQuantity, setKitAndQuantity] = useState<
 		Array<{ kit_id: number; quantity: string }>
 	>([]);
+	const [workImages, setWorkImages] = useState<{
+		startWork: string;
+		endWork: string;
+	}>({ startWork: '', endWork: '' });
+	const [hasStartPhoto, setHasStartPhoto] = useState(true);
 	const [openQR, setOpenQR] = useState(id ? false : true);
 	const [success, setSuccess] = useState(true);
 	const [openToast, setOpenToast] = useState(false);
@@ -89,6 +95,10 @@ export default function OrdersForm() {
 		});
 		setKitAndQuantity(response.data.ordersKits);
 		setFormData(response.data);
+		setWorkImages({
+			startWork: response.data.photoStartWork,
+			endWork: response.data.photoEndWork,
+		});
 	};
 
 	// useEffect(() => {
@@ -139,10 +149,14 @@ export default function OrdersForm() {
 	};
 
 	const saveOrder = async (e: any) => {
-		setSaving(true);
-
 		e.preventDefault();
-		console.log(userId);
+		setSaving(true);
+		if (workImages.startWork.length === 0) {
+			setHasStartPhoto((prev) => !prev);
+			setSaving(false);
+			return;
+		}
+
 		const {
 			address,
 			neighborhood,
@@ -156,6 +170,7 @@ export default function OrdersForm() {
 			protocolNumber,
 		} = formData;
 		const osStatus = status || 1;
+
 		try {
 			if (id) {
 				await api.put(`order/${id}`, {
@@ -168,6 +183,8 @@ export default function OrdersForm() {
 					qr_code,
 					ordersKits: kitAndQuantity,
 					protocolNumber,
+					photoEndWork: workImages.endWork,
+					photoStartWork: workImages.startWork,
 				});
 				setSuccess(true);
 				setOpenToast(true);
@@ -189,6 +206,8 @@ export default function OrdersForm() {
 					ordersKits: kitAndQuantity,
 					protocolNumber,
 					userId,
+					photoEndWork: workImages.endWork,
+					photoStartWork: workImages.startWork,
 				});
 				setSuccess(true);
 				setOpenToast(true);
@@ -222,7 +241,6 @@ export default function OrdersForm() {
 
 	useEffect(() => {
 		if (!id && userLocation?.latitude && userLocation?.longitude) {
-			console.log('get qr code ');
 			getLocation();
 		}
 	}, [userLocation?.latitude, userLocation?.longitude]);
@@ -235,15 +253,50 @@ export default function OrdersForm() {
 			const addressResult = response.data.results[0];
 			setFormData((prev) => ({
 				...prev,
-				address: `${addressResult.address_components[1].short_name} n.º:  ${addressResult.address_components[0].short_name}`,
-				neighborhood: addressResult.address_components[2].short_name,
-				city: addressResult.address_components[3].short_name,
-				state: addressResult.address_components[4].short_name,
+				address: `${addressResult.address_components[1]?.short_name} n.º:  ${addressResult.address_components[0].short_name}`,
+				neighborhood: addressResult.address_components[2]?.short_name,
+				city: addressResult.address_components[3]?.short_name,
+				state: addressResult.address_components[4]?.short_name,
 			}));
 		} catch (error) {
 			setAddressError(true);
 			console.error(error);
 		}
+	};
+
+	const sentStartWorkPhoto = async (e: any) => {
+		const data = new FormData();
+
+		data.append('file', e.target.files[0]);
+
+		const response = await api.post(
+			`order/start-work-photo?id=${id || ''}`,
+			data,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			}
+		);
+
+		setWorkImages((prev) => ({ ...prev, startWork: response.data.file }));
+	};
+	const sentEndWorkPhoto = async (e: any) => {
+		const data = new FormData();
+
+		data.append('file', e.target.files[0]);
+
+		const response = await api.post(
+			`order/end-work-photo?id=${id || ''}`,
+			data,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			}
+		);
+
+		setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
 	};
 
 	return (
@@ -283,14 +336,53 @@ export default function OrdersForm() {
 								}
 							/>
 						</div>
-						<div className="mb-3 col-1 col-md-1">
-						<button
-							type="button"
-							onClick={() => setOpenQR(!openQR)}
-							className="align-self-center btn btn-primary"
-						>
-							<BsQrCode />
-						</button>
+						<div className="mb-3 col-1 col-md-1 align-qr-code">
+							<button
+								type="button"
+								onClick={() => setOpenQR(!openQR)}
+								className="align-self-center btn btn-primary"
+							>
+								<BsQrCode />
+							</button>
+						</div>
+						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
+							<label htmlFor="exampleInputEmail1" className="form-label">
+								Foto do início do trabalho
+							</label>
+							{workImages.startWork && (
+								<Image image={workImages.startWork} height="240px" />
+							)}
+							<label className="btn btn-primary" htmlFor="start-work">
+								Inserir Foto
+							</label>
+							<input
+								style={{ display: 'none' }}
+								id="start-work"
+								type="file"
+								onChange={sentStartWorkPhoto}
+								accept="image/png, image/jpeg"
+							/>
+							{!hasStartPhoto && (
+								<p className="text-danger">Não foi inserida imagem</p>
+							)}
+						</div>
+						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
+							<label htmlFor="exampleInputEmail1" className="form-label">
+								Foto do final do trabalho
+							</label>
+							{workImages.endWork && (
+								<Image image={workImages.endWork} height="240px" />
+							)}
+							<label className="btn btn-primary" htmlFor="end-work">
+								Inserir Foto
+							</label>
+							<input
+								style={{ display: 'none' }}
+								id="end-work"
+								type="file"
+								onChange={sentEndWorkPhoto}
+								accept="image/png, image/jpeg"
+							/>
 						</div>
 						<div className="mb-3 col-6 col-md-6">
 							<label htmlFor="exampleInputEmail1" className="form-label">
@@ -324,11 +416,11 @@ export default function OrdersForm() {
 									}))
 								}
 							>
-								<option value="0">
-									Aberto
-								</option>
+								<option value="0">Aberto</option>
 								<option value="1">Em trabalho</option>
-								<option selected value="2">Finalizado</option>
+								<option selected value="2">
+									Finalizado
+								</option>
 							</select>
 						</div>
 						{addressError && (
