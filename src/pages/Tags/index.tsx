@@ -42,7 +42,7 @@ export default function Tags() {
 					params: { start: tagsInput.start, end: tagsInput.end },
 				}
 			);
-			const arrayList = response.data.map((tg) => tg.referenceCode);
+			const arrayList = response.data.map((tg: any) => tg.referenceCode);
 			setPrintTagList((prevState) => [...prevState, ...arrayList]);
 			getTags();
 			setWaitingTag(false);

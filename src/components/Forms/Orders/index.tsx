@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { api } from '../../../api';
 import { BsFillTrashFill, BsQrCode } from 'react-icons/bs';
 import { useNavigate, useSearchParams } from 'react-router';
@@ -10,13 +10,6 @@ import Toast from '../../Toast';
 import { estadosBrasileiros } from './data';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
 import Image from '../Image';
-import Webcam from 'react-webcam';
-
-const videoConstraints = {
-	width: 1280,
-	height: 720,
-	facingMode: 'user',
-};
 
 export default function OrdersForm() {
 	const { userId } = useAccessLevelStore();
@@ -306,36 +299,10 @@ export default function OrdersForm() {
 		setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
 	};
 
-	const webcamRef = useRef(null);
-	// const [screenShotEnd, setScreenShotEnd] = useState('');
-	const capture = useCallback(async () => {
-		const imageSrc = webcamRef?.current?.getScreenshot();
-		// setScreenShotEnd(imageSrc);
-
-		const data = new FormData();
-
-		const blob = await fetch(imageSrc)
-			.then((res) => res.blob())
-			.catch((err) => console.error('Erro ao converter base64 para blob', err));
-
-		data.append('file', blob, 'end-work-photo.jpg');
-
-		const response = await api.post(
-			`order/end-work-photo?id=${id || ''}`,
-			data,
-			{
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			}
-		);
-
-		setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
-	}, [webcamRef]);
-
 	return (
 		<div className="card form-container p-3 pb-3 mb-5">
 			{openToast && <Toast success={success} />}
+			{/* {openEnd && } */}
 			<div className="card-body row">
 				{openQR && (
 					<QRCodeScanner
@@ -391,11 +358,19 @@ export default function OrdersForm() {
 							</label>
 							<input
 								style={{ display: 'none' }}
+								accept="image/*"
+								id="start-work"
+								type="file"
+								capture="environment"
+								onChange={sentStartWorkPhoto}
+							/>
+							{/* <input
+								style={{ display: 'none' }}
 								id="start-work"
 								type="file"
 								onChange={sentStartWorkPhoto}
 								accept="image/png, image/jpeg"
-							/>
+							/> */}
 							{!hasStartPhoto && (
 								<p className="text-danger">Não foi inserida imagem</p>
 							)}
@@ -410,23 +385,13 @@ export default function OrdersForm() {
 							<label className="btn btn-primary" htmlFor="end-work">
 								Inserir Foto
 							</label>
-							<Webcam
-								audio={false}
-								height={720}
-								ref={webcamRef}
-								screenshotFormat="image/webp"
-								width={1280}
-								videoConstraints={videoConstraints}
-							/>
-							<button type="button" onClick={capture}>
-								Capture photo
-							</button>
 							<input
 								style={{ display: 'none' }}
 								id="end-work"
 								type="file"
 								onChange={sentEndWorkPhoto}
-								accept="image/png, image/jpeg"
+								capture="environment"
+								accept="image/*"
 							/>
 						</div>
 						<div className="mb-3 col-6 col-md-6">
