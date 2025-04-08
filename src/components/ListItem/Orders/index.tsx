@@ -104,12 +104,11 @@ export default function ListItemOrders({
 							</Link>
 						)}
 
-						{accessLevel === 0 ||
-							(accessLevel === 2 && (
-								<Link to={`form?id=${id}`}>
-									<BsFillPencilFill />
-								</Link>
-							))}
+						{(accessLevel === 0 || accessLevel === 2) && (
+							<Link to={`form?id=${id}`}>
+								<BsFillPencilFill />
+							</Link>
+						)}
 
 						{accessLevel === 0 && (
 							<a className="d-none d-md-flex action" onClick={deleteListItem}>
