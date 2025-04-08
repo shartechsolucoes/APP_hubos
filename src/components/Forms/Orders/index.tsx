@@ -358,10 +358,10 @@ export default function OrdersForm() {
 							</label>
 							<input
 								style={{ display: 'none' }}
-								accept="image/*"
+								// accept="image/*"
 								id="start-work"
 								type="file"
-								capture="environment"
+								accept="image/*;capture=camera"
 								onChange={sentStartWorkPhoto}
 							/>
 							{/* <input
@@ -390,8 +390,8 @@ export default function OrdersForm() {
 								id="end-work"
 								type="file"
 								onChange={sentEndWorkPhoto}
-								capture="environment"
-								accept="image/*"
+								// capture="environment"
+								accept="image/*;capture=camera"
 							/>
 						</div>
 						<div className="mb-3 col-6 col-md-6">
