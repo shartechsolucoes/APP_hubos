@@ -99,16 +99,17 @@ export default function ListItemOrders({
 					</div>
 					<div className="col-md-1 d-flex justify-content-end align-items-center gap-1 ">
 						{(accessLevel === 2 || accessLevel === 1 || accessLevel === 0) && (
-								<Link to={`view?id=${id}`} className="d-none d-md-flex action">
-									<BsEyeFill />
-								</Link>
-							)}
-
-						{accessLevel === 0 && (
-							<Link to={`form?id=${id}`}>
-								<BsFillPencilFill />
+							<Link to={`view?id=${id}`} className="d-none d-md-flex action">
+								<BsEyeFill />
 							</Link>
 						)}
+
+						{accessLevel === 0 ||
+							(accessLevel === 2 && (
+								<Link to={`form?id=${id}`}>
+									<BsFillPencilFill />
+								</Link>
+							))}
 
 						{accessLevel === 0 && (
 							<a className="d-none d-md-flex action" onClick={deleteListItem}>

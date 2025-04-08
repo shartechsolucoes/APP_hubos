@@ -148,7 +148,7 @@ export default function OrdersForm() {
 		}
 	};
 
-	const saveOrder = async (e: any) => {
+	const saveOrder = async (e?: any) => {
 		e.preventDefault();
 		setSaving(true);
 		if (workImages.startWork.length === 0) {
@@ -281,6 +281,7 @@ export default function OrdersForm() {
 
 		setWorkImages((prev) => ({ ...prev, startWork: response.data.file }));
 	};
+
 	const sentEndWorkPhoto = async (e: any) => {
 		const data = new FormData();
 
@@ -297,6 +298,7 @@ export default function OrdersForm() {
 		);
 
 		setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
+		saveOrder();
 	};
 
 	return (
@@ -348,7 +350,7 @@ export default function OrdersForm() {
 						</div>
 						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
 							<label htmlFor="exampleInputEmail1" className="form-label">
-								Foto do início do trabalho
+								Antes
 							</label>
 							{workImages.startWork && (
 								<Image image={workImages.startWork} height="240px" />
@@ -364,27 +366,25 @@ export default function OrdersForm() {
 								capture="environment"
 								onChange={sentStartWorkPhoto}
 							/>
-							{/* <input
-								style={{ display: 'none' }}
-								id="start-work"
-								type="file"
-								onChange={sentStartWorkPhoto}
-								accept="image/png, image/jpeg"
-							/> */}
 							{!hasStartPhoto && (
 								<p className="text-danger">Não foi inserida imagem</p>
 							)}
 						</div>
 						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
-							<label htmlFor="exampleInputEmail1" className="form-label">
-								Foto do final do trabalho
-							</label>
+							{id && (
+								<label htmlFor="exampleInputEmail1" className="form-label">
+									Depois
+								</label>
+							)}
 							{workImages.endWork && (
 								<Image image={workImages.endWork} height="240px" />
 							)}
-							<label className="btn btn-primary" htmlFor="end-work">
-								Inserir Foto
-							</label>
+
+							{id && (
+								<label className="btn btn-primary" htmlFor={'end-work'}>
+									Inserir Foto
+								</label>
+							)}
 							<input
 								style={{ display: 'none' }}
 								id="end-work"
