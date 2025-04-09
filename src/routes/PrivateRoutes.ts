@@ -32,6 +32,12 @@ export const privateRoutes = [
 				access: [0, 1, 2],
 			},
 			{
+				name: 'Nova Ordem de Serviço',
+				path: '/orders/form-v2',
+				component: Form,
+				access: [0, 1, 2],
+			},
+			{
 				name: 'Visualizar Ordem de Serviço',
 				path: '/orders/view',
 				component: View,
