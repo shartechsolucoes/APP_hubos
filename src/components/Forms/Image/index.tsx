@@ -18,7 +18,7 @@ export default function Image({
 			src={`${import.meta.env.VITE_API_URL}${image}`}
 			// height="120"
 			// width="120"
-			alt="User avatar"
+			alt={image}
 		/>
 	);
 }

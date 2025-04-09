@@ -1,11 +1,12 @@
-import { useEffect,useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../../../api';
 import { useSearchParams } from 'react-router';
-import {format} from "date-fns";
-import {ptBR} from "date-fns/locale";
-import {BsFileEarmarkPdf} from "react-icons/bs";
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { BsFileEarmarkPdf } from 'react-icons/bs';
 import { useReactToPrint } from 'react-to-print';
-import useAccessLevelStore from "../../../stores/accessLevelStore.ts";
+import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
+import Image from '../../Forms/Image/index.tsx';
 
 export default function OrdersView() {
 	const { accessLevel } = useAccessLevelStore();
@@ -13,10 +14,9 @@ export default function OrdersView() {
 	const [listOfKits, setListOfKits] = useState<
 		Array<{
 			id: number;
-			quantity:
-				string;
+			quantity: string;
 			description: string;
-			materials?: { material: { description: string;  quantity: string;} }[];
+			materials?: { material: { description: string; quantity: string } }[];
 		}>
 	>([]);
 	const [kits, setKits] = useState<
@@ -43,8 +43,6 @@ export default function OrdersView() {
 		setFormData(response.data);
 	};
 
-
-
 	useEffect(() => {
 		if (kits.length === 0) {
 			getKits();
@@ -58,8 +56,12 @@ export default function OrdersView() {
 		console.log(formData);
 	}, [formData]);
 
-	const registerDay  = formData.registerDay ? format(formData.registerDay, "dd/MM/yyyy", {locale:ptBR} ): '';
-	const registerTime  = formData.registerDay ? format(formData.registerDay, "hh:mm", {locale:ptBR} ): '';
+	const registerDay = formData.registerDay
+		? format(formData.registerDay, 'dd/MM/yyyy', { locale: ptBR })
+		: '';
+	const registerTime = formData.registerDay
+		? format(formData.registerDay, 'hh:mm', { locale: ptBR })
+		: '';
 
 	const contentRef = useRef<HTMLDivElement>(null);
 	const reactToPrintFn = useReactToPrint({ contentRef });
@@ -71,26 +73,26 @@ export default function OrdersView() {
 					<BsFileEarmarkPdf /> Baixar PDF
 				</button>
 			</div>
-			<div className="card p-3 pb-3 mb-5"  >
-
+			<div className="card p-3 pb-3 mb-5">
 				<div className="card-body" ref={contentRef}>
 					<div className="m-3 row">
 						<h1 className="mb-3">Ordem de Serviço #{formData.qr_code}</h1>
 						<h4 className="mt-5">Informações Gerais</h4>
-						<hr/>
+						<hr />
 						<div className="col-md-12 mt-2">
-							<strong>Empresa:</strong> Prefeitura da cidade de Almirante Tamandaré{formData.data}
+							<strong>Empresa:</strong> Prefeitura da cidade de Almirante
+							Tamandaré{formData.data}
 						</div>
 						<div className="col-md-4 mt-2">
 							<strong>Data:</strong> {registerDay}
 						</div>
 						{(accessLevel === 2 || accessLevel === 0) && (
-						<div className="col-md-4 mt-2">
-							<strong>Hora:</strong> {registerTime}
-						</div>
-							)}
+							<div className="col-md-4 mt-2">
+								<strong>Hora:</strong> {registerTime}
+							</div>
+						)}
 						<h4 className="mt-5">Endereço</h4>
-						<hr/>
+						<hr />
 						<div className="col-md-6 mt-2">
 							<strong>Rua:</strong> {formData.address}
 						</div>
@@ -111,14 +113,33 @@ export default function OrdersView() {
 							<strong>Longitude:</strong> {formData.long}
 						</div>
 
-						<h4  className="mt-5">Obs</h4>
-						<hr/>
-						<div className="mb-3">
-							{formData.observations}
+						<h4 className="mt-5">Obs</h4>
+						<hr />
+						<div className="mb-3">{formData.observations}</div>
+
+						<h4 className="mt-5">Fotos</h4>
+						<hr />
+						<div className="mb-3 d-flex gap-4 justify-content-center">
+							<span className="d-flex flex-column fw-bold align-items-center">
+								{formData.photoStartWork && (
+									<>
+										<label className="mb-3">Inicio</label>
+										<Image image={formData.photoStartWork} height="240px" />
+									</>
+								)}
+							</span>
+							<span className="d-flex flex-column fw-bold align-items-center">
+								{formData.photoEndWork && (
+									<>
+										<label className="mb-3">Fim</label>
+										<Image image={formData.photoEndWork} height="240px" />
+									</>
+								)}
+							</span>
 						</div>
 
 						<h4 className="mt-5">Kit(s)</h4>
-						<hr/>
+						<hr />
 						<table className="mt-2">
 							<tr>
 								<th>Descrição</th>
@@ -134,17 +155,17 @@ export default function OrdersView() {
 											<td>
 												{kit?.materials?.map((material) => (
 													<div className="ms-3 my-2">
-														({material.material.quantity}) {material.material.description}
+														({material.material.quantity}){' '}
+														{material.material.description}
 													</div>
 												))}
 											</td>
-											<td className="text-center">{
-												kitAndQuantity.some((kq) => kq.kit_id === kit.id)
-													? kitAndQuantity.filter(
-														(k) => k.kit_id === kit.id
-													)[0].quantity
-													: ''
-											}</td>
+											<td className="text-center">
+												{kitAndQuantity.some((kq) => kq.kit_id === kit.id)
+													? kitAndQuantity.filter((k) => k.kit_id === kit.id)[0]
+															.quantity
+													: ''}
+											</td>
 										</tr>
 									))}
 								</>
