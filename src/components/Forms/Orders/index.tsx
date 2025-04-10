@@ -148,7 +148,7 @@ export default function OrdersForm() {
 		}
 	};
 
-	const saveOrder = async (e?: any, afterPhoto: string) => {
+	const saveOrder = async (e?: any, afterPhoto?: string) => {
 		if (e) {
 			e.preventDefault();
 		}
