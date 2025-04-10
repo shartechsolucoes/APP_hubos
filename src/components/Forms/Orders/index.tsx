@@ -148,8 +148,11 @@ export default function OrdersForm() {
 		}
 	};
 
-	const saveOrder = async (e?: any) => {
-		e.preventDefault();
+	const saveOrder = async (e?: any, afterPhoto: string) => {
+		if (e) {
+			e.preventDefault();
+		}
+		console.log('lero');
 		setSaving(true);
 		if (workImages.startWork.length === 0) {
 			setHasStartPhoto((prev) => !prev);
@@ -183,7 +186,7 @@ export default function OrdersForm() {
 					qr_code,
 					ordersKits: kitAndQuantity,
 					protocolNumber,
-					photoEndWork: workImages.endWork,
+					photoEndWork: afterPhoto || workImages.endWork,
 					photoStartWork: workImages.startWork,
 				});
 				setSuccess(true);
@@ -222,6 +225,7 @@ export default function OrdersForm() {
 			setOpenToast(true);
 			setSuccess(false);
 			setTimeout(() => setOpenToast(false), 1000);
+			setSaving(false);
 		}
 	};
 
@@ -287,18 +291,21 @@ export default function OrdersForm() {
 
 		data.append('file', e.target.files[0]);
 
-		const response = await api.post(
-			`order/end-work-photo?id=${id || ''}`,
-			data,
-			{
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			}
-		);
-
-		setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
-		saveOrder();
+		try {
+			const response = await api.post(
+				`order/end-work-photo?id=${id || ''}`,
+				data,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+			setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
+			saveOrder(undefined, response.data.file);
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	return (
