@@ -15,10 +15,15 @@ export default function MaterialsForm() {
 	const [searchParams] = useSearchParams();
 	const [success, setSuccess] = useState(true);
 	const [openToast, setOpenToast] = useState(false);
+	const [fieldError, setFieldError] = useState(false);
 	const id = searchParams.get('id');
 
 	const saveMaterial = async (e: any) => {
 		e.preventDefault();
+		if (!formData.description) {
+			setFieldError(true);
+			return;
+		}
 		try {
 			if (id) {
 				await api.put(`material/${id}`, formData);
@@ -35,6 +40,7 @@ export default function MaterialsForm() {
 				}, 1300);
 				route(`/materials/form?id=${id}`);
 			}
+			setFieldError(false);
 			setSuccess(true);
 		} catch (error) {
 			console.error(error);
@@ -47,7 +53,6 @@ export default function MaterialsForm() {
 		const response = await api.get(`material/${id}`);
 		const { description, active, group } = response.data;
 		setFormData({ description, active, group });
-		console.log(response.data);
 	};
 
 	useEffect(() => {
@@ -58,7 +63,9 @@ export default function MaterialsForm() {
 
 	return (
 		<div className="row">
-			{openToast && <Toast success={success} />}
+			{openToast && (
+				<Toast success={success} msgError="Erro ao salvar o material" />
+			)}
 			<div className="col-md-3">
 				<div className="card list-height overflow-y-auto pb-0 mb-5">
 					<div className="card-header">
@@ -99,6 +106,9 @@ export default function MaterialsForm() {
 											}))
 										}
 									/>
+									{fieldError && (
+										<p className="text-danger">Descrição vazia </p>
+									)}
 								</div>
 
 								<div className="mb-3 col-6">
