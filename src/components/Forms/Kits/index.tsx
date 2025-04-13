@@ -1,8 +1,9 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { api } from '../../../api';
 import { BsFillTrashFill } from 'react-icons/bs';
 import { useNavigate, useSearchParams } from 'react-router';
 import Toast from '../../Toast';
+import KitList from './KitList';
 
 export default function KitsForm() {
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
@@ -31,6 +32,8 @@ export default function KitsForm() {
 		setMaterials(response.data);
 	};
 
+	const childRef = useRef();
+
 	const getKit = async () => {
 		const response = await api.get(`/kit/${id}`);
 		const materialsList = response.data.materials.map(
@@ -51,8 +54,9 @@ export default function KitsForm() {
 	};
 
 	useEffect(() => {
+		setListOfMaterials([]);
 		getMaterials();
-	}, []);
+	}, [id]);
 
 	useEffect(() => {
 		if (id && materials.length > 0) {
@@ -112,6 +116,7 @@ export default function KitsForm() {
 					route(`/kits`);
 				}, 1300);
 			}
+			childRef?.current?.getKits();
 		} catch (error) {
 			setSuccess(false);
 			setSuccessMsg('');
@@ -183,11 +188,20 @@ export default function KitsForm() {
 		<div className="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
 			<div className="card">
 				<div className="row row-bordered g-0">
-					<div className="col-md-3">
-						<h5 className="card-header m-0 me-2 pb-3">Kits</h5>
-					</div>
-					<div className="col-md-9">
-						<div className="card-body">
+					{id && (
+						<div
+							className="col-md-3 overflow-y-auto overflow-x-hidden"
+							style={{ maxHeight: '436px' }}
+						>
+							<h5 className="card-header m-0 me-2 pb-3">Kits</h5>
+							<KitList ref={childRef} />
+						</div>
+					)}
+					<div className={id ? 'col-md-9 ' : 'col-md-12'}>
+						<div
+							className="card-body overflow-y-auto"
+							style={{ maxHeight: '436px' }}
+						>
 							<div className="list-height pb-0 mb-5">
 								<div className="d-flex justify-content-between">
 									<h5 className="card-title">Editar</h5>
@@ -267,6 +281,7 @@ export default function KitsForm() {
 											</select>
 										</span>
 										<button
+											disabled={selectedMaterial.length === 0}
 											type="button"
 											className="btn btn-primary"
 											onClick={() => handleMaterialList()}
