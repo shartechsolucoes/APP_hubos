@@ -19,7 +19,7 @@ export default function KitsForm() {
 		Array<{ id: number; quantity: string }>
 	>([]);
 	const [openToast, setOpenToast] = useState(false);
-	const [success, setSuccess] = useState(false);
+	const [success, setSuccess] = useState(true);
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 
@@ -88,21 +88,25 @@ export default function KitsForm() {
 	}
 
 	const saveKit = async () => {
-		setOpenToast(true);
 		const kit = {
 			description: formData.description,
 			materials: materialAndQuantity,
 		};
 		try {
+			setErrorMsg('');
 			if (id) {
 				await api.put(`kit/${id}`, kit);
 				setSuccess(true);
+				setSuccessMsg('Kit atualizado com sucesso');
+				setOpenToast(true);
 				setTimeout(() => {
 					setOpenToast(false);
 				}, 1300);
 			} else {
 				await api.post(`kit`, kit);
 				setSuccess(true);
+				setSuccessMsg('Kit criado com sucesso');
+				setOpenToast(true);
 				setTimeout(() => {
 					setOpenToast(false);
 					route(`/kits`);
@@ -110,7 +114,13 @@ export default function KitsForm() {
 			}
 		} catch (error) {
 			setSuccess(false);
+			setSuccessMsg('');
+			setErrorMsg('Erro ao criar o Kit');
+			setOpenToast(true);
 			console.error(error);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 1300);
 		}
 	};
 
@@ -136,36 +146,40 @@ export default function KitsForm() {
 	};
 
 	const deleteKitMaterial = async (kitId: number, materialId: number) => {
-		try {
-			await api.delete(`/kit-material/${materialId}/${kitId} `);
-			setOpenToast(true);
-			materialAndQuantity.splice(
-				materialAndQuantity.findIndex((material) => material.id === materialId),
-				1
-			);
-			listOfMaterials.splice(
-				listOfMaterials.findIndex((material) => material.id === materialId),
-				1
-			);
+		if (materialId && kitId) {
+			try {
+				await api.delete(`/kit-material/${materialId}/${kitId} `);
+				setOpenToast(true);
+				materialAndQuantity.splice(
+					materialAndQuantity.findIndex(
+						(material) => material.id === materialId
+					),
+					1
+				);
+				listOfMaterials.splice(
+					listOfMaterials.findIndex((material) => material.id === materialId),
+					1
+				);
 
-			setListOfMaterials([...listOfMaterials]);
+				setListOfMaterials([...listOfMaterials]);
 
-			setSuccessMsg('Material removido');
-		} catch (error) {
-			console.error(error);
-			setOpenToast(true);
-			setErrorMsg('Nào foi possível Remover o material ');
+				setSuccessMsg('Material removido');
+			} catch (error) {
+				console.error(error);
+				setOpenToast(true);
+				setSuccessMsg('');
+				setErrorMsg('Nào foi possível Remover o material ');
+			}
+
+			setTimeout(() => {
+				setSuccessMsg('');
+				setErrorMsg('');
+				setOpenToast(false);
+			}, 1300);
 		}
-
-		setTimeout(() => {
-			setSuccessMsg('');
-			setErrorMsg('');
-			setOpenToast(false);
-		}, 1300);
 	};
 
 	return (
-
 		<div className="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
 			<div className="card">
 				<div className="row row-bordered g-0">
@@ -177,15 +191,22 @@ export default function KitsForm() {
 							<div className="list-height pb-0 mb-5">
 								<div className="d-flex justify-content-between">
 									<h5 className="card-title">Editar</h5>
-									<button type="submit" className="btn btn-primary" onClick={saveKit}>
+									<button
+										type="submit"
+										className="btn btn-primary"
+										onClick={saveKit}
+									>
 										Salvar
 									</button>
 								</div>
-								<hr/>
+								<hr />
 								<form>
 									<div className="row">
 										<div className="mb-3 col-9">
-											<label htmlFor="exampleInputEmail1" className="form-label">
+											<label
+												htmlFor="exampleInputEmail1"
+												className="form-label"
+											>
 												Descrição
 											</label>
 											<input
@@ -202,7 +223,10 @@ export default function KitsForm() {
 											/>
 										</div>
 										<div className="mb-3 col-3">
-											<label htmlFor="exampleInputEmail1" className="form-label">
+											<label
+												htmlFor="exampleInputEmail1"
+												className="form-label"
+											>
 												Status
 											</label>
 											<input
@@ -220,25 +244,28 @@ export default function KitsForm() {
 										</div>
 									</div>
 									<div className="mb-3 d-flex justify-content-between align-items-end gap-5">
-								<span className="flex-fill">
-									<label htmlFor="exampleInputEmail1" className="form-label">
-										Materiais
-									</label>
-									<select
-										className="form-select"
-										aria-label="Default select example"
-										onChange={(e) => setSelectedMaterial(e.target.value)}
-									>
-										<option selected disabled value={''}>
-											Selecione o Material
-										</option>
-										{materials.map((material) => (
-											<option value={material.id}>
-												{material.description}
-											</option>
-										))}
-									</select>
-								</span>
+										<span className="flex-fill">
+											<label
+												htmlFor="exampleInputEmail1"
+												className="form-label"
+											>
+												Materiais
+											</label>
+											<select
+												className="form-select"
+												aria-label="Default select example"
+												onChange={(e) => setSelectedMaterial(e.target.value)}
+											>
+												<option selected disabled value={''}>
+													Selecione o Material
+												</option>
+												{materials.map((material) => (
+													<option value={material.id}>
+														{material.description}
+													</option>
+												))}
+											</select>
+										</span>
 										<button
 											type="button"
 											className="btn btn-primary"
@@ -248,65 +275,59 @@ export default function KitsForm() {
 										</button>
 									</div>
 
-									<ul className="p-0 m-0">
+									<ul className="p-0 m-0"></ul>
 
-									</ul>
-
-										{listOfMaterials.length > 0 && (
-											<>
-												{listOfMaterials.map((material) => (
-
-													<div className="mb-2">
-														<li className="d-flex">
-															<div className="avatar flex-shrink-0 me-3">
-																<span className="avatar-initial rounded bg-label-secondary"><i
-																	className="bx bx-football"></i></span>
+									{listOfMaterials.length > 0 && (
+										<>
+											{listOfMaterials.map((material) => (
+												<div className="mb-2">
+													<li className="d-flex">
+														<div className="avatar flex-shrink-0 me-3">
+															<span className="avatar-initial rounded bg-label-secondary">
+																<i className="bx bx-football"></i>
+															</span>
+														</div>
+														<div className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+															<div className="me-2">
+																<h6 className="mb-0">{material.description}</h6>
+																<small className="text-muted">?Type</small>
 															</div>
-															<div
-																className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-																<div className="me-2">
-																	<h6 className="mb-0">{material.description}</h6>
-																	<small className="text-muted">?Type</small>
-																</div>
-																<div className="user-progress d-flex gap-2">
-
-																	<input
-																		value={
-																			materialAndQuantity.some(
-																				(mq) => mq.id === material.id
-																			)
-																				? materialAndQuantity.filter(
+															<div className="user-progress d-flex gap-2">
+																<input
+																	value={
+																		materialAndQuantity.some(
+																			(mq) => mq.id === material.id
+																		)
+																			? materialAndQuantity.filter(
 																					(m) => m.id === material.id
-																				)[0].quantity
-																				: ''
-																		}
-																		type="text"
-																		className="form-control"
-																		onChange={(e) =>
-																			handleMaterialQuantity(e, `${material.id}`)
-																		}
-																	/>
-																	<button
-																		type="button"
-																		className="btn btn-primary"
-																		onClick={() =>
-																			deleteKitMaterial(
-																				parseInt(id || ''),
-																				material.id
-																			)
-																		}
-																	>
-																		<BsFillTrashFill/>
-																	</button>
-																</div>
+																			  )[0].quantity
+																			: ''
+																	}
+																	type="text"
+																	className="form-control"
+																	onChange={(e) =>
+																		handleMaterialQuantity(e, `${material.id}`)
+																	}
+																/>
+																<button
+																	type="button"
+																	className="btn btn-primary"
+																	onClick={() =>
+																		deleteKitMaterial(
+																			parseInt(id || ''),
+																			material.id
+																		)
+																	}
+																>
+																	<BsFillTrashFill />
+																</button>
 															</div>
-														</li>
-
-													</div>
-												))}
-											</>
-										)}
-
+														</div>
+													</li>
+												</div>
+											))}
+										</>
+									)}
 								</form>
 							</div>
 						</div>
@@ -315,12 +336,10 @@ export default function KitsForm() {
 			</div>
 
 			{openToast && (
-				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg}/>
+				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
 			)}
 
-			<div className="col-md-9">
-
-			</div>
+			<div className="col-md-9"></div>
 		</div>
 	);
 }
