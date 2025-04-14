@@ -560,6 +560,7 @@ export default function OrdersForm() {
 								</select>
 							</span>
 							<button
+								disabled={!selectedKit}
 								type="button"
 								className="btn btn-primary"
 								onClick={() => {
