@@ -13,7 +13,7 @@ export default function KitsForm() {
 	>([]);
 
 	const [listOfMaterials, setListOfMaterials] = useState<
-		Array<{ id: number; description: string }>
+		Array<{ id: number; description: string; group: string }>
 	>([]);
 	const [selectedMaterial, setSelectedMaterial] = useState('');
 	const [materialAndQuantity, setMaterialAndQuantity] = useState<
@@ -305,7 +305,9 @@ export default function KitsForm() {
 														<div className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
 															<div className="me-2">
 																<h6 className="mb-0">{material.description}</h6>
-																<small className="text-muted">?Type</small>
+																<small className="text-muted">
+																	{material.group}
+																</small>
 															</div>
 															<div className="user-progress d-flex gap-2">
 																<input
