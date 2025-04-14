@@ -24,7 +24,7 @@ export default function Tags() {
 			? 1
 			: (totalItems / 10) % 1 > 0.5
 			? Math.ceil(totalItems / 10)
-			: Math.floor(totalItems / 10);
+			: Math.ceil(totalItems / 10);
 
 	const getTags = async () => {
 		const response = await api.get('tags', { params: { page } });

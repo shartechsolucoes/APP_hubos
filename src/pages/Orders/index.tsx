@@ -61,7 +61,7 @@ export default function Orders() {
 			? 1
 			: (totalOrders / 10) % 1 > 0.5
 			? Math.ceil(totalOrders / 10)
-			: Math.floor(totalOrders / 10);
+			: Math.ceil(totalOrders / 10);
 
 	const getOrders = async (page = 0) => {
 		setLoading(true);
