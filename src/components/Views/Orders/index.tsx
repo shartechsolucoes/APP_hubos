@@ -124,7 +124,11 @@ export default function OrdersView() {
 								{formData.photoStartWork && (
 									<>
 										<label className="mb-3">Inicio</label>
-										<Image image={formData.photoStartWork} height="240px" />
+										<Image
+											image={formData.photoStartWork}
+											height="240px"
+											orientation="from-image"
+										/>
 									</>
 								)}
 							</span>
@@ -132,7 +136,11 @@ export default function OrdersView() {
 								{formData.photoEndWork && (
 									<>
 										<label className="mb-3">Fim</label>
-										<Image image={formData.photoEndWork} height="240px" />
+										<Image
+											image={formData.photoEndWork}
+											height="240px"
+											orientation="from-image"
+										/>
 									</>
 								)}
 							</span>

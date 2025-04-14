@@ -1,9 +1,11 @@
 export default function Image({
 	image,
 	height,
+	orientation,
 }: {
 	image: string;
 	height?: string;
+	orientation?: 'none' | 'from-image';
 }) {
 	return (
 		<img
@@ -14,6 +16,7 @@ export default function Image({
 				width: 'auto',
 				height: height,
 				objectFit: 'contain',
+				imageOrientation: orientation,
 			}}
 			src={`${import.meta.env.VITE_API_URL}${image}`}
 			// height="120"
