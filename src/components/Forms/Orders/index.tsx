@@ -148,11 +148,11 @@ export default function OrdersForm() {
 		}
 	};
 
-	const saveOrder = async (e?: any, afterPhoto?: string) => {
+	const saveOrder = async (e?: any, afterPhoto?: string, statusEnd: string) => {
 		if (e) {
 			e.preventDefault();
 		}
-		console.log('lero');
+
 		setSaving(true);
 		if (workImages.startWork.length === 0) {
 			setHasStartPhoto((prev) => !prev);
@@ -172,6 +172,7 @@ export default function OrdersForm() {
 			qr_code,
 			protocolNumber,
 		} = formData;
+
 		const osStatus = status || 1;
 
 		try {
@@ -181,7 +182,7 @@ export default function OrdersForm() {
 					neighborhood,
 					city,
 					state,
-					status,
+					status: statusEnd || status,
 					observations,
 					qr_code,
 					ordersKits: kitAndQuantity,
@@ -302,7 +303,9 @@ export default function OrdersForm() {
 				}
 			);
 			setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
-			saveOrder(undefined, response.data.file);
+			setFormData((prev) => ({ ...prev, status: 2 }));
+
+			saveOrder(undefined, response.data.file, 2);
 		} catch (e) {
 			console.error(e);
 		}
@@ -424,7 +427,7 @@ export default function OrdersForm() {
 							</label>
 							<select
 								id="status"
-								value="2"
+								value={formData.status || 0}
 								className="form-control"
 								onChange={(e) =>
 									setFormData((prev) => ({
