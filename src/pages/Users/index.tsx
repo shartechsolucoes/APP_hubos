@@ -12,6 +12,7 @@ export default function Users() {
 			login: string;
 			access_level: number;
 			email: string;
+			status: boolean;
 		}>
 	>([]);
 
@@ -49,6 +50,7 @@ export default function Users() {
 							login={item.login}
 							email={item.email}
 							access_level={item.access_level}
+							status={item.status}
 						/>
 						{users.length - 1 !== index}
 					</>
