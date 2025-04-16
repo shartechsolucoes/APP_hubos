@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../../api';
 import { useSearchParams } from 'react-router';
-import {format, parseISO} from 'date-fns';
+import { format, parseISO } from 'date-fns';
 // import { ptBR } from 'date-fns/locale';
 import './styles.css';
 import { useReactToPrint } from 'react-to-print';
@@ -55,7 +55,7 @@ export default function Report() {
 		console.log(response.data);
 	};
 
-	const today = format(new Date(), "dd/MM/yyyy");
+	const today = format(new Date(), 'dd/MM/yyyy');
 
 	useEffect(() => {
 		getOrders();
@@ -88,8 +88,6 @@ export default function Report() {
 						</span>
 						<p className="m-4">{today}</p>
 					</div>
-
-
 					<table className="table table-striped">
 						<tr>
 							<th>Nº OS</th>
@@ -108,9 +106,7 @@ export default function Report() {
 										{order.ordersKits.length > 0 && (
 											<>
 												{order.ordersKits.map((kit) => (
-													<>
-														{kit.kit.description}
-													</>
+													<>{kit.kit.description}</>
 												))}
 											</>
 										)}
@@ -119,11 +115,16 @@ export default function Report() {
 									<td>{order.order.long}</td>
 									<td>{order.order.address}</td>
 									<td>{order.order.neighborhood}</td>
-									<td>{order.order.city}/{order.order.state}</td>
+									<td>
+										{order.order.city}/{order.order.state}
+									</td>
 								</tr>
 							</>
 						))}
 					</table>
+					<div className="d-flex justify-content-end fs-5">
+						<p className="fw-bold">Total</p>: {orders.length}
+					</div>
 				</div>
 			</div>
 		</>
