@@ -4,7 +4,7 @@ import useModalStore from '../../../../stores/modalStore';
 import ListItemOrders from '../../../ListItem/Kits';
 import Modal from '../../../Modal';
 
-export default forwardRef(function KitList(props, ref) {
+export default forwardRef(function KitList(_, ref) {
 	const { openModal, closeModal } = useModalStore((state) => state);
 	const [deleteId, setDeleteId] = useState<unknown>(null);
 	const [kits, setKits] = useState<Array<{ id: number; description: string }>>(

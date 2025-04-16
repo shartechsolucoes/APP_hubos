@@ -148,7 +148,11 @@ export default function OrdersForm() {
 		}
 	};
 
-	const saveOrder = async (e?: any, afterPhoto?: string, statusEnd: string) => {
+	const saveOrder = async (
+		e?: any,
+		afterPhoto?: string,
+		statusEnd?: string
+	) => {
 		if (e) {
 			e.preventDefault();
 		}
@@ -305,7 +309,7 @@ export default function OrdersForm() {
 			setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
 			setFormData((prev) => ({ ...prev, status: 2 }));
 
-			saveOrder(undefined, response.data.file, 2);
+			saveOrder(undefined, response.data.file, '2');
 		} catch (e) {
 			console.error(e);
 		}

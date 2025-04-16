@@ -9,7 +9,7 @@ export default function KitsForm() {
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
 	const route = useNavigate();
 	const [materials, setMaterials] = useState<
-		Array<{ id: number; description: string }>
+		Array<{ id: number; description: string; group: string }>
 	>([]);
 
 	const [listOfMaterials, setListOfMaterials] = useState<
@@ -32,7 +32,7 @@ export default function KitsForm() {
 		setMaterials(response.data);
 	};
 
-	const childRef = useRef();
+	const childRef = useRef<any>();
 
 	const getKit = async () => {
 		const response = await api.get(`/kit/${id}`);
