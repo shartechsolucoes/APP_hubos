@@ -39,8 +39,7 @@ export default forwardRef(function KitList(_, ref) {
 
 	return (
 		<>
-			<div className="col-12">
-				<div className="card pb-0 mb-0">
+
 					{kits.map((kit) => (
 						<>
 							<ListItemOrders
@@ -53,8 +52,7 @@ export default forwardRef(function KitList(_, ref) {
 							/>
 						</>
 					))}
-				</div>
-			</div>
+
 			<Modal
 				cancelCopy="Cancelar"
 				copy="Deseja remover o item selecionado ?"
