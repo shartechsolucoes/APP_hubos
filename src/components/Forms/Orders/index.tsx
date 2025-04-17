@@ -364,7 +364,7 @@ export default function OrdersForm() {
 						</div>
 						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
 							<label htmlFor="exampleInputEmail1" className="form-label">
-								Antes
+								Início
 							</label>
 							{workImages.startWork && (
 								<Image image={workImages.startWork} height="240px" />
@@ -387,7 +387,7 @@ export default function OrdersForm() {
 						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
 							{id && (
 								<label htmlFor="exampleInputEmail1" className="form-label">
-									Depois
+									Fim
 								</label>
 							)}
 							{workImages.endWork && (
