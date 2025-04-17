@@ -65,7 +65,7 @@ export default function OrdersView() {
 
 	const contentRef = useRef<HTMLDivElement>(null);
 	const reactToPrintFn = useReactToPrint({ contentRef });
-
+	const today = format(new Date(), 'dd/MM/yyyy');
 	return (
 		<>
 			<div className="d-flex p-2 pt-0 justify-content-end gap-3">
@@ -75,49 +75,51 @@ export default function OrdersView() {
 			</div>
 			<div className="card p-3 pb-3 mb-5">
 				<div className="card-body" ref={contentRef}>
+					<div className="d-flex gap-4 mb-4">
+						<img
+							alt="logo da prefeitura"
+							className="m-4"
+							src="/src/assets/prefeitura_logo.png"
+							height={70}
+							width={50}
+						/>
+						<span className="flex-fill text-center">
+							<h2 className="m-3 mt-5 fw-bolder">Ordem de Serviço #{formData.qr_code}</h2>
+							{
+								<p>
+									Executado em {registerDay}
+								</p>
+							}
+						</span>
+						<p className="m-4">{today}</p>
+					</div>
 					<div className="m-3 row">
-						<h1 className="mb-3">Ordem de Serviço #{formData.qr_code}</h1>
-						<h4 className="mt-5">Informações Gerais</h4>
+						<h4 className="">Endereço</h4>
 						<hr />
-						<div className="col-md-12 mt-2">
-							<strong>Empresa:</strong> Prefeitura da cidade de Almirante
-							Tamandaré{formData.data}
-						</div>
-						<div className="col-md-4 mt-2">
-							<strong>Data:</strong> {registerDay}
-						</div>
-						{(accessLevel === 2 || accessLevel === 0) && (
-							<div className="col-md-4 mt-2">
-								<strong>Hora:</strong> {registerTime}
-							</div>
-						)}
-						<h4 className="mt-5">Endereço</h4>
-						<hr />
-						<div className="col-md-6 mt-2">
+						<div className="col-6 mt-2">
 							<strong>Rua:</strong> {formData.address}
 						</div>
-						<div className="col-md-6 mt-2">
+						<div className="col-6 mt-2">
 							<strong>Bairro:</strong> {formData.neighborhood}
 						</div>
-						<div className="col-md-6 mt-2">
+						<div className="col-6 mt-2">
 							<strong>Município:</strong> {formData.city}
 						</div>
-						<div className="col-md-6 mt-2">
+						<div className="col-6 mt-2">
 							<strong>UF:</strong> {formData.state}
 						</div>
-
 						<div className="col-md-6 mt-2">
 							<strong>Latitude:</strong> {formData.lat}
 						</div>
-						<div className="col-md-6 mt-2">
+						<div className="col-6 mt-2">
 							<strong>Longitude:</strong> {formData.long}
 						</div>
 
-						<h4 className="mt-5">Obs</h4>
+						<h4 className="mt-4">Obs:</h4>
 						<hr />
 						<div className="mb-3">{formData.observations}</div>
 
-						<h4 className="mt-5">Fotos</h4>
+						<h4 className="mt-4">Fotos</h4>
 						<hr />
 						<div className="mb-3 d-flex gap-4 justify-content-center">
 							<span className="d-flex flex-column fw-bold align-items-center">
@@ -146,7 +148,7 @@ export default function OrdersView() {
 							</span>
 						</div>
 
-						<h4 className="mt-5">Kit(s)</h4>
+						<h4 className="mt-4">Kit(s)</h4>
 						<hr />
 						<table className="mt-2">
 							<tr>
