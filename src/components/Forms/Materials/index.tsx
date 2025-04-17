@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../../../api';
 import { useNavigate, useSearchParams } from 'react-router';
 import Toast from '../../Toast';
+import MaterialList from './MaterialList';
 
 export default function MaterialsForm() {
 	const [formData, setFormData] = useState<{
@@ -17,6 +18,7 @@ export default function MaterialsForm() {
 	const [openToast, setOpenToast] = useState(false);
 	const [fieldError, setFieldError] = useState(false);
 	const id = searchParams.get('id');
+	const childRef = useRef<any>();
 
 	const saveMaterial = async (e: any) => {
 		e.preventDefault();
@@ -28,6 +30,7 @@ export default function MaterialsForm() {
 			if (id) {
 				await api.put(`material/${id}`, formData);
 				setOpenToast(true);
+
 				setTimeout(() => {
 					setOpenToast(false);
 				}, 1300);
@@ -42,6 +45,7 @@ export default function MaterialsForm() {
 			}
 			setFieldError(false);
 			setSuccess(true);
+			childRef?.current?.getMaterials();
 		} catch (error) {
 			console.error(error);
 			setOpenToast(true);
@@ -59,25 +63,24 @@ export default function MaterialsForm() {
 		if (id) {
 			getMaterial();
 		}
-	}, []);
+	}, [id]);
 
 	return (
 		<div className="row">
 			{openToast && (
 				<Toast success={success} msgError="Erro ao salvar o material" />
 			)}
-			<div className="col-md-3">
-				<div className="card list-height overflow-y-auto pb-0 mb-5">
-					<div className="card-header">
-						<p className="card-title">Materiais</p>
-					</div>
-					<div className="card-body p-3"></div>
+			{id && (
+				<div className="col-md-3">
+					<MaterialList ref={childRef} />
 				</div>
-			</div>
-			<div className="col-md-9">
+			)}
+			<div className="col">
 				<div className="card list-height overflow-y-auto pb-0 mb-5">
-					<div className="card-header">
-						<p className="card-title">Editar</p>
+					<div className="card-header d-flex justify-content-between align-itens-center">
+						<p className="card-title fs-5 m-0  p-0 align-items-center d-flex fw-bold">
+							Editar
+						</p>
 						<button
 							type="submit"
 							onClick={saveMaterial}
