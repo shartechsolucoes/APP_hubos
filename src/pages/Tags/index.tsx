@@ -1,9 +1,10 @@
 import ListItem from '../../components/ListItem/Tags';
 import './index.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../../api';
 import Pagination from '../../components/Pagination';
 import QRCode from 'react-qr-code';
+import { useReactToPrint } from 'react-to-print';
 
 export default function Tags() {
 	const [tags, setTags] = useState<
@@ -64,6 +65,9 @@ export default function Tags() {
 		}
 	};
 
+	const contentRef = useRef<HTMLDivElement>(null);
+	const reactToPrintFn = useReactToPrint({ contentRef });
+
 	useEffect(() => {
 		getTags();
 	}, [page]);
@@ -111,25 +115,44 @@ export default function Tags() {
 					</div>
 				</div>
 				<div className="col-9">
-					<div className="card list-height overflow-y-auto pb-0 mb-5">
-						<div className="card-header">
+					<div className="card  pb-0 mb-5">
+						<div className="card-header d-flex justify-content-between">
 							<p className="card-title">Etiqueta</p>
-							<a href="#">Imprimir</a>
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => reactToPrintFn()}
+							>
+								Imprimir
+							</button>
 						</div>
-						<div className="card-body d-flex gap-4 flex-wrap">
+						<div
+							className="card-body d-flex flex-wrap justify-content-center print-media overflow-y-auto tag-list"
+							style={{ gap: '5em !important' }}
+							ref={contentRef}
+						>
 							{printTagList.map((tl) => (
-								<div
-									key={tl}
-									className="tag-qr position-relative flex-grow-1"
-									style={{ maxHeight: '150px', maxWidth: '150px' }}
-								>
-									<QRCode
-										size={256}
-										style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
-										value={tl}
-										viewBox={`0 0 24 24`}
-									/>
-								</div>
+								<>
+									<div
+										key={tl}
+										className="tag-qr position-relative flex-grow-1"
+										style={{ maxHeight: '240px', maxWidth: '240px' }}
+									>
+										<QRCode
+											size={256}
+											style={{
+												height: 'auto',
+												maxWidth: '100%',
+												width: '100%',
+											}}
+											value={tl}
+											viewBox={`0 0 24 24`}
+										/>
+										<p className="d-flex justify-content-center m-4">
+											OS: {tl}
+										</p>
+									</div>
+								</>
 							))}
 						</div>
 					</div>

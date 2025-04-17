@@ -1,3 +1,23 @@
-.tag-qr svg{
+.tag-qr svg {
     font-size: 150px;
+}
+
+.tag-list {
+    max-height: 30vh
+}
+
+
+@media print {
+    .print-media {
+        margin: 3em;
+        display: block;
+    }
+
+    .tag-list {
+        max-height: fit-content;
+    }
+}
+
+@page {
+    margin-top: .5in;
 }
