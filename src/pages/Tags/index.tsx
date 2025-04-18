@@ -127,7 +127,7 @@ export default function Tags() {
 							</button>
 						</div>
 						<div
-							className="card-body d-flex flex-wrap justify-content-center print-media overflow-y-auto tag-list"
+							className=" tag-list card-body d-flex flex-wrap justify-content-center print-media overflow-y-auto "
 							style={{ gap: '5em !important' }}
 							ref={contentRef}
 						>
