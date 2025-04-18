@@ -3,6 +3,8 @@ import { api } from '../../../../../api';
 import InputMask from 'react-input-mask';
 import { useNavigate } from 'react-router';
 import useAccessLevelStore from '../../../../../stores/accessLevelStore';
+import { estadosBrasileiros } from '../../../Orders/data';
+import Toast from '../../../../Toast';
 
 export default function DataRegister({
 	id,
@@ -17,6 +19,12 @@ export default function DataRegister({
 	const [formData, setFormData] = useState<{ [key: string]: any }>(userData);
 	const route = useNavigate();
 	const { avatar } = useAccessLevelStore();
+
+	const [openToast, setOpenToast] = useState(false);
+	const [success, setSuccess] = useState(true);
+	const [successMsg, setSuccessMsg] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
+
 	const handleUser = async (e: any) => {
 		setPasswordError(false);
 		e.preventDefault();
@@ -55,7 +63,16 @@ export default function DataRegister({
 					city,
 					status,
 				});
+				setSuccess(true);
+				setOpenToast(true);
+				setSuccessMsg('Salvo com sucesso');
 				updateData();
+				setTimeout(() => {
+					setSuccessMsg('');
+					setErrorMsg('');
+					updateData();
+					setOpenToast(false);
+				}, 1300);
 			} else {
 				await api.post('/user', {
 					access_level,
@@ -71,10 +88,25 @@ export default function DataRegister({
 					status,
 					picture: avatar,
 				});
-				route('/users');
+				setSuccess(true);
+				setOpenToast(true);
+				setSuccessMsg('Salvo com sucesso');
+				setTimeout(() => {
+					setSuccessMsg('');
+					setErrorMsg('');
+					route('/users');
+					setOpenToast(false);
+				}, 1300);
 			}
 		} catch (error) {
 			console.error(error);
+			setSuccess(false);
+			setOpenToast(true);
+			setTimeout(() => {
+				setSuccessMsg('');
+				setErrorMsg('');
+				setOpenToast(false);
+			}, 1300);
 		}
 	};
 
@@ -90,6 +122,9 @@ export default function DataRegister({
 
 	return (
 		<div className="card list-height overflow-y-auto p-3 pb-3 my-3">
+			{openToast && (
+				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
+			)}
 			<h5 className="card-header">Editar Dados</h5>
 			<div className="card-body">
 				<form onSubmit={handleUser} className="row">
@@ -331,9 +366,7 @@ export default function DataRegister({
 						<label htmlFor="login" className="form-label">
 							Estado
 						</label>
-						<input
-							required
-							type="text"
+						<select
 							className="form-control"
 							id="state"
 							value={formData.state}
@@ -343,7 +376,16 @@ export default function DataRegister({
 									[e.target.id]: e.target.value,
 								}))
 							}
-						/>
+						>
+							<option value={''} selected disabled>
+								Selecione uma UF
+							</option>
+							{estadosBrasileiros.map((state, index) => (
+								<option key={index} value={state.acronym}>
+									{state.state}
+								</option>
+							))}
+						</select>
 					</div>
 					<button type="submit" className="btn btn-primary">
 						Salvar

@@ -88,8 +88,6 @@ export default function UserForm() {
 				</div>
 
 				{screen(changeScreen)}
-
-				<div></div>
 			</div>
 		</div>
 	);

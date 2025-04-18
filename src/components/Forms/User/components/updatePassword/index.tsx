@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { api } from '../../../../../api';
+import Toast from '../../../../Toast';
 
 export default function UpdatePassword({ id }: { id: string | null }) {
 	const [passwordData, setPasswordData] = useState<{
@@ -8,6 +9,10 @@ export default function UpdatePassword({ id }: { id: string | null }) {
 		confirmPassword: string;
 	}>({ oldPassword: '', newPassword: '', confirmPassword: '' });
 	const [passwordError, setPasswordError] = useState(false);
+	const [openToast, setOpenToast] = useState(false);
+	const [success, setSuccess] = useState(true);
+	const [successMsg, setSuccessMsg] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const setNewPassword = async () => {
 		setPasswordError(false);
@@ -33,13 +38,32 @@ export default function UpdatePassword({ id }: { id: string | null }) {
 				oldPassword: passwordData.oldPassword,
 				newPassword: passwordData.newPassword,
 			});
+			setSuccess(true);
+			setOpenToast(true);
+			setSuccessMsg('Salvo com sucesso');
+
+			setTimeout(() => {
+				setSuccessMsg('');
+				setErrorMsg('');
+				setOpenToast(false);
+			}, 1300);
 		} catch (error) {
 			console.log(error);
 			setPasswordError(true);
+			setSuccess(false);
+			setOpenToast(true);
+			setTimeout(() => {
+				setSuccessMsg('');
+				setErrorMsg('');
+				setOpenToast(false);
+			}, 1300);
 		}
 	};
 	return (
 		<div className="card">
+			{openToast && (
+				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
+			)}
 			<h5 className="card-header">Trocar Senha</h5>
 			<div className="card-body">
 				<div className="row">
