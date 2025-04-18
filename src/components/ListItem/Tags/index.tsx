@@ -1,13 +1,17 @@
 import './index.css';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export default function ListItemOrders({
 	title,
 	used,
-
+	date,
+	selectedList,
 	selectItem,
 }: {
 	title?: string;
-
+	date?: Date;
+	selectedList?: string[];
 	group?: string;
 	used?: boolean;
 	deleteItem: () => void;
@@ -25,6 +29,7 @@ export default function ListItemOrders({
 										<input
 											className="form-check-input m-0"
 											type="checkbox"
+											checked={selectedList?.some((item) => item === title)}
 											onChange={() => selectItem(title || '')}
 										/>
 									)}
@@ -36,9 +41,9 @@ export default function ListItemOrders({
 						</div>
 					</div>
 					<div className="col-sm-4 col-md-4 d-flex justify-content-start align-items-center">
-						<a href="app-ecommerce-order-details.html">
-							<span>Data</span>
-						</a>
+						<span>
+							{date ? format(date, 'dd/MM/yy', { locale: ptBR }) : ''}
+						</span>
 					</div>
 					<div className="col-sm-4 col-md-2 d-flex justify-content-center align-items-center">
 						<span className="text-truncate d-flex align-items-center text-heading">

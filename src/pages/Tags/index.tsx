@@ -8,7 +8,7 @@ import { useReactToPrint } from 'react-to-print';
 
 export default function Tags() {
 	const [tags, setTags] = useState<
-		Array<{ id: number; referenceCode: string; qr_code: string }>
+		Array<{ id: number; referenceCode: string; qr_code: string; date: Date }>
 	>([]);
 
 	const [tagsInput, setTagsInput] = useState<{ start: string; end: string }>({
@@ -58,7 +58,7 @@ export default function Tags() {
 		if (hasTag) {
 			const slicedList = printTagList;
 			slicedList.splice(slicedList.indexOf(tag), 1);
-			console.log(slicedList);
+
 			setPrintTagList((prevState) => prevState.filter((item) => item !== tag));
 		} else {
 			setPrintTagList((prev) => [...prev, tag]);
@@ -135,8 +135,8 @@ export default function Tags() {
 								<>
 									<div
 										key={tl}
-										className="tag-qr position-relative flex-grow-1"
-										style={{ maxHeight: '240px', maxWidth: '240px' }}
+										className="tag-qr position-relative flex-grow-1 d-flex gap-4 flex-column align-items-center m-4"
+										style={{ maxHeight: '360px', maxWidth: '360px' }}
 									>
 										<QRCode
 											size={256}
@@ -164,9 +164,11 @@ export default function Tags() {
 								key={tag.id}
 								title={tag.referenceCode}
 								used={!!tag.qr_code}
+								date={tag.date}
 								deleteItem={function (): void {
 									throw new Error('Function not implemented.');
 								}}
+								selectedList={printTagList}
 								selectItem={(e) => setInList(e)}
 							/>
 						</>
