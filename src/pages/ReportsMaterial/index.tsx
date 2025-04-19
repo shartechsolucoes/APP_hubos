@@ -83,16 +83,16 @@ export default function ReportMaterial() {
 						<tr>
 							<th>Código</th>
 							<th>Descrição</th>
-							<th>Medidas</th>
 							<th>QTD</th>
+							<th>Medidas</th>
 						</tr>
 						{orders.map((order) => (
 							<>
 								<tr className="row-os">
 									<td>{order.id}</td>
 									<td>{order.description}</td>
-									<td>{order.quantityMaterial}</td>
 									<td>{order.quantity}</td>
+									<td>{order.quantityMaterial}</td>
 								</tr>
 							</>
 						))}
