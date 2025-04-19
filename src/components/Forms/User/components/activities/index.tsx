@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../../../../api';
 import { Link, useSearchParams } from 'react-router';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export default function Activities() {
 	const [searchParams] = useSearchParams();
@@ -28,7 +30,11 @@ export default function Activities() {
 								<div className="timeline-header mb-3">
 									<h6 className="mb-0">OS N°{actv.qr_code}</h6>
 									<small className="text-body-secondary">
-										{actv.registerDay}
+										{actv.registerDay
+											? format(actv.registerDay, 'dd/MM/yy HH:mm', {
+													locale: ptBR,
+											  })
+											: ''}
 									</small>
 								</div>
 								<p className="mb-2">
