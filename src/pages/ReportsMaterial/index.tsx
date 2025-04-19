@@ -29,6 +29,7 @@ export default function ReportMaterial() {
 			id: number;
 			description: string;
 			quantity: number;
+			quantityMaterial: string;
 		}>
 	>([]);
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -82,6 +83,7 @@ export default function ReportMaterial() {
 						<tr>
 							<th>Código</th>
 							<th>Descrição</th>
+							<th>Medidas</th>
 							<th>QTD</th>
 						</tr>
 						{orders.map((order) => (
@@ -89,6 +91,7 @@ export default function ReportMaterial() {
 								<tr className="row-os">
 									<td>{order.id}</td>
 									<td>{order.description}</td>
+									<td>{order.quantityMaterial}</td>
 									<td>{order.quantity}</td>
 								</tr>
 							</>
