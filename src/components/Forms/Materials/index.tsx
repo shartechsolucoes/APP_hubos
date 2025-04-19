@@ -55,8 +55,8 @@ export default function MaterialsForm() {
 
 	const getMaterial = async () => {
 		const response = await api.get(`material/${id}`);
-		const { description, active, group } = response.data;
-		setFormData({ description, active, group });
+		const { description, active, group, quantity } = response.data;
+		setFormData({ description, active, group, quantity });
 	};
 
 	useEffect(() => {
@@ -93,7 +93,7 @@ export default function MaterialsForm() {
 					<div className="card-body p-3">
 						<form>
 							<div className="row">
-								<div className="mb-3 col-12">
+								<div className="mb-3 col-9">
 									<label htmlFor="exampleInputEmail1" className="form-label">
 										Descrição
 									</label>
@@ -102,6 +102,26 @@ export default function MaterialsForm() {
 										type="text"
 										className="form-control"
 										id="description"
+										onChange={(e) =>
+											setFormData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									/>
+									{fieldError && (
+										<p className="text-danger">Descrição vazia </p>
+									)}
+								</div>
+								<div className="mb-3 col-3">
+									<label htmlFor="exampleInputEmail1" className="form-label">
+										Quantidade
+									</label>
+									<input
+										value={formData.quantity}
+										type="text"
+										className="form-control"
+										id="quantity"
 										onChange={(e) =>
 											setFormData((prev) => ({
 												...prev,
