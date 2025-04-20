@@ -55,8 +55,8 @@ export default function MaterialsForm() {
 
 	const getMaterial = async () => {
 		const response = await api.get(`material/${id}`);
-		const { description, active, group, quantity } = response.data;
-		setFormData({ description, active, group, quantity });
+		const { description, active, group, unit } = response.data;
+		setFormData({ description, active, group, unit });
 	};
 
 	useEffect(() => {
@@ -115,13 +115,13 @@ export default function MaterialsForm() {
 								</div>
 								<div className="mb-3 col-3">
 									<label htmlFor="exampleInputEmail1" className="form-label">
-										Quantidade
+										Unidade de medida
 									</label>
 									<input
-										value={formData.quantity}
+										value={formData.unit}
 										type="text"
 										className="form-control"
-										id="quantity"
+										id="unit"
 										onChange={(e) =>
 											setFormData((prev) => ({
 												...prev,

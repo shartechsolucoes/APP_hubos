@@ -29,7 +29,7 @@ export default function ReportMaterial() {
 			id: number;
 			description: string;
 			quantity: number;
-			quantityMaterial: string;
+			unit: string;
 		}>
 	>([]);
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -84,7 +84,7 @@ export default function ReportMaterial() {
 							<th>Código</th>
 							<th>Descrição</th>
 							<th>QTD</th>
-							<th>Medidas</th>
+							<th>Unidade de medida</th>
 						</tr>
 						{orders.map((order) => (
 							<>
@@ -92,7 +92,7 @@ export default function ReportMaterial() {
 									<td>{order.id}</td>
 									<td>{order.description}</td>
 									<td>{order.quantity}</td>
-									<td>{order.quantityMaterial}</td>
+									<td>{order.unit}</td>
 								</tr>
 							</>
 						))}

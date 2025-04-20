@@ -91,14 +91,17 @@ export default function KitsForm() {
 		}
 	}
 
-	const saveKit = async () => {
+	const saveKit = async (e: any) => {
+		e.preventDefault();
 		const kit = {
 			description: formData.description,
+			status: formData.active,
 			materials: materialAndQuantity,
 		};
 		try {
 			setErrorMsg('');
 			if (id) {
+				console.log(kit);
 				await api.put(`kit/${id}`, kit);
 				setSuccess(true);
 				setSuccessMsg('Kit atualizado com sucesso');
@@ -186,171 +189,168 @@ export default function KitsForm() {
 
 	return (
 		<>
-		<div className="row">
-		{id && (
-			<div className="col-md-3">
-				<div className="card list-height overflow-y-auto pb-0 mb-5">
-					<div className="card-header">
-						<p className="card-title">Kits</p>
+			<div className="row">
+				{id && (
+					<div className="col-md-3">
+						<div className="card list-height overflow-y-auto pb-0 mb-5">
+							<div className="card-header">
+								<p className="card-title">Kits</p>
+							</div>
+							<div className="card-body p-3">
+								<KitList ref={childRef} />
+							</div>
+						</div>
 					</div>
-					<div className="card-body p-3">
-						<KitList ref={childRef} />
+				)}
+				<div className={id ? 'col-md-9' : 'col-md-12'}>
+					<div className="card p-4">
+						<h5 className="card-title">Editar</h5>
+						<hr />
+						<form>
+							<div className="row">
+								<div className="mb-3 col-9">
+									<label htmlFor="exampleInputEmail1" className="form-label">
+										Descrição
+									</label>
+									<input
+										type="text"
+										className="form-control"
+										id="description"
+										value={formData.description}
+										onChange={(e) =>
+											setFormData((prev) => ({
+												...prev,
+												[e.target.id]: `${e.target.value}`,
+											}))
+										}
+									/>
+								</div>
+								<div className="mb-3 col-3">
+									<label htmlFor="exampleInputEmail1" className="form-label">
+										Status
+									</label>
+									<select
+										id="active"
+										value={`${formData.status}`}
+										className="form-control mt-2"
+										onChange={(e) =>
+											setFormData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									>
+										<option selected value="true">
+											Ativo
+										</option>
+										<option value="false">Inativo</option>
+									</select>
+								</div>
+							</div>
+							<div className="mb-3 d-flex justify-content-between align-items-end gap-5">
+								<span className="flex-fill">
+									<label htmlFor="exampleInputEmail1" className="form-label">
+										Materiais
+									</label>
+									<select
+										className="form-select"
+										aria-label="Default select example"
+										onChange={(e) => setSelectedMaterial(e.target.value)}
+									>
+										<option selected disabled value={''}>
+											Selecione o Material
+										</option>
+										{materials.map((material) => (
+											<option value={material.id}>
+												{material.description}
+											</option>
+										))}
+									</select>
+								</span>
+								<button
+									disabled={selectedMaterial.length === 0}
+									type="button"
+									className="btn btn-primary"
+									onClick={() => handleMaterialList()}
+								>
+									+
+								</button>
+							</div>
+
+							<ul className="p-0 m-0"></ul>
+
+							{listOfMaterials.length > 0 && (
+								<>
+									{listOfMaterials.map((material) => (
+										<div className="mb-2">
+											<li className="d-flex">
+												<div className="avatar flex-shrink-0 me-3">
+													<span className="avatar-initial rounded bg-label-secondary">
+														<i className="bx bx-football"></i>
+													</span>
+												</div>
+												<div className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+													<div className="me-2">
+														<h6 className="mb-0">{material.description}</h6>
+														<small className="text-muted">
+															{material.group}
+														</small>
+													</div>
+													<div className="user-progress d-flex gap-2">
+														<input
+															value={
+																materialAndQuantity.some(
+																	(mq) => mq.id === material.id
+																)
+																	? materialAndQuantity.filter(
+																			(m) => m.id === material.id
+																	  )[0].quantity
+																	: ''
+															}
+															type="text"
+															className="form-control"
+															onChange={(e) =>
+																handleMaterialQuantity(e, `${material.id}`)
+															}
+														/>
+														<button
+															type="button"
+															className="btn btn-primary"
+															onClick={() =>
+																deleteKitMaterial(
+																	parseInt(id || ''),
+																	material.id
+																)
+															}
+														>
+															<BsFillTrashFill />
+														</button>
+													</div>
+												</div>
+											</li>
+										</div>
+									))}
+								</>
+							)}
+							<button
+								type="submit"
+								className="btn btn-primary"
+								onClick={saveKit}
+							>
+								Salvar
+							</button>
+						</form>
 					</div>
 				</div>
+
+				{openToast && (
+					<Toast
+						success={success}
+						msgSuccess={successMsg}
+						msgError={errorMsg}
+					/>
+				)}
 			</div>
-		)}
-		<div className={id ? 'col-md-9' : 'col-md-12'}>
-			<div className="card p-4">
-				<h5 className="card-title">Editar</h5>
-				<hr />
-				<form>
-					<div className="row">
-						<div className="mb-3 col-9">
-							<label
-								htmlFor="exampleInputEmail1"
-								className="form-label"
-							>
-								Descrição
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								id="description"
-								value={formData.description}
-								onChange={(e) =>
-									setFormData((prev) => ({
-										...prev,
-										[e.target.id]: `${e.target.value}`,
-									}))
-								}
-							/>
-						</div>
-						<div className="mb-3 col-3">
-							<label
-								htmlFor="exampleInputEmail1"
-								className="form-label"
-							>
-								Status
-							</label>
-							<input
-								value={formData.status}
-								type="text"
-								className="form-control"
-								id="status"
-								onChange={(e) =>
-									setFormData((prev) => ({
-										...prev,
-										[e.target.id]: `${e.target.value}`,
-									}))
-								}
-							/>
-						</div>
-					</div>
-					<div className="mb-3 d-flex justify-content-between align-items-end gap-5">
-										<span className="flex-fill">
-											<label
-												htmlFor="exampleInputEmail1"
-												className="form-label"
-											>
-												Materiais
-											</label>
-											<select
-												className="form-select"
-												aria-label="Default select example"
-												onChange={(e) => setSelectedMaterial(e.target.value)}
-											>
-												<option selected disabled value={''}>
-													Selecione o Material
-												</option>
-												{materials.map((material) => (
-													<option value={material.id}>
-														{material.description}
-													</option>
-												))}
-											</select>
-										</span>
-						<button
-							disabled={selectedMaterial.length === 0}
-							type="button"
-							className="btn btn-primary"
-							onClick={() => handleMaterialList()}
-						>
-							+
-						</button>
-					</div>
-
-					<ul className="p-0 m-0"></ul>
-
-					{listOfMaterials.length > 0 && (
-						<>
-							{listOfMaterials.map((material) => (
-								<div className="mb-2">
-									<li className="d-flex">
-										<div className="avatar flex-shrink-0 me-3">
-															<span className="avatar-initial rounded bg-label-secondary">
-																<i className="bx bx-football"></i>
-															</span>
-										</div>
-										<div className="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-											<div className="me-2">
-												<h6 className="mb-0">{material.description}</h6>
-												<small className="text-muted">
-													{material.group}
-												</small>
-											</div>
-											<div className="user-progress d-flex gap-2">
-												<input
-													value={
-														materialAndQuantity.some(
-															(mq) => mq.id === material.id
-														)
-															? materialAndQuantity.filter(
-																(m) => m.id === material.id
-															)[0].quantity
-															: ''
-													}
-													type="text"
-													className="form-control"
-													onChange={(e) =>
-														handleMaterialQuantity(e, `${material.id}`)
-													}
-												/>
-												<button
-													type="button"
-													className="btn btn-primary"
-													onClick={() =>
-														deleteKitMaterial(
-															parseInt(id || ''),
-															material.id
-														)
-													}
-												>
-													<BsFillTrashFill />
-												</button>
-											</div>
-										</div>
-									</li>
-								</div>
-							))}
-						</>
-					)}
-					<button
-						type="submit"
-						className="btn btn-primary"
-						onClick={saveKit}
-					>
-						Salvar
-					</button>
-				</form>
-			</div>
-
-
-		</div>
-
-		{openToast && (
-			<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
-		)}
-		</div>
-</>
-);
+		</>
+	);
 }

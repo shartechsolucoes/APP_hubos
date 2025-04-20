@@ -8,9 +8,9 @@ import useModalStore from '../../stores/modalStore';
 export default function Kits() {
 	const { openModal, closeModal } = useModalStore((state) => state);
 	const [deleteId, setDeleteId] = useState<unknown>(null);
-	const [kits, setKits] = useState<Array<{ id: number; description: string }>>(
-		[]
-	);
+	const [kits, setKits] = useState<
+		Array<{ id: number; description: string; status: boolean }>
+	>([]);
 
 	const getKits = async () => {
 		const response = await api.get('kits', {
@@ -71,6 +71,7 @@ export default function Kits() {
 							<ListItem
 								title={kit.description}
 								id={`${kit.id}`}
+								status={kit.status}
 								deleteListItem={() => {
 									setDeleteId(kit.id);
 									openModal();

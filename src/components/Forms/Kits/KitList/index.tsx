@@ -39,19 +39,19 @@ export default forwardRef(function KitList(_, ref) {
 
 	return (
 		<>
-
-					{kits.map((kit) => (
-						<>
-							<ListItemOrders
-								title={kit.description}
-								id={`${kit.id}`}
-								deleteListItem={() => {
-									setDeleteId(kit.id);
-									openModal();
-								}}
-							/>
-						</>
-					))}
+			{kits.map((kit) => (
+				<>
+					<ListItemOrders
+						title={kit.description}
+						id={`${kit.id}`}
+						showStatus={false}
+						deleteListItem={() => {
+							setDeleteId(kit.id);
+							openModal();
+						}}
+					/>
+				</>
+			))}
 
 			<Modal
 				cancelCopy="Cancelar"
