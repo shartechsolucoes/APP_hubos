@@ -84,19 +84,23 @@ export default function ReportMaterial() {
 							<th>Código</th>
 							<th>Descrição</th>
 							<th>QTD</th>
-							<th>Unidade de medida</th>
 						</tr>
 						{orders.map((order) => (
 							<>
 								<tr className="row-os">
 									<td>{order.id}</td>
 									<td>{order.description}</td>
-									<td>{order.quantity}</td>
-									<td>{order.unit}</td>
+									<td>
+										{order.quantity}
+										{order.unit}
+									</td>
 								</tr>
 							</>
 						))}
 					</table>
+					<div className="d-flex justify-content-end fs-5">
+						<p className="fw-bold">Total</p>: {orders.length}
+					</div>
 				</div>
 			</div>
 		</>
