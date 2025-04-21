@@ -10,6 +10,7 @@ export default function ListItemOrders({
 	deleteItem,
 	showGroup = true,
 	showMedida,
+	unit,
 }: {
 	title?: string;
 	id?: number;
@@ -17,6 +18,7 @@ export default function ListItemOrders({
 	deleteItem: () => void;
 	showGroup?: boolean;
 	showMedida?: boolean;
+	unit?: string;
 }) {
 	const { accessLevel } = useAccessLevelStore();
 
@@ -32,14 +34,7 @@ export default function ListItemOrders({
 					</div>
 					<div className="col-sm-6 col-md-2 d-flex justify-content-start align-items-center">
 						{showGroup && (
-							<div className="d-flex justify-content-start align-items-center">
-								<div className="avatar-wrapper">
-									<div className="avatar avatar-sm me-3">
-										<span className="avatar-initial rounded-circle bg-label-dark ">
-											Ic
-										</span>
-									</div>
-								</div>
+							<div className="d-flex align-items-center">
 								<div className="d-flex flex-column">
 									<span className="fw-medium">{group}</span>
 								</div>
@@ -48,7 +43,7 @@ export default function ListItemOrders({
 					</div>
 					{showMedida && (
 						<div className="col-md-2 d-flex justify-content-center align-items-center">
-							Medida
+							Medida: {unit === 'm' ? 'Metros' : 'Unidade'}
 						</div>
 					)}
 
