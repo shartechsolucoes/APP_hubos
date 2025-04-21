@@ -37,6 +37,7 @@ export default function Orders() {
 			}[];
 			user: {
 				name: string;
+				picture: string;
 			};
 		}>
 	>([]);
@@ -266,6 +267,7 @@ export default function Orders() {
 										}}
 										duplicateItem={() => duplicateItem(order.id)}
 										userName={order.user.name}
+										userPicture={order.user.picture}
 									/>
 								</>
 							))}

@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import Status from '../../StatusOS/';
+import Image from '../../Forms/Image';
 
 export default function ListItemOrders({
 	id,
@@ -24,6 +25,7 @@ export default function ListItemOrders({
 	duplicateItem,
 	kit,
 	userName,
+	userPicture,
 }: {
 	qrcode?: string;
 	address?: string;
@@ -37,6 +39,7 @@ export default function ListItemOrders({
 	duplicateItem?: () => void;
 	kit?: string;
 	userName?: string;
+	userPicture?: string;
 }) {
 	const { accessLevel } = useAccessLevelStore();
 	const formattedDate = date ? format(date, 'dd/MM/yy', { locale: ptBR }) : '';
@@ -75,8 +78,12 @@ export default function ListItemOrders({
 						<div className="d-flex justify-content-start align-items-center">
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3">
-									<span className="avatar-initial rounded-circle bg-label-dark ">
-										{pegarPrimeirasLetras(userName)}
+									<span className="avatar-initial rounded-circle bg-label-dark overflow-hidden">
+										{userPicture ? (
+											<Image image={userPicture} />
+										) : (
+											<span>{pegarPrimeirasLetras(userName)}</span>
+										)}
 									</span>
 								</div>
 							</div>
