@@ -5,11 +5,9 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { BsFileEarmarkPdf } from 'react-icons/bs';
 import { useReactToPrint } from 'react-to-print';
-import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
 import Image from '../../Forms/Image/index.tsx';
 
 export default function OrdersView() {
-	const { accessLevel } = useAccessLevelStore();
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
 	const [listOfKits, setListOfKits] = useState<
 		Array<{
@@ -59,9 +57,9 @@ export default function OrdersView() {
 	const registerDay = formData.registerDay
 		? format(formData.registerDay, 'dd/MM/yyyy', { locale: ptBR })
 		: '';
-	const registerTime = formData.registerDay
-		? format(formData.registerDay, 'hh:mm', { locale: ptBR })
-		: '';
+	// const registerTime = formData.registerDay
+	// 	? format(formData.registerDay, 'hh:mm', { locale: ptBR })
+	// 	: '';
 
 	const contentRef = useRef<HTMLDivElement>(null);
 	const reactToPrintFn = useReactToPrint({ contentRef });
@@ -84,12 +82,10 @@ export default function OrdersView() {
 							width={50}
 						/>
 						<span className="flex-fill text-center">
-							<h2 className="m-3 mt-5 fw-bolder">Ordem de Serviço #{formData.qr_code}</h2>
-							{
-								<p>
-									Executado em {registerDay}
-								</p>
-							}
+							<h2 className="m-3 mt-5 fw-bolder">
+								Ordem de Serviço #{formData.qr_code}
+							</h2>
+							{<p>Executado em {registerDay}</p>}
 						</span>
 						<p className="m-4">{today}</p>
 					</div>

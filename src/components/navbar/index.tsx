@@ -7,7 +7,7 @@ import useAccessLevelStore from '../../stores/accessLevelStore';
 
 export default function Navbar() {
 	const navigate = useNavigate();
-	const { userName, userAvatar, updateNavAvatar } = useAccessLevelStore();
+	const { userName, userAvatar } = useAccessLevelStore();
 	const [toggleDropdown, setToggleDropdown] = useState(false);
 	const [hasavatar, setHasAvatar] = useState(false);
 	const toggleMenu = () => {

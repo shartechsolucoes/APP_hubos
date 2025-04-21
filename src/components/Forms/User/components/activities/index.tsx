@@ -22,7 +22,7 @@ export default function Activities() {
 			<h5 className="card-header">Atividade</h5>
 			<div className="card-body pt-1">
 				<ul className="timeline mb-0">
-					{activities.map((actv) => (
+					{activities.map((actv: any) => (
 						<li className="timeline-item timeline-item-transparent">
 							<span className="timeline-point timeline-point-primary"></span>
 
