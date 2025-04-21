@@ -9,11 +9,11 @@ export default function KitsForm() {
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
 	const route = useNavigate();
 	const [materials, setMaterials] = useState<
-		Array<{ id: number; description: string; group: string }>
+		Array<{ id: number; description: string; group: string; unit: string }>
 	>([]);
 
 	const [listOfMaterials, setListOfMaterials] = useState<
-		Array<{ id: number; description: string; group: string }>
+		Array<{ id: number; description: string; group: string; unit: string }>
 	>([]);
 	const [selectedMaterial, setSelectedMaterial] = useState('');
 	const [materialAndQuantity, setMaterialAndQuantity] = useState<
@@ -313,6 +313,9 @@ export default function KitsForm() {
 																handleMaterialQuantity(e, `${material.id}`)
 															}
 														/>
+														<span className="me-3 d-flex align-self-center fw-bold">
+															{material.unit}
+														</span>
 														<button
 															type="button"
 															className="btn btn-primary"
