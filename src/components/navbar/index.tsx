@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './styles.css';
 import { FaSearch } from 'react-icons/fa';
 import { IoMenu } from 'react-icons/io5';
@@ -7,21 +7,38 @@ import useAccessLevelStore from '../../stores/accessLevelStore';
 
 export default function Navbar() {
 	const navigate = useNavigate();
-	const { userName, userAvatar } = useAccessLevelStore();
+	const { userName, userAvatar, updateNavAvatar } = useAccessLevelStore();
 	const [toggleDropdown, setToggleDropdown] = useState(false);
+	const [hasavatar, setHasAvatar] = useState(false);
 	const toggleMenu = () => {
 		const r = document.documentElement;
 		r.style.cssText = '--menu-position: 0vw;';
-		// 	const r = document.getElementsByClassName('menu')[0];
-		// r.classList.add('navbar-toggle');
 	};
-
-	// let expand;
 
 	const logOut = () => {
 		localStorage.removeItem('token');
+		localStorage.removeItem('userName');
+		localStorage.removeItem('userId');
+		localStorage.removeItem('userAvatar');
+		localStorage.removeItem('accessLevel');
 		navigate('/login');
 	};
+
+	function getInitialsNames(completeName = '') {
+		if (!completeName) {
+			return '';
+		}
+		if (!completeName.includes(' ')) {
+			return completeName[0];
+		}
+		const [primeiroNome, sobrenome] = completeName.split(' ');
+		return primeiroNome[0] + sobrenome[0];
+	}
+
+	useEffect(() => {
+		setHasAvatar(!!localStorage.getItem('userAvatar'));
+	}, []);
+
 	return (
 		<>
 			<nav
@@ -69,7 +86,13 @@ export default function Navbar() {
 									className="avatar rounded-circle"
 									style={{ overflow: 'hidden' }}
 								>
-									<img src={userAvatar} className="w-px-40 h-auto " />
+									{hasavatar ? (
+										<img src={userAvatar} className="w-px-40 h-auto " />
+									) : (
+										<div className="fw-medium h-100 w-100 d-flex align-items-center justify-content-center bg-label-dark">
+											{getInitialsNames(userName)}
+										</div>
+									)}
 								</div>
 							</a>
 
@@ -78,53 +101,6 @@ export default function Navbar() {
 									toggleDropdown && 'show'
 								}`}
 							>
-								{/* <li>
-									<a className="dropdown-item" href="#">
-										<div className="d-flex">
-											<div className="flex-shrink-0 me-3">
-												<div className="avatar avatar-online">
-													<img
-														src="https://themewagon.github.io/soft-ui-dashboard-react/static/media/team-2.e725aef8c892cb21f262.jpg"
-														className="w-px-40 h-auto rounded-circle"
-													/>
-												</div>
-											</div>
-											<div className="flex-grow-1">
-												<span className="fw-semibold d-block">John Doe</span>
-												<small className="text-muted">Admin</small>
-											</div>
-										</div>
-									</a>
-								</li>
-								<li>
-									<div className="dropdown-divider"></div>
-								</li>
-								<li>
-									<a className="dropdown-item" href="#">
-										<i className="bx bx-user me-2"></i>
-										<span className="align-middle">My Profile</span>
-									</a>
-								</li>
-								<li>
-									<a className="dropdown-item" href="#">
-										<i className="bx bx-cog me-2"></i>
-										<span className="align-middle">Settings</span>
-									</a>
-								</li>
-								<li>
-									<a className="dropdown-item" href="#">
-										<span className="d-flex align-items-center align-middle">
-											<i className="flex-shrink-0 bx bx-credit-card me-2"></i>
-											<span className="flex-grow-1 align-middle">Billing</span>
-											<span className="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">
-												4
-											</span>
-										</span>
-									</a>
-								</li>
-								<li>
-									<div className="dropdown-divider"></div>
-								</li> */}
 								<li>
 									<div className="dropdown-item">
 										<i className="bx bx-power-off me-2"></i>
@@ -145,8 +121,6 @@ export default function Navbar() {
 					</ul>
 				</div>
 			</nav>
-			{/*<h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light"></span>{paths(pathname)}*/}
-			{/*</h4>*/}
 		</>
 	);
 }

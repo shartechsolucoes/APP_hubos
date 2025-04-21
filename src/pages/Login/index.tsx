@@ -10,8 +10,13 @@ function Login() {
 	const [formData, setFormData] = useState<{ login: string; password: string }>(
 		{ login: '', password: '' }
 	);
-	const { handleAccessLevel, handleUserName, handleUserId, handleUserAvatar } =
-		useAccessLevelStore();
+	const {
+		handleAccessLevel,
+		handleUserName,
+		handleUserId,
+		handleUserAvatar,
+		updateNavAvatar,
+	} = useAccessLevelStore();
 
 	const handleLogin = async (e: any) => {
 		try {
@@ -28,6 +33,7 @@ function Login() {
 			handleUserName(response.data.userName);
 			handleUserId(response.data.userId);
 			handleUserAvatar(response.data.picture);
+			updateNavAvatar();
 			navigate('/');
 			setError(false);
 		} catch (error) {

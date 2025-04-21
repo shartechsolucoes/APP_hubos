@@ -29,7 +29,6 @@ const useAccessLevelStore = create<AccessLevel>((set) => ({
 		localStorage.setItem('userAvatar', avatar);
 	},
 	updateNavAvatar: () => {
-		console.log('updated');
 		set({
 			userAvatar: `${import.meta.env.VITE_API_URL}${localStorage.getItem(
 				'userAvatar'
