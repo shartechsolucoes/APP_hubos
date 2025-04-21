@@ -2,6 +2,7 @@ import { BsFillPencilFill } from 'react-icons/bs';
 import { Link } from 'react-router';
 import './index.css';
 import useAccessLevelStore from '../../../stores/accessLevelStore.ts';
+import Image from '../../Forms/Image/index.tsx';
 
 export default function ListItemOrders({
 	title,
@@ -10,6 +11,8 @@ export default function ListItemOrders({
 	login,
 	id,
 	status,
+	picture,
+	name,
 }: {
 	title?: string;
 	email?: string;
@@ -17,6 +20,8 @@ export default function ListItemOrders({
 	login?: string;
 	id?: string;
 	status?: boolean;
+	picture?: string;
+	name?: string;
 }) {
 	function access(access_level: number | undefined) {
 		switch (access_level) {
@@ -33,6 +38,18 @@ export default function ListItemOrders({
 		}
 	}
 	const { accessLevel } = useAccessLevelStore();
+
+	function getInitialsNames(completeName = '') {
+		if (!completeName) {
+			return '';
+		}
+		if (!completeName.includes(' ')) {
+			return completeName[0];
+		}
+		const [primeiroNome, sobrenome] = completeName.split(' ');
+		return primeiroNome[0] + sobrenome[0];
+	}
+
 	return (
 		<>
 			<div className="" style={{ borderBottom: '1px solid #f1efef' }}>
@@ -46,8 +63,12 @@ export default function ListItemOrders({
 							{/*/>*/}
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3">
-									<span className="avatar-initial rounded-circle bg-label-dark ">
-										ER
+									<span className="avatar-initial rounded-circle bg-label-dark overflow-hidden d-flex align-items-center justify-content-center ">
+										{picture ? (
+											<Image image={picture} />
+										) : (
+											getInitialsNames(name)
+										)}
 									</span>
 								</div>
 							</div>

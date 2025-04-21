@@ -9,7 +9,7 @@ export default function Image({
 }) {
 	return (
 		<img
-			className="img-fluid rounded mb-4"
+			className="img-fluid rounded"
 			style={{
 				// maxHeight: height,
 				// maxWidth: '162px',
