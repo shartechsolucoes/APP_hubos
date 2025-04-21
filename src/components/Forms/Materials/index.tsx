@@ -117,7 +117,24 @@ export default function MaterialsForm() {
 									<label htmlFor="exampleInputEmail1" className="form-label">
 										Unidade de medida
 									</label>
-									<input
+									<select
+										id="unit"
+										value={formData.unit ? `${formData.unit}` : ''}
+										className="form-control mt-2"
+										onChange={(e) =>
+											setFormData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									>
+										<option value="" selected disabled>
+											Selecione
+										</option>
+										<option value="m">Metros</option>
+										<option value="und">Unidades</option>
+									</select>
+									{/* <input
 										value={formData.unit}
 										type="text"
 										className="form-control"
@@ -128,10 +145,7 @@ export default function MaterialsForm() {
 												[e.target.id]: e.target.value,
 											}))
 										}
-									/>
-									{fieldError && (
-										<p className="text-danger">Descrição vazia </p>
-									)}
+									/> */}
 								</div>
 
 								<div className="mb-3 col-6">
