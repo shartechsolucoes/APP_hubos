@@ -55,8 +55,8 @@ export default function MaterialsForm() {
 
 	const getMaterial = async () => {
 		const response = await api.get(`material/${id}`);
-		const { description, active, group, unit } = response.data;
-		setFormData({ description, active, group, unit });
+		const { description, active, group, unit, status } = response.data;
+		setFormData({ description, active, group, unit, status });
 	};
 
 	useEffect(() => {
@@ -170,8 +170,8 @@ export default function MaterialsForm() {
 										Status
 									</label>
 									<select
-										id="active"
-										value={`${formData.active}`}
+										id="status"
+										value={formData.status}
 										className="form-control mt-2"
 										onChange={(e) =>
 											setFormData((prev) => ({

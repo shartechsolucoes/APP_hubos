@@ -8,7 +8,13 @@ import Modal from '../../components/Modal';
 
 export default function Materials() {
 	const [materials, setMaterials] = useState<
-		Array<{ id: number; description: string; group: string; unit: string }>
+		Array<{
+			id: number;
+			description: string;
+			group: string;
+			unit: string;
+			status: string;
+		}>
 	>([]);
 	const [deleteId, setDeleteId] = useState<number | null>(null);
 	const { openModal, closeModal } = useModalStore((state) => state);
@@ -63,7 +69,9 @@ export default function Materials() {
 								id={material.id}
 								title={material.description}
 								unit={material.unit}
+								status={material.status}
 								showMedida={true}
+								showStatus={true}
 								deleteItem={() => {
 									setDeleteId(material.id);
 									openModal();

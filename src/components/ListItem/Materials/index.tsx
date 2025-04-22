@@ -9,8 +9,10 @@ export default function ListItemOrders({
 	group,
 	deleteItem,
 	showGroup = true,
+	showStatus = false,
 	showMedida,
 	unit,
+	status,
 }: {
 	title?: string;
 	id?: number;
@@ -19,6 +21,8 @@ export default function ListItemOrders({
 	showGroup?: boolean;
 	showMedida?: boolean;
 	unit?: string;
+	showStatus?: boolean;
+	status?: string;
 }) {
 	const { accessLevel } = useAccessLevelStore();
 
@@ -47,7 +51,18 @@ export default function ListItemOrders({
 						</div>
 					)}
 
-					<div className="col-md-1 d-flex justify-content-center align-items-center"></div>
+					{showStatus && (
+						<div className="col-md-1 d-flex justify-content-center align-items-center">
+							<small
+								className={`text-truncate d-none d-sm-block badge ${
+									status ? 'bg-label-success' : 'bg-label-danger'
+								}`}
+							>
+								{status ? 'Ativo' : 'Inativo'}
+							</small>
+						</div>
+					)}
+
 					<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">
 						{accessLevel === 0 && (
 							<Link to={`/materials/form?id=${id}`}>
