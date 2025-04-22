@@ -10,11 +10,13 @@ export default function MaterialsForm() {
 		group: string;
 		active: string;
 		status: boolean;
+		unit: string;
 	}>({
 		description: '',
 		group: '',
 		active: 'true',
 		status: true,
+		unit: 'm',
 	});
 	const route = useNavigate();
 	const [searchParams] = useSearchParams();
