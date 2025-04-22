@@ -6,12 +6,15 @@ import MaterialList from './MaterialList';
 
 export default function MaterialsForm() {
 	const [formData, setFormData] = useState<{
-		[field: string]: string;
+		description: string;
+		group: string;
+		active: string;
+		status: boolean;
 	}>({
 		description: '',
 		group: '',
 		active: 'true',
-		status: 'true',
+		status: true,
 	});
 	const route = useNavigate();
 	const [searchParams] = useSearchParams();
@@ -154,7 +157,7 @@ export default function MaterialsForm() {
 										Grupo
 									</label>
 									<input
-										value={formData.group}
+										value={formData.group || ''}
 										type="text"
 										className="form-control"
 										id="group"
@@ -172,12 +175,12 @@ export default function MaterialsForm() {
 									</label>
 									<select
 										id="status"
-										value={formData.status}
+										value={`${formData.status}`}
 										className="form-control mt-2"
 										onChange={(e) =>
 											setFormData((prev) => ({
 												...prev,
-												[e.target.id]: e.target.value,
+												[e.target.id]: e.target.value === 'true' ? true : false,
 											}))
 										}
 									>
