@@ -8,18 +8,23 @@ export default function Activities() {
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get('id');
 	const [activities, setActivities] = useState([]);
+	const [count, setCount] = useState([]);
 
 	const getActivities = async () => {
 		const response = await api.get('/user/activities', { params: { id } });
-		setActivities(response.data);
+		setActivities(response.data.activities);
+		setCount(response.data.count);
 	};
 
 	useEffect(() => {
 		getActivities();
 	}, []);
 	return (
-		<div className="card mb-6">
-			<h5 className="card-header">Atividade</h5>
+		<div className="card mb-6  ">
+			<h5 className="card-header d-flex justify-content-between">
+				Atividade <span>Total: {count}</span>
+			</h5>
+
 			<div className="card-body pt-1">
 				<ul className="timeline mb-0">
 					{activities.map((actv: any) => (
