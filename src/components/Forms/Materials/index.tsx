@@ -11,6 +11,7 @@ export default function MaterialsForm() {
 		description: '',
 		group: '',
 		active: 'true',
+		status: 'true',
 	});
 	const route = useNavigate();
 	const [searchParams] = useSearchParams();

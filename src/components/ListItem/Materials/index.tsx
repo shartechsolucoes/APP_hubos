@@ -55,10 +55,10 @@ export default function ListItemOrders({
 						<div className="col-md-1 d-flex justify-content-center align-items-center">
 							<small
 								className={`text-truncate d-none d-sm-block badge ${
-									status ? 'bg-label-success' : 'bg-label-danger'
+									status === 'true' ? 'bg-label-success' : 'bg-label-danger'
 								}`}
 							>
-								{status ? 'Ativo' : 'Inativo'}
+								{status === 'true' ? 'Ativo' : 'Inativo'}
 							</small>
 						</div>
 					)}
