@@ -230,7 +230,7 @@ export default function KitsForm() {
 										Status
 									</label>
 									<select
-										id="active"
+										id="status"
 										value={`${formData.status}`}
 										className="form-control mt-2"
 										onChange={(e) =>
