@@ -14,7 +14,7 @@ import ModalImage from './ModalImage';
 import { LiaSearchPlusSolid } from 'react-icons/lia';
 
 export default function OrdersForm() {
-	const { userId } = useAccessLevelStore();
+	const { userId, accessLevel } = useAccessLevelStore();
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get('id');
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
@@ -176,8 +176,8 @@ export default function OrdersForm() {
 			state,
 			status,
 			observations,
-			// lat,
-			// long,
+			lat,
+			long,
 			qr_code,
 			protocolNumber,
 		} = formData;
@@ -194,6 +194,8 @@ export default function OrdersForm() {
 					status: statusEnd || status,
 					observations,
 					qr_code,
+					lat,
+					long,
 					ordersKits: kitAndQuantity,
 					protocolNumber,
 					photoEndWork: afterPhoto || workImages.endWork,
@@ -213,8 +215,8 @@ export default function OrdersForm() {
 					state,
 					status: osStatus,
 					observations,
-					lat: `${userLocation?.latitude}`,
-					long: `${userLocation?.longitude}`,
+					lat: lat || `${userLocation?.latitude}`,
+					long: long || `${userLocation?.longitude}`,
 					qr_code,
 					ordersKits: kitAndQuantity,
 					protocolNumber,
@@ -572,6 +574,46 @@ export default function OrdersForm() {
 								))}
 							</select>
 						</div>
+						{accessLevel === 0 && (
+							<>
+								<div className="mb-3 col-12 col-md-6">
+									<label htmlFor="exampleInputEmail1" className="form-label">
+										Latitude
+									</label>
+									<input
+										type="text"
+										className="form-control"
+										id="lat"
+										value={formData.lat}
+										onChange={(e) =>
+											setFormData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									/>
+								</div>
+
+								<div className="mb-3 col-12 col-md-6">
+									<label htmlFor="exampleInputEmail1" className="form-label">
+										Longitude
+									</label>
+									<input
+										type="text"
+										className="form-control"
+										id="long"
+										value={formData.long}
+										onChange={(e) =>
+											setFormData((prev) => ({
+												...prev,
+												[e.target.id]: e.target.value,
+											}))
+										}
+									/>
+								</div>
+							</>
+						)}
+
 						<div className="mb-3">
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								OBS:
