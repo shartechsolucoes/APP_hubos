@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { api } from '../../../api';
 import { BsFillTrashFill, BsQrCode } from 'react-icons/bs';
 import { useNavigate, useSearchParams } from 'react-router';
@@ -10,6 +10,8 @@ import Toast from '../../Toast';
 import { estadosBrasileiros } from './data';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
 import Image from '../Image';
+import ModalImage from './ModalImage';
+import { LiaSearchPlusSolid } from 'react-icons/lia';
 
 export default function OrdersForm() {
 	const { userId } = useAccessLevelStore();
@@ -41,6 +43,9 @@ export default function OrdersForm() {
 	const [openToast, setOpenToast] = useState(false);
 	const [isSaving, setSaving] = useState(false);
 	const [addressError, setAddressError] = useState(false);
+
+	const [openImage, setOpenImage] = useState('');
+	const imageModalRef = useRef<any>();
 
 	const [userLocation, setUserLocation] = useState<{
 		latitude: number;
@@ -367,7 +372,25 @@ export default function OrdersForm() {
 								Início
 							</label>
 							{workImages.startWork && (
-								<Image image={workImages.startWork} height="240px" />
+								<button
+									onClick={() => {
+										setOpenImage(workImages.startWork);
+										imageModalRef.current.setOpen(true);
+									}}
+									type="button"
+									className="btn position-relative"
+								>
+									<Image image={workImages.startWork} height="240px" />
+									<LiaSearchPlusSolid
+										style={{
+											position: 'absolute',
+											bottom: '.5em',
+											right: '.5em',
+											height: '24px',
+											width: '24px',
+										}}
+									/>
+								</button>
 							)}
 							<label className="btn btn-primary" htmlFor="start-work">
 								Inserir Foto
@@ -391,7 +414,25 @@ export default function OrdersForm() {
 								</label>
 							)}
 							{workImages.endWork && (
-								<Image image={workImages.endWork} height="240px" />
+								<button
+									type="button"
+									className="btn position-relative"
+									onClick={() => {
+										setOpenImage(workImages.endWork);
+										imageModalRef.current.setOpen(true);
+									}}
+								>
+									<Image image={workImages.endWork} height="240px" />
+									<LiaSearchPlusSolid
+										style={{
+											position: 'absolute',
+											bottom: '.5em',
+											right: '.5em',
+											height: '24px',
+											width: '24px',
+										}}
+									/>
+								</button>
 							)}
 
 							{id && (
@@ -642,6 +683,7 @@ export default function OrdersForm() {
 					</div>
 				</form>
 			</div>
+			<ModalImage image={openImage} ref={imageModalRef} />
 		</div>
 	);
 }
