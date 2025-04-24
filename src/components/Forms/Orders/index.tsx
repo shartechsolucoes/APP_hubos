@@ -12,6 +12,7 @@ import useAccessLevelStore from '../../../stores/accessLevelStore';
 import Image from '../Image';
 import ModalImage from './ModalImage';
 import { LiaSearchPlusSolid } from 'react-icons/lia';
+import Spinner from '../../Spiner';
 
 export default function OrdersForm() {
 	const { userId, accessLevel } = useAccessLevelStore();
@@ -280,13 +281,18 @@ export default function OrdersForm() {
 		}
 	};
 
+	const [startLoad, setStartLoad] = useState(false);
+	const [endLoad, setEndLoad] = useState(false);
+
 	const sentStartWorkPhoto = async (e: any) => {
+		setStartLoad(true);
 		const data = new FormData();
+		const os = formData.qr_code;
 
 		data.append('file', e.target.files[0]);
 
 		const response = await api.post(
-			`order/start-work-photo?id=${id || ''}`,
+			`order/start-work-photo?id=${id || ''}&os=${os}`,
 			data,
 			{
 				headers: {
@@ -296,16 +302,20 @@ export default function OrdersForm() {
 		);
 
 		setWorkImages((prev) => ({ ...prev, startWork: response.data.file }));
+		saveOrder(undefined, response.data.file);
+		setStartLoad(false);
 	};
 
 	const sentEndWorkPhoto = async (e: any) => {
+		setEndLoad(true);
 		const data = new FormData();
+		const os = formData.qr_code;
 
 		data.append('file', e.target.files[0]);
 
 		try {
 			const response = await api.post(
-				`order/end-work-photo?id=${id || ''}`,
+				`order/end-work-photo?id=${id || ''}&os=${os}`,
 				data,
 				{
 					headers: {
@@ -317,6 +327,7 @@ export default function OrdersForm() {
 			setFormData((prev) => ({ ...prev, status: 2 }));
 
 			saveOrder(undefined, response.data.file, '2');
+			setEndLoad(false);
 		} catch (e) {
 			console.error(e);
 		}
@@ -352,12 +363,16 @@ export default function OrdersForm() {
 								className="form-control"
 								id="qr_code"
 								value={formData.qr_code}
-								onChange={(e) =>
-									setFormData((prev) => ({
-										...prev,
-										[e.target.id]: `${e.target.value}`,
-									}))
-								}
+								inputMode="numeric"
+								onChange={(e) => {
+									const reg = new RegExp(/^\d*$/);
+									if (reg.test(e.target.value)) {
+										setFormData((prev) => ({
+											...prev,
+											[e.target.id]: `${e.target.value}`,
+										}));
+									}
+								}}
 							/>
 						</div>
 						<div className="mb-3 col-1 col-md-1 align-qr-code">
@@ -373,28 +388,41 @@ export default function OrdersForm() {
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								Início
 							</label>
-							{workImages.startWork && (
-								<button
-									onClick={() => {
-										setOpenImage(workImages.startWork);
-										imageModalRef.current.setOpen(true);
-									}}
-									type="button"
-									className="btn position-relative"
-								>
-									<Image image={workImages.startWork} height="240px" />
-									<LiaSearchPlusSolid
-										style={{
-											position: 'absolute',
-											bottom: '.5em',
-											right: '.5em',
-											height: '24px',
-											width: '24px',
-										}}
-									/>
-								</button>
+							{startLoad ? (
+								<div className="d-flex justify-content-center mt-5 mb-5">
+									<Spinner />
+								</div>
+							) : (
+								<>
+									{workImages.startWork && (
+										<button
+											onClick={() => {
+												setOpenImage(workImages.startWork);
+												imageModalRef.current.setOpen(true);
+											}}
+											type="button"
+											className="btn position-relative"
+										>
+											<Image image={workImages.startWork} height="240px" />
+											<LiaSearchPlusSolid
+												style={{
+													position: 'absolute',
+													bottom: '.5em',
+													right: '.5em',
+													height: '24px',
+													width: '24px',
+												}}
+											/>
+										</button>
+									)}
+								</>
 							)}
-							<label className="btn btn-primary" htmlFor="start-work">
+							<label
+								className={`btn btn-primary ${
+									formData.qr_code ? '' : 'disabled'
+								}`}
+								htmlFor="start-work"
+							>
 								Inserir Foto
 							</label>
 							<input
@@ -415,26 +443,34 @@ export default function OrdersForm() {
 									Fim
 								</label>
 							)}
-							{workImages.endWork && (
-								<button
-									type="button"
-									className="btn position-relative"
-									onClick={() => {
-										setOpenImage(workImages.endWork);
-										imageModalRef.current.setOpen(true);
-									}}
-								>
-									<Image image={workImages.endWork} height="240px" />
-									<LiaSearchPlusSolid
-										style={{
-											position: 'absolute',
-											bottom: '.5em',
-											right: '.5em',
-											height: '24px',
-											width: '24px',
-										}}
-									/>
-								</button>
+							{endLoad ? (
+								<div className="d-flex justify-content-center mt-5 mb-5">
+									<Spinner />
+								</div>
+							) : (
+								<>
+									{workImages.endWork && (
+										<button
+											type="button"
+											className="btn position-relative"
+											onClick={() => {
+												setOpenImage(workImages.endWork);
+												imageModalRef.current.setOpen(true);
+											}}
+										>
+											<Image image={workImages.endWork} height="240px" />
+											<LiaSearchPlusSolid
+												style={{
+													position: 'absolute',
+													bottom: '.5em',
+													right: '.5em',
+													height: '24px',
+													width: '24px',
+												}}
+											/>
+										</button>
+									)}
+								</>
 							)}
 
 							{id && (
