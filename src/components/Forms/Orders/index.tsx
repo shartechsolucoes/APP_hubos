@@ -157,7 +157,8 @@ export default function OrdersForm() {
 	const saveOrder = async (
 		e?: any,
 		afterPhoto?: string,
-		statusEnd?: string
+		statusEnd?: string,
+		startPhoto?: string
 	) => {
 		if (e) {
 			e.preventDefault();
@@ -200,7 +201,7 @@ export default function OrdersForm() {
 					ordersKits: kitAndQuantity,
 					protocolNumber,
 					photoEndWork: afterPhoto || workImages.endWork,
-					photoStartWork: workImages.startWork,
+					photoStartWork: startPhoto || workImages.startWork,
 				});
 				setSuccess(true);
 				setOpenToast(true);
@@ -302,7 +303,9 @@ export default function OrdersForm() {
 		);
 
 		setWorkImages((prev) => ({ ...prev, startWork: response.data.file }));
-		saveOrder(undefined, response.data.file);
+		if (id) {
+			saveOrder(undefined, undefined, undefined, response.data.file);
+		}
 		setStartLoad(false);
 	};
 
