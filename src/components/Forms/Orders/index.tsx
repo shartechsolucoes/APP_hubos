@@ -286,8 +286,6 @@ export default function OrdersForm() {
 	const [endLoad, setEndLoad] = useState(false);
 
 	const sentStartWorkPhoto = async (e: any) => {
-		console.log('clebis =>', e.target.files[0]);
-
 		if (!e.target.files[0]) return;
 		setStartLoad(true);
 		const data = new FormData();
