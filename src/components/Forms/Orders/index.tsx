@@ -286,6 +286,9 @@ export default function OrdersForm() {
 	const [endLoad, setEndLoad] = useState(false);
 
 	const sentStartWorkPhoto = async (e: any) => {
+		console.log('clebis =>', e.target.files[0]);
+
+		if (!e.target.files[0]) return;
 		setStartLoad(true);
 		const data = new FormData();
 		const os = formData.qr_code;
@@ -304,12 +307,13 @@ export default function OrdersForm() {
 
 		setWorkImages((prev) => ({ ...prev, startWork: response.data.file }));
 		if (id) {
-			saveOrder(undefined, undefined, undefined, response.data.file);
+			await saveOrder(undefined, undefined, undefined, response.data.file);
 		}
 		setStartLoad(false);
 	};
 
 	const sentEndWorkPhoto = async (e: any) => {
+		if (!e.target.files[0]) return;
 		setEndLoad(true);
 		const data = new FormData();
 		const os = formData.qr_code;
