@@ -8,7 +8,13 @@ import { useReactToPrint } from 'react-to-print';
 
 export default function Tags() {
 	const [tags, setTags] = useState<
-		Array<{ id: number; referenceCode: string; qr_code: string; date: Date }>
+		Array<{
+			id: number;
+			referenceCode: string;
+			qr_code: string;
+			date: Date;
+			registerDay: Date;
+		}>
 	>([]);
 
 	const [tagsInput, setTagsInput] = useState<{ start: string; end: string }>({
@@ -165,6 +171,7 @@ export default function Tags() {
 								title={tag.referenceCode}
 								used={!!tag.qr_code}
 								date={tag.date}
+								registeredDay={tag.registerDay}
 								deleteItem={function (): void {
 									throw new Error('Function not implemented.');
 								}}

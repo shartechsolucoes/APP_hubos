@@ -7,10 +7,12 @@ export default function ListItemOrders({
 	used,
 	date,
 	selectedList,
+	registeredDay,
 	selectItem,
 }: {
 	title?: string;
 	date?: Date;
+	registeredDay?: Date;
 	selectedList?: string[];
 	group?: string;
 	used?: boolean;
@@ -42,7 +44,18 @@ export default function ListItemOrders({
 					</div>
 					<div className="col-sm-4 col-md-4 d-flex justify-content-start align-items-center">
 						<span>
-							{date ? format(date, 'dd/MM/yy', { locale: ptBR }) : ''}
+							{date
+								? `Criado: ${format(date, 'dd/MM/yy', { locale: ptBR })}`
+								: ''}
+						</span>
+					</div>
+					<div className="col-sm-4 col-md-4 d-flex justify-content-start align-items-center">
+						<span>
+							{registeredDay
+								? `Utilizado: ${format(registeredDay, 'dd/MM/yy', {
+										locale: ptBR,
+								  })}`
+								: ''}
 						</span>
 					</div>
 					<div className="col-sm-4 col-md-2 d-flex justify-content-center align-items-center">
