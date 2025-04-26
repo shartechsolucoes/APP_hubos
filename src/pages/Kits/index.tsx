@@ -4,6 +4,7 @@ import { api } from '../../api';
 import { useEffect, useState } from 'react';
 import Modal from '../../components/Modal';
 import useModalStore from '../../stores/modalStore';
+import Toast from '../../components/Toast';
 
 export default function Kits() {
 	const { openModal, closeModal } = useModalStore((state) => state);
@@ -11,6 +12,11 @@ export default function Kits() {
 	const [kits, setKits] = useState<
 		Array<{ id: number; description: string; status: boolean }>
 	>([]);
+
+	const [openToast, setOpenToast] = useState(false);
+	const [messageError, setMessageError] = useState('');
+	const [messageSuccess, setMessageSuccess] = useState('');
+	const [success, setSuccess] = useState(false);
 
 	const getKits = async () => {
 		const response = await api.get('kits', {
@@ -23,9 +29,28 @@ export default function Kits() {
 	};
 
 	const deleteItem = async (delItem: unknown) => {
-		await api.delete(`/kit/${delItem}`);
-		getKits();
-		closeModal();
+		try {
+			await api.delete(`/kit/${delItem}`);
+			getKits();
+			closeModal();
+			setSuccess(true);
+			setMessageSuccess('Apagado com sucesso');
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+				setMessageSuccess('');
+			}, 2000);
+		} catch (error) {
+			console.error(error);
+			closeModal();
+			setSuccess(false);
+			setMessageError(JSON.parse(error.request.response).msg);
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+				setMessageError('');
+			}, 2000);
+		}
 	};
 
 	const [searchKits, setSearchKits] = useState('');
@@ -36,6 +61,13 @@ export default function Kits() {
 	return (
 		<>
 			<div className="d-flex py-4 pt-0 gap-4 justify-content-end align-items-center">
+				{openToast && (
+					<Toast
+						success={success}
+						msgError={messageError}
+						msgSuccess={messageSuccess}
+					/>
+				)}
 				<div className="d-none d-md-flex d-flex flex-column ">
 					<input
 						className="form-control"
