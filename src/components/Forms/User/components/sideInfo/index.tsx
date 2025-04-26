@@ -13,9 +13,6 @@ export default function SideInfo({
 		useAccessLevelStore();
 	const [avatar, setAvatar] = useState('');
 
-	useEffect(() => {
-		console.log(formData);
-	}, []);
 	function access(access_level: number | undefined) {
 		switch (access_level) {
 			case 0:
