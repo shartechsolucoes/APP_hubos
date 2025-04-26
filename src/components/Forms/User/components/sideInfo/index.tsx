@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../../../../../api';
 import useAccessLevelStore from '../../../../../stores/accessLevelStore';
 
@@ -12,6 +12,10 @@ export default function SideInfo({
 	const { userId, handleUserAvatar, updateNavAvatar, getAvatar } =
 		useAccessLevelStore();
 	const [avatar, setAvatar] = useState('');
+
+	useEffect(() => {
+		console.log(formData);
+	}, []);
 	function access(access_level: number | undefined) {
 		switch (access_level) {
 			case 0:
@@ -54,7 +58,8 @@ export default function SideInfo({
 			<div className="card-body pt-12">
 				<div className="user-avatar-section">
 					<div className=" d-flex align-items-center flex-column">
-						{avatar ? (
+						{avatar}
+						{avatar || formData.picture ? (
 							<img
 								className="img-fluid rounded mb-4"
 								src={
