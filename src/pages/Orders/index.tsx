@@ -12,6 +12,7 @@ import { ptBR } from 'date-fns/locale';
 import Pagination from '../../components/Pagination';
 import Spinner from '../../components/Spiner';
 import useAccessLevelStore from '../../stores/accessLevelStore.ts';
+import Toast from '../../components/Toast/index.tsx';
 
 export default function Orders() {
 	const { accessLevel, userId } = useAccessLevelStore();
@@ -42,6 +43,11 @@ export default function Orders() {
 		start: null,
 		end: null,
 	});
+
+	const [openToast, setOpenToast] = useState(false);
+	const [success, setSuccess] = useState(false);
+	const [successMsg, setSuccessMsg] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const [totalOrders, setTotalOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
@@ -125,12 +131,31 @@ export default function Orders() {
 	};
 
 	const duplicateItem = async (itemId: unknown) => {
-		await api.post(`/order/duplicate/${itemId}`);
-		getOrders();
+		try {
+			await api.post(`/order/duplicate/${itemId}`);
+			setSuccess(true);
+			setSuccessMsg('OS Duplicada, adicione imagens do serviço');
+			setOpenToast(true);
+			getOrders();
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 2000);
+		} catch (error) {
+			console.error(error);
+			setSuccess(false);
+			setErrorMsg('Erro au duplicar OS');
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 2000);
+		}
 	};
 
 	return (
 		<>
+			{openToast && (
+				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
+			)}
 			<div className="col-md-12">
 				<div className="d-flex justify-content-end align-items-end gap-3 my-4">
 					<div className="d-none d-md-flex d-flex flex-column ">
