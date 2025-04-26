@@ -14,7 +14,7 @@ import Spinner from '../../components/Spiner';
 import useAccessLevelStore from '../../stores/accessLevelStore.ts';
 
 export default function Orders() {
-	const { accessLevel } = useAccessLevelStore();
+	const { accessLevel, userId } = useAccessLevelStore();
 	const { openModal, closeModal } = useModalStore((state) => state);
 	const [orders, setOrders] = useState<
 		Array<{
@@ -53,6 +53,7 @@ export default function Orders() {
 	const [searchOS, setSearchOS] = useState('');
 	const [searchStatus, setSearchStatus] = useState('');
 	const [searchNeighborhood, setSearchNeighborhood] = useState('');
+	const [user, setUser] = useState('');
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
 
@@ -70,6 +71,7 @@ export default function Orders() {
 		try {
 			const response = await api.get('orders', {
 				params: {
+					userId: user,
 					page,
 					os: searchOS,
 					status: searchStatus,
@@ -111,8 +113,14 @@ export default function Orders() {
 		);
 	};
 	useEffect(() => {
-		getOrders();
-	}, []);
+		if (user.length > 0) {
+			getOrders();
+		}
+	}, [user]);
+
+	useEffect(() => {
+		setUser(userId);
+	}, [userId]);
 
 	const deleteItem = async (delItem: unknown) => {
 		await api.delete(`/order/${delItem}`);
