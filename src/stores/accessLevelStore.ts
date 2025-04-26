@@ -26,7 +26,9 @@ const useAccessLevelStore = create<AccessLevel>((set) => ({
 	handleUserName: (name) => set({ userName: name }),
 	handleUserId: (id) => set({ userId: id }),
 	handleUserAvatar: (avatar) => {
-		localStorage.setItem('userAvatar', avatar);
+		if (avatar) {
+			localStorage.setItem('userAvatar', avatar);
+		}
 	},
 	updateNavAvatar: () => {
 		set({

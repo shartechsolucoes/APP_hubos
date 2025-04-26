@@ -54,17 +54,21 @@ export default function SideInfo({
 			<div className="card-body pt-12">
 				<div className="user-avatar-section">
 					<div className=" d-flex align-items-center flex-column">
-						<img
-							className="img-fluid rounded mb-4"
-							src={
-								avatar
-									? `${import.meta.env.VITE_API_URL}${avatar}`
-									: `${import.meta.env.VITE_API_URL}${formData.picture}`
-							}
-							height="120"
-							width="120"
-							alt="User avatar"
-						/>
+						{avatar ? (
+							<img
+								className="img-fluid rounded mb-4"
+								src={
+									avatar
+										? `${import.meta.env.VITE_API_URL}${avatar}`
+										: `${import.meta.env.VITE_API_URL}${formData.picture}`
+								}
+								height="120"
+								width="120"
+								alt="User avatar"
+							/>
+						) : (
+							<span style={{ height: '120px' }}></span>
+						)}
 						<label className="btn btn-primary" htmlFor="avatar-upload">
 							Inserir Foto
 						</label>
@@ -76,7 +80,7 @@ export default function SideInfo({
 							accept="image/png, image/jpeg"
 						/>
 						<div className="user-info text-center">
-							<h5>{formData.name}</h5>
+							<h5 className="mt-3">{formData.name}</h5>
 							<span className="badge bg-label-secondary">
 								{access(formData.access_level)}
 							</span>
