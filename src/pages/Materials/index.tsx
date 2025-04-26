@@ -46,7 +46,7 @@ export default function Materials() {
 				setOpenToast(false);
 				setMessageSuccess('');
 			}, 2000);
-		} catch (error) {
+		} catch (error: any) {
 			console.error(error);
 			closeModal();
 			setSuccess(false);
