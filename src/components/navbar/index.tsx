@@ -72,8 +72,6 @@ export default function Navbar() {
 							/>
 						</div>
 					</div>
-					sss
-					{hasavatar.toString()}
 					<ul className="navbar-nav flex-row align-items-center ms-auto">
 						<li className="nav-item lh-1 me-3"></li>
 
