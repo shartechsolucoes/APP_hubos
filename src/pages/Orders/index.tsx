@@ -30,11 +30,7 @@ export default function Orders() {
 			qr_code: string;
 			registerDay: Date;
 			state: string;
-			ordersKits: {
-				kit_id: number;
-				quantity: string;
-				kit: { description: string };
-			}[];
+			ordersKits: string[];
 			user: {
 				name: string;
 				picture: string;
@@ -268,7 +264,7 @@ export default function Orders() {
 										state={order.state}
 										status={order.status}
 										date={order.registerDay}
-										kit={order?.ordersKits[0]?.kit?.description ?? ''}
+										kit={order?.ordersKits[0] ?? ''}
 										deleteListItem={() => {
 											setDeleteId(order.id);
 											openModal();
