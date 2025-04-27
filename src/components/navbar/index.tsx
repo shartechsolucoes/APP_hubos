@@ -82,7 +82,7 @@ export default function Navbar() {
 								onClick={() => setToggleDropdown((prev) => !prev)}
 							>
 								<div
-									className="avatar rounded-circle"
+									className="avatar rounded-circle d-flex"
 									style={{ overflow: 'hidden' }}
 								>
 									{hasavatar ? (

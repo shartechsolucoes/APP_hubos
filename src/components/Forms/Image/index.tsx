@@ -16,7 +16,7 @@ export default function Image({
 				// maxWidth: '162px',
 				width: 'auto',
 				height: height,
-				objectFit: 'contain',
+				objectFit: 'inherit',
 				imageOrientation: orientation,
 			}}
 			src={`${import.meta.env.VITE_API_URL}${image}?t=${Date.now()}`}

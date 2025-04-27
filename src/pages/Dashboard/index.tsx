@@ -46,7 +46,7 @@ export default function Dashboard() {
 			registerDay: string;
 			state: string;
 			ordersKits: string;
-			user: { name: string };
+			user: { name: string; picture: string };
 		}>
 	>([]);
 	const [user, setUser] = useState('');
@@ -233,6 +233,7 @@ export default function Dashboard() {
 					{orders.map((order) => (
 						<>
 							<ListItemOrdersDash
+								userPicture={order.user.picture}
 								key={order.id}
 								qrcode={order.qr_code}
 								register={order.registerDay}
