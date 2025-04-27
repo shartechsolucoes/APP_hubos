@@ -45,11 +45,7 @@ export default function Dashboard() {
 			qr_code: string;
 			registerDay: string;
 			state: string;
-			ordersKits: {
-				kit_id: number;
-				quantity: string;
-				kit: { description: string };
-			}[];
+			ordersKits: string;
 			user: { name: string };
 		}>
 	>([]);
@@ -246,7 +242,7 @@ export default function Dashboard() {
 								neighborhood={order.neighborhood}
 								city={order.city}
 								state={order.state}
-								kit={order?.ordersKits[0]?.kit?.description || ''}
+								kit={order?.ordersKits || ''}
 								userName={order.user.name}
 							/>
 						</>
