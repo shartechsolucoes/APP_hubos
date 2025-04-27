@@ -55,7 +55,6 @@ export default function SideInfo({
 			<div className="card-body pt-12">
 				<div className="user-avatar-section">
 					<div className=" d-flex align-items-center flex-column">
-						{avatar}
 						{avatar || formData.picture ? (
 							<img
 								className="img-fluid rounded mb-4"
