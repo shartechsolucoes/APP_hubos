@@ -27,14 +27,12 @@ export default function ListItemOrders({
 						<div className="d-flex justify-content-start align-items-center">
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3  justify-content-center align-items-center d-flex">
-									{!used && (
-										<input
-											className="form-check-input m-0"
-											type="checkbox"
-											checked={selectedList?.some((item) => item === title)}
-											onChange={() => selectItem(title || '')}
-										/>
-									)}
+									<input
+										className="form-check-input m-0"
+										type="checkbox"
+										checked={selectedList?.some((item) => item === title)}
+										onChange={() => selectItem(title || '')}
+									/>
 								</div>
 							</div>
 							<div className="d-flex flex-column">
