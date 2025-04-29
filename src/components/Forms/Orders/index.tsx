@@ -304,7 +304,7 @@ export default function OrdersForm() {
 
 		setWorkImages((prev) => ({ ...prev, startWork: response.data.file }));
 		if (id) {
-			saveOrder(undefined, undefined, undefined, response.data.file);
+			await saveOrder(undefined, undefined, undefined, response.data.file);
 		}
 		setStartLoad(false);
 	};

@@ -52,7 +52,7 @@ function Login() {
 								<div className="mt-2 mb-4 text-center">
 									<img
 										src="/public/assets/logo.png"
-										className="w-50 justify-content-center m-auto"
+										className="w-25 justify-content-center m-auto"
 									/>
 								</div>
 								<h4 className="mb-4 text-center">Bem vindo de volta! 👋</h4>

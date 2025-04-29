@@ -91,8 +91,7 @@ export default function ReportMaterial() {
 									<td>{order.id}</td>
 									<td>{order.description}</td>
 									<td>
-										{order.quantity}
-										{order.unit}
+										{order.quantity} {order.unit}
 									</td>
 								</tr>
 							</>
