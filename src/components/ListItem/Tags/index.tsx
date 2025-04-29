@@ -7,10 +7,12 @@ export default function ListItemOrders({
 	used,
 	date,
 	selectedList,
+	registeredDay,
 	selectItem,
 }: {
 	title?: string;
 	date?: Date;
+	registeredDay?: Date;
 	selectedList?: string[];
 	group?: string;
 	used?: boolean;
@@ -25,14 +27,12 @@ export default function ListItemOrders({
 						<div className="d-flex justify-content-start align-items-center">
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3  justify-content-center align-items-center d-flex">
-									{!used && (
-										<input
-											className="form-check-input m-0"
-											type="checkbox"
-											checked={selectedList?.some((item) => item === title)}
-											onChange={() => selectItem(title || '')}
-										/>
-									)}
+									<input
+										className="form-check-input m-0"
+										type="checkbox"
+										checked={selectedList?.some((item) => item === title)}
+										onChange={() => selectItem(title || '')}
+									/>
 								</div>
 							</div>
 							<div className="d-flex flex-column">
@@ -42,7 +42,18 @@ export default function ListItemOrders({
 					</div>
 					<div className="col-sm-4 col-md-4 d-flex justify-content-start align-items-center">
 						<span>
-							{date ? format(date, 'dd/MM/yy', { locale: ptBR }) : ''}
+							{date
+								? `Criado: ${format(date, 'dd/MM/yy', { locale: ptBR })}`
+								: ''}
+						</span>
+					</div>
+					<div className="col-sm-4 col-md-4 d-flex justify-content-start align-items-center">
+						<span>
+							{registeredDay
+								? `Utilizado: ${format(registeredDay, 'dd/MM/yy', {
+										locale: ptBR,
+								  })}`
+								: ''}
 						</span>
 					</div>
 					<div className="col-sm-4 col-md-2 d-flex justify-content-center align-items-center">

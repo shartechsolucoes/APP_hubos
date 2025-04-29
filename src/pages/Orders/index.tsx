@@ -12,9 +12,10 @@ import { ptBR } from 'date-fns/locale';
 import Pagination from '../../components/Pagination';
 import Spinner from '../../components/Spiner';
 import useAccessLevelStore from '../../stores/accessLevelStore.ts';
+import Toast from '../../components/Toast/index.tsx';
 
 export default function Orders() {
-	const { accessLevel } = useAccessLevelStore();
+	const { accessLevel, userId } = useAccessLevelStore();
 	const { openModal, closeModal } = useModalStore((state) => state);
 	const [orders, setOrders] = useState<
 		Array<{
@@ -30,11 +31,7 @@ export default function Orders() {
 			qr_code: string;
 			registerDay: Date;
 			state: string;
-			ordersKits: {
-				kit_id: number;
-				quantity: string;
-				kit: { description: string };
-			}[];
+			ordersKits: string;
 			user: {
 				name: string;
 				picture: string;
@@ -47,12 +44,18 @@ export default function Orders() {
 		end: null,
 	});
 
+	const [openToast, setOpenToast] = useState(false);
+	const [success, setSuccess] = useState(false);
+	const [successMsg, setSuccessMsg] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
+
 	const [totalOrders, setTotalOrders] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [searchOS, setSearchOS] = useState('');
 	const [searchStatus, setSearchStatus] = useState('');
 	const [searchNeighborhood, setSearchNeighborhood] = useState('');
+	const [user, setUser] = useState('');
 
 	const [openReportsDropdown, setOpenReportsDropdown] = useState(false);
 
@@ -70,6 +73,7 @@ export default function Orders() {
 		try {
 			const response = await api.get('orders', {
 				params: {
+					userId: user,
 					page,
 					os: searchOS,
 					status: searchStatus,
@@ -111,8 +115,14 @@ export default function Orders() {
 		);
 	};
 	useEffect(() => {
-		getOrders();
-	}, []);
+		if (user.length > 0) {
+			getOrders();
+		}
+	}, [user]);
+
+	useEffect(() => {
+		setUser(userId);
+	}, [userId]);
 
 	const deleteItem = async (delItem: unknown) => {
 		await api.delete(`/order/${delItem}`);
@@ -121,12 +131,31 @@ export default function Orders() {
 	};
 
 	const duplicateItem = async (itemId: unknown) => {
-		await api.post(`/order/duplicate/${itemId}`);
-		getOrders();
+		try {
+			await api.post(`/order/duplicate/${itemId}`);
+			setSuccess(true);
+			setSuccessMsg('OS Duplicada, adicione imagens do serviço');
+			setOpenToast(true);
+			getOrders();
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 2000);
+		} catch (error) {
+			console.error(error);
+			setSuccess(false);
+			setErrorMsg('Erro au duplicar OS');
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+			}, 2000);
+		}
 	};
 
 	return (
 		<>
+			{openToast && (
+				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
+			)}
 			<div className="col-md-12">
 				<div className="d-flex justify-content-end align-items-end gap-3 my-4">
 					<div className="d-none d-md-flex d-flex flex-column ">
@@ -260,7 +289,7 @@ export default function Orders() {
 										state={order.state}
 										status={order.status}
 										date={order.registerDay}
-										kit={order?.ordersKits[0]?.kit?.description ?? ''}
+										kit={order?.ordersKits ?? ''}
 										deleteListItem={() => {
 											setDeleteId(order.id);
 											openModal();

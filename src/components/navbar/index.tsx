@@ -37,7 +37,7 @@ export default function Navbar() {
 
 	useEffect(() => {
 		setHasAvatar(!!localStorage.getItem('userAvatar'));
-	}, []);
+	}, [userAvatar]);
 
 	return (
 		<>
@@ -72,7 +72,6 @@ export default function Navbar() {
 							/>
 						</div>
 					</div>
-
 					<ul className="navbar-nav flex-row align-items-center ms-auto">
 						<li className="nav-item lh-1 me-3"></li>
 
@@ -83,7 +82,7 @@ export default function Navbar() {
 								onClick={() => setToggleDropdown((prev) => !prev)}
 							>
 								<div
-									className="avatar rounded-circle"
+									className="avatar rounded-circle d-flex"
 									style={{ overflow: 'hidden' }}
 								>
 									{hasavatar ? (

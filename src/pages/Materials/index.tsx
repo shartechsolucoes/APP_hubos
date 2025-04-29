@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { api } from '../../api';
 import useModalStore from '../../stores/modalStore';
 import Modal from '../../components/Modal';
+import Toast from '../../components/Toast';
 
 export default function Materials() {
 	const [materials, setMaterials] = useState<
@@ -19,6 +20,10 @@ export default function Materials() {
 	const [deleteId, setDeleteId] = useState<number | null>(null);
 	const { openModal, closeModal } = useModalStore((state) => state);
 	const [searchMaterial, setSearchMaterial] = useState('');
+	const [openToast, setOpenToast] = useState(false);
+	const [messageError, setMessageError] = useState('');
+	const [messageSuccess, setMessageSuccess] = useState('');
+	const [success, setSuccess] = useState(false);
 
 	const getMaterials = async () => {
 		const response = await api.get('materials', {
@@ -30,9 +35,28 @@ export default function Materials() {
 	};
 
 	const deleteMaterial = async (id: number) => {
-		await api.delete(`material/${id}`);
-		getMaterials();
-		closeModal();
+		try {
+			await api.delete(`material/${id}`);
+			getMaterials();
+			closeModal();
+			setSuccess(true);
+			setMessageSuccess('Apagado com sucesso');
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+				setMessageSuccess('');
+			}, 2000);
+		} catch (error: any) {
+			console.error(error);
+			closeModal();
+			setSuccess(false);
+			setMessageError(JSON.parse(error.request.response).msg);
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+				setMessageError('');
+			}, 2000);
+		}
 	};
 	useEffect(() => {
 		getMaterials();
@@ -41,6 +65,13 @@ export default function Materials() {
 	return (
 		<>
 			<div>
+				{openToast && (
+					<Toast
+						success={success}
+						msgError={messageError}
+						msgSuccess={messageSuccess}
+					/>
+				)}
 				<div className="d-flex py-4 gap-4 pt-0 justify-content-end align-items-center">
 					<div className="d-none d-md-flex d-flex flex-column ">
 						<input

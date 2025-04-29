@@ -1,4 +1,5 @@
 import './styles.css';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 interface IPagination {
 	currentPage: number;
@@ -28,94 +29,67 @@ export default function Pagination({
 			<div className="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto ms-auto">
 				{totalPages > 1 && (
 					<div className="dt-paging">
-						<nav aria-label="pagination">
-							<ul className="pagination">
-								<li
-									className={`dt-paging-button page-item pagination-button-size`}
-								>
-									{currentPage > 1 && (
-										<button
-											className="page-link"
-											role="link"
-											type="button"
-											aria-controls="DataTables_Table_0"
-											aria-current="page"
-											data-dt-idx="0"
-											onClick={() => toggleList(currentPage - 2)}
+						<nav className="d-flex" aria-label="pagination">
+							<button
+								disabled={currentPage === 0}
+								className="btn border border-0"
+								role="link"
+								type="button"
+								aria-controls="DataTables_Table_0"
+								aria-current="page"
+								data-dt-idx="0"
+								onClick={() => toggleList(currentPage - 1)}
+							>
+								<FaArrowLeft color="101010" />
+							</button>
+							<ul className="pagination mx-2">
+								{(() => {
+									const visiblePages = Math.min(5, totalPages);
+									let startPage = Math.max(
+										0,
+										currentPage - Math.floor(visiblePages / 2)
+									);
+									let endPage = startPage + visiblePages;
+
+									if (endPage > totalPages) {
+										endPage = totalPages;
+										startPage = Math.max(0, endPage - visiblePages);
+									}
+
+									return Array.from(
+										{ length: endPage - startPage },
+										(_, i) => startPage + i
+									).map((page) => (
+										<li
+											key={page}
+											className={`dt-paging-button page-item pagination-button-size mx-1 ${
+												page === currentPage ? 'active' : ''
+											}`}
 										>
-											{currentPage - 1}
-										</button>
-									)}
-								</li>
-								<li
-									className={`dt-paging-button page-item pagination-button-size`}
-								>
-									{currentPage > 0 && (
-										<button
-											className="page-link"
-											role="link"
-											type="button"
-											aria-controls="DataTables_Table_0"
-											aria-current="page"
-											data-dt-idx="0"
-											onClick={() => toggleList(currentPage - 1)}
-										>
-											{currentPage}
-										</button>
-									)}
-								</li>
-								<li
-									className={`dt-paging-button page-item ${
-										currentPage === currentPage ? 'active' : ''
-									}`}
-								>
-									<button
-										className="page-link"
-										role="link"
-										type="button"
-										aria-controls="DataTables_Table_0"
-										aria-current="page"
-										data-dt-idx="0"
-										onClick={() => toggleList(currentPage)}
-									>
-										{currentPage + 1}
-									</button>
-								</li>
-								<li
-									className={`dt-paging-button page-item pagination-button-size`}
-								>
-									{totalPages >= currentPage + 2 && (
-										<button
-											className="page-link"
-											role="link"
-											type="button"
-											aria-controls="DataTables_Table_0"
-											aria-current="page"
-											data-dt-idx="0"
-											onClick={() => toggleList(currentPage + 1)}
-										>
-											{currentPage + 2}
-										</button>
-									)}
-								</li>
-								<li
-									className={`dt-paging-button page-item pagination-button-size`}
-								>
-									{totalPages >= currentPage + 3 && (
-										<button
-											className="page-link"
-											role="link"
-											type="button"
-											aria-controls="DataTables_Table_0"
-											aria-current="page"
-											data-dt-idx="0"
-											onClick={() => toggleList(currentPage + 2)}
-										>
-											{currentPage + 3}
-										</button>
-									)}
-								</li>
+											<button
+												className="page-link"
+												role="link"
+												type="button"
+												onClick={() => toggleList(page)}
+											>
+												{page + 1}
+											</button>
+										</li>
+									));
+								})()}
 							</ul>
+							<button
+								disabled={currentPage + 1 === totalPages}
+								className="btn border border-0"
+								role="link"
+								type="button"
+								aria-controls="DataTables_Table_0"
+								aria-current="page"
+								data-dt-idx="0"
+								onClick={() => toggleList(currentPage + 1)}
+							>
+								<FaArrowRight color="101010" />
+							</button>
 						</nav>
 					</div>
 				)}

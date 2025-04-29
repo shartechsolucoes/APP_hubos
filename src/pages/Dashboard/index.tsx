@@ -30,7 +30,7 @@ const center = {
 };
 
 export default function Dashboard() {
-	const { accessLevel } = useAccessLevelStore();
+	const { accessLevel, userId } = useAccessLevelStore();
 	const [orders, setOrders] = useState<
 		Array<{
 			status: number;
@@ -45,14 +45,11 @@ export default function Dashboard() {
 			qr_code: string;
 			registerDay: string;
 			state: string;
-			ordersKits: {
-				kit_id: number;
-				quantity: string;
-				kit: { description: string };
-			}[];
-			user: { name: string };
+			ordersKits: string;
+			user: { name: string; picture: string };
 		}>
 	>([]);
+	const [user, setUser] = useState('');
 
 	const [totalItems, setTotalItems] = useState<{
 		dayOrder: number;
@@ -70,7 +67,7 @@ export default function Dashboard() {
 		const today = new Date();
 		const formattedDate = format(today, 'yyyy-MM-dd');
 		const response = await api.get(
-			`/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}`
+			`/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}&userId=${userId}`
 		);
 		setOrders(response.data.orders);
 		setTotalItems((prev) => ({
@@ -80,7 +77,7 @@ export default function Dashboard() {
 	};
 
 	const getDashboardData = async () => {
-		const response = await api.get(`/dashboard`);
+		const response = await api.get(`/dashboard?userId=${userId}`);
 		const { order, kit, user } = response.data;
 		setTotalItems((prev) => ({
 			...prev,
@@ -107,9 +104,15 @@ export default function Dashboard() {
 	}, [map]);
 
 	useEffect(() => {
-		getOrders();
-		getDashboardData();
-	}, []);
+		if (user.length > 0) {
+			getOrders();
+			getDashboardData();
+		}
+	}, [user]);
+
+	useEffect(() => {
+		setUser(userId);
+	}, [userId]);
 
 	return (
 		<>
@@ -230,6 +233,7 @@ export default function Dashboard() {
 					{orders.map((order) => (
 						<>
 							<ListItemOrdersDash
+								userPicture={order.user.picture}
 								key={order.id}
 								qrcode={order.qr_code}
 								register={order.registerDay}
@@ -239,7 +243,7 @@ export default function Dashboard() {
 								neighborhood={order.neighborhood}
 								city={order.city}
 								state={order.state}
-								kit={order?.ordersKits[0]?.kit?.description || ''}
+								kit={order?.ordersKits || ''}
 								userName={order.user.name}
 							/>
 						</>

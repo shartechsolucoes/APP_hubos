@@ -12,22 +12,19 @@ export default function Layout() {
 	const { handleAccessLevel, handleUserName, handleUserId } =
 		useAccessLevelStore();
 	const [token, setToken] = useState(localStorage.getItem('token') || '');
-	const [level, setLevel] = useState(localStorage.getItem('accessLevel') || '');
-	const [name, setName] = useState(localStorage.getItem('userName') || '');
-	const [id, setId] = useState(localStorage.getItem('userId') || '');
 
+	const initializer = async () => {
+		await setToken(localStorage.getItem('token') || '');
+	};
 	useEffect(() => {
-		setToken(localStorage.getItem('token') || '');
-		setLevel(localStorage.getItem('accessLevel') || '');
-		setName(localStorage.getItem('userName') || '');
-		setId(localStorage.getItem('userId') || '');
+		initializer();
 		if (!token) {
 			navigate('/login');
 		}
 
-		handleAccessLevel(parseInt(level || ''));
-		handleUserName(name);
-		handleUserId(id);
+		handleAccessLevel(parseInt(localStorage.getItem('accessLevel') || ''));
+		handleUserName(localStorage.getItem('userName') || '');
+		handleUserId(localStorage.getItem('userId') || '');
 	}, []);
 
 	return (

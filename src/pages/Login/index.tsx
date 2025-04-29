@@ -28,7 +28,9 @@ function Login() {
 			localStorage.setItem('accessLevel', response.data.access_level);
 			localStorage.setItem('userName', response.data.userName);
 			localStorage.setItem('userId', response.data.userId);
-			localStorage.setItem('userAvatar', response.data.picture);
+			if (response.data.picture) {
+				localStorage.setItem('userAvatar', response.data.picture);
+			}
 			handleAccessLevel(response.data.access_level);
 			handleUserName(response.data.userName);
 			handleUserId(response.data.userId);
