@@ -4,6 +4,7 @@ import { BsFillTrashFill, BsQrCode } from 'react-icons/bs';
 import { useNavigate, useSearchParams } from 'react-router';
 import QRCodeScanner from '../../QRCodeScanner';
 import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 
 import './styles.css';
 import Toast from '../../Toast';
@@ -43,7 +44,7 @@ export default function OrdersForm() {
 		startWork: string;
 		endWork: string;
 	}>({ startWork: '', endWork: '' });
-	const [hasStartPhoto, setHasStartPhoto] = useState(true);
+
 	const [openQR, setOpenQR] = useState(id ? false : true);
 	const [success, setSuccess] = useState(true);
 	const [openToast, setOpenToast] = useState(false);
@@ -170,11 +171,6 @@ export default function OrdersForm() {
 		}
 
 		setSaving(true);
-		if (workImages.startWork.length === 0) {
-			setHasStartPhoto((prev) => !prev);
-			setSaving(false);
-			return;
-		}
 
 		const {
 			address,
@@ -294,13 +290,51 @@ export default function OrdersForm() {
 
 	const sentStartWorkPhoto = async (e: any) => {
 		if (!e.target.files[0]) return;
-		setStartLoad(true);
-		const data = new FormData();
-		const os = formData.qr_code;
 
-		data.append('file', e.target.files[0]);
+		setStartLoad(true);
+		const os = formData.qr_code;
+		const originalFile = e.target.files[0];
 
 		try {
+			// 1. Comprimir imagem
+			const compressedFile = await imageCompression(originalFile, {
+				maxSizeMB: 1,
+				maxWidthOrHeight: 1024,
+				useWebWorker: true,
+			});
+
+			// 2. Converter para JPG usando canvas
+			const convertToJPG = async (file: File): Promise<File> => {
+				const imageBitmap = await createImageBitmap(file);
+				const canvas = document.createElement('canvas');
+				canvas.width = imageBitmap.width;
+				canvas.height = imageBitmap.height;
+
+				const ctx = canvas.getContext('2d');
+				if (!ctx) throw new Error('Erro ao obter contexto do canvas');
+				ctx.drawImage(imageBitmap, 0, 0);
+
+				return new Promise((resolve) => {
+					canvas.toBlob(
+						(blob) => {
+							if (!blob) throw new Error('Erro ao converter imagem para JPG');
+							const newFile = new File([blob], 'foto.jpg', {
+								type: 'image/jpeg',
+							});
+							resolve(newFile);
+						},
+						'image/jpeg',
+						0.9
+					); // qualidade de 0.9
+				});
+			};
+
+			const finalFile = await convertToJPG(compressedFile);
+
+			// 3. Enviar
+			const data = new FormData();
+			data.append('file', finalFile);
+
 			const response = await api.post(
 				`order/start-work-photo?id=${id || ''}&os=${os}`,
 				data,
@@ -311,28 +345,69 @@ export default function OrdersForm() {
 				}
 			);
 
-			await setWorkImages((prev) => ({
-				...prev,
-				startWork: response.data.file,
-			}));
-			if (id) {
-				await saveOrder(undefined, undefined, undefined, response.data.file);
-			}
-			setStartLoad(false);
+			await Promise.all([
+				setWorkImages((prev) => ({
+					...prev,
+					startWork: response.data.file,
+				})),
+				id
+					? saveOrder(undefined, undefined, undefined, response.data.file)
+					: Promise.resolve(),
+			]);
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setStartLoad(false);
 		}
 	};
 
 	const sentEndWorkPhoto = async (e: any) => {
 		if (!e.target.files[0]) return;
-		setEndLoad(true);
-		const data = new FormData();
-		const os = formData.qr_code;
 
-		data.append('file', e.target.files[0]);
+		setEndLoad(true);
+		const os = formData.qr_code;
+		const originalFile = e.target.files[0];
 
 		try {
+			// 1. Comprimir imagem
+			const compressedFile = await imageCompression(originalFile, {
+				maxSizeMB: 1,
+				maxWidthOrHeight: 1024,
+				useWebWorker: true,
+			});
+
+			// 2. Converter para JPG usando canvas
+			const convertToJPG = async (file: File): Promise<File> => {
+				const imageBitmap = await createImageBitmap(file);
+				const canvas = document.createElement('canvas');
+				canvas.width = imageBitmap.width;
+				canvas.height = imageBitmap.height;
+
+				const ctx = canvas.getContext('2d');
+				if (!ctx) throw new Error('Erro ao obter contexto do canvas');
+				ctx.drawImage(imageBitmap, 0, 0);
+
+				return new Promise((resolve) => {
+					canvas.toBlob(
+						(blob) => {
+							if (!blob) throw new Error('Erro ao converter imagem para JPG');
+							const newFile = new File([blob], 'foto.jpg', {
+								type: 'image/jpeg',
+							});
+							resolve(newFile);
+						},
+						'image/jpeg',
+						0.9
+					);
+				});
+			};
+
+			const finalFile = await convertToJPG(compressedFile);
+
+			// 3. Enviar
+			const data = new FormData();
+			data.append('file', finalFile);
+
 			const response = await api.post(
 				`order/end-work-photo?id=${id || ''}&os=${os}`,
 				data,
@@ -342,12 +417,17 @@ export default function OrdersForm() {
 					},
 				}
 			);
-			setWorkImages((prev) => ({ ...prev, endWork: response.data.file }));
-			setFormData((prev) => ({ ...prev, status: 2 }));
-			await saveOrder(undefined, response.data.file, '2');
+
+			// 4. Atualizar estado e salvar
+			await Promise.all([
+				setWorkImages((prev) => ({ ...prev, endWork: response.data.file })),
+				setFormData((prev) => ({ ...prev, status: 2 })),
+				saveOrder(undefined, response.data.file, '2'),
+			]);
+		} catch (error) {
+			console.error(error);
+		} finally {
 			setEndLoad(false);
-		} catch (e) {
-			console.error(e);
 		}
 	};
 
@@ -401,7 +481,7 @@ export default function OrdersForm() {
 								<BsQrCode />
 							</button>
 						</div>
-						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
+						<div className="mb-3 col-12 col-md-6 d-flex flex-column">
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								Início
 							</label>
@@ -455,11 +535,8 @@ export default function OrdersForm() {
 								capture="environment"
 								onChange={sentStartWorkPhoto}
 							/>
-							{!hasStartPhoto && (
-								<p className="text-danger">Não foi inserida imagem</p>
-							)}
 						</div>
-						<div className="mb-3 col-6 col-md-6 d-flex flex-column">
+						<div className="mb-3 col-12 col-md-6 d-flex flex-column">
 							{id && (
 								<label htmlFor="exampleInputEmail1" className="form-label">
 									Fim
