@@ -111,7 +111,7 @@ export default function ListItemOrders({
 							</Link>
 						)}
 
-						{(accessLevel === 0 || accessLevel === 2) && (
+						{(accessLevel === 0 || (accessLevel === 2 && status !== 2)) && (
 							<Link to={`form?id=${id}`}>
 								<BsFillPencilFill />
 							</Link>
