@@ -6976,15 +6976,14 @@ label.btn {
 
 .btn-secondary {
     color: #fff;
-    background-color: #8592a3;
-    border-color: #8592a3;
-    box-shadow: 0 0.125rem 0.25rem 0 rgba(133, 146, 163, 0.4);
+    background-color: #2563b2;
+    border-color: #2563b2;
 }
 
 .btn-secondary:hover {
     color: #fff;
-    background-color: #788393;
-    border-color: #788393;
+    background-color: #00aeed;
+    border-color: #00aeed;
     transform: translateY(-1px);
 }
 
@@ -6992,8 +6991,8 @@ label.btn {
 .btn-secondary:focus,
 .btn-secondary.focus {
     color: #fff;
-    background-color: #788393;
-    border-color: #788393;
+    background-color: #00aeed;
+    border-color: #00aeed;
     transform: translateY(0);
     box-shadow: none;
 }
@@ -7193,15 +7192,14 @@ label.btn {
 }
 
 .btn-info {
-    color: #fff;
-    background-color: #03c3ec;
-    border-color: #03c3ec;
-    box-shadow: 0 0.125rem 0.25rem 0 rgba(3, 195, 236, 0.4);
+    color: #fff!important;
+    background-color: #2564b3;
+    border-color: #2563b2;
 }
 
 .btn-info:hover {
     color: #fff;
-    background-color: #03b0d4;
+    background-color: #00aeed;
     border-color: #03b0d4;
     transform: translateY(-1px);
 }

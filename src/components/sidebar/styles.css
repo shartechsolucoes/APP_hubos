@@ -8,18 +8,23 @@
 }
 
 .bg-menu-theme .menu-inner>.menu-item a.active {
-  color: #7a7ada;
-  background-color: rgba(79, 130, 214, 0.18) !important;
+  color: #2564b2;
+  background-color: rgba(0, 174, 237, 0.16) !important;
   font-weight: 600;
 }
 
 .bg-menu-theme .menu-inner>.menu-item a.active:before {
-  background: #9999fd;
+  background: #00adec;
   margin-right: -16px;
 }
 
 .menu-vertical .menu-item .menu-toggle::after {
   transition: transform .3s;
+}
+
+.app-brand-text{
+  width: 80%;
+  margin: auto;
 }
 
 @media (width >=1200px) {

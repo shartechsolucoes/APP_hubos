@@ -65,7 +65,7 @@ export default function Sidebar() {
 						<a href="#" className="app-brand-link">
 							<span className="app-brand-logo demo"></span>
 							<span className="app-brand-text demo menu-text fw-bolder ms-2 mt-3">
-								<img src="/public/assets/logo.png" className="w-25"/>
+								<img src="/public/assets/geoos_vertical.png" className="w-100"/>
 							</span>
 						</a>
 

@@ -30,12 +30,7 @@ export default function OrdersForm() {
 		}>
 	>([]);
 	const [kits, setKits] = useState<
-		Array<{
-			id: number;
-			quantity: string;
-			description: string;
-			status: boolean;
-		}>
+		Array<{ id: number; quantity: string; description: string }>
 	>([]);
 	const [kitAndQuantity, setKitAndQuantity] = useState<
 		Array<{ kit_id: number; quantity: string }>
@@ -206,8 +201,6 @@ export default function OrdersForm() {
 				});
 				setSuccess(true);
 				setOpenToast(true);
-				setStartLoad(false);
-				setEndLoad(false);
 				setTimeout(() => {
 					setOpenToast(false);
 					setSaving(false);
@@ -359,6 +352,7 @@ export default function OrdersForm() {
 		} finally {
 			setStartLoad(false);
 		}
+		setStartLoad(false);
 	};
 
 	const sentEndWorkPhoto = async (e: any) => {
@@ -434,6 +428,7 @@ export default function OrdersForm() {
 	return (
 		<div className="card form-container p-3 pb-3 mb-5">
 			{openToast && <Toast success={success} />}
+			{/* {openEnd && } */}
 			<div className="card-body row">
 				{openQR && (
 					<QRCodeScanner
@@ -485,40 +480,35 @@ export default function OrdersForm() {
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								Início
 							</label>
-							<>
-								{workImages.startWork && (
-									<button
-										disabled={startLoad}
-										onClick={() => {
-											setOpenImage(workImages.startWork);
-											imageModalRef.current.setOpen(true);
-										}}
-										type="button"
-										className="btn position-relative"
-									>
-										{startLoad ? (
-											<div className="d-flex justify-content-center mt-5 mb-5">
-												<Spinner />
-											</div>
-										) : (
-											<Image
-												image={workImages.startWork}
-												key={workImages.startWork}
-												height="240px"
-											/>
-										)}
-										<LiaSearchPlusSolid
-											style={{
-												position: 'absolute',
-												bottom: '.5em',
-												right: '.5em',
-												height: '24px',
-												width: '24px',
+							{startLoad ? (
+								<div className="d-flex justify-content-center mt-5 mb-5">
+									<Spinner />
+								</div>
+							) : (
+								<>
+									{workImages.startWork && (
+										<button
+											onClick={() => {
+												setOpenImage(workImages.startWork);
+												imageModalRef.current.setOpen(true);
 											}}
-										/>
-									</button>
-								)}
-							</>
+											type="button"
+											className="btn position-relative"
+										>
+											<Image image={workImages.startWork} height="240px" />
+											<LiaSearchPlusSolid
+												style={{
+													position: 'absolute',
+													bottom: '.5em',
+													right: '.5em',
+													height: '24px',
+													width: '24px',
+												}}
+											/>
+										</button>
+									)}
+								</>
+							)}
 							<label
 								className={`btn btn-primary ${
 									formData.qr_code ? '' : 'disabled'
@@ -542,40 +532,35 @@ export default function OrdersForm() {
 									Fim
 								</label>
 							)}
-							<>
-								{workImages.endWork && (
-									<button
-										disabled={endLoad}
-										type="button"
-										className="btn position-relative"
-										onClick={() => {
-											setOpenImage(workImages.endWork);
-											imageModalRef.current.setOpen(true);
-										}}
-									>
-										{endLoad ? (
-											<div className="d-flex justify-content-center mt-5 mb-5">
-												<Spinner />
-											</div>
-										) : (
-											<Image
-												image={workImages.endWork}
-												key={workImages.endWork}
-												height="240px"
-											/>
-										)}
-										<LiaSearchPlusSolid
-											style={{
-												position: 'absolute',
-												bottom: '.5em',
-												right: '.5em',
-												height: '24px',
-												width: '24px',
+							{endLoad ? (
+								<div className="d-flex justify-content-center mt-5 mb-5">
+									<Spinner />
+								</div>
+							) : (
+								<>
+									{workImages.endWork && (
+										<button
+											type="button"
+											className="btn position-relative"
+											onClick={() => {
+												setOpenImage(workImages.endWork);
+												imageModalRef.current.setOpen(true);
 											}}
-										/>
-									</button>
-								)}
-							</>
+										>
+											<Image image={workImages.endWork} height="240px" />
+											<LiaSearchPlusSolid
+												style={{
+													position: 'absolute',
+													bottom: '.5em',
+													right: '.5em',
+													height: '24px',
+													width: '24px',
+												}}
+											/>
+										</button>
+									)}
+								</>
+							)}
 
 							{id && (
 								<label className="btn btn-primary" htmlFor={'end-work'}>
@@ -784,12 +769,9 @@ export default function OrdersForm() {
 									<option value={''} selected disabled>
 										Selecione o(s) Kit(s)
 									</option>
-									{kits.map(
-										(kit) =>
-											kit.status === true && (
-												<option value={kit.id}>{kit.description}</option>
-											)
-									)}
+									{kits.map((kit) => (
+										<option value={kit.id}>{kit.description}</option>
+									))}
 								</select>
 							</span>
 							<button
