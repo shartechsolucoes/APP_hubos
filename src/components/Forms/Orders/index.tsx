@@ -480,7 +480,7 @@ export default function OrdersForm() {
 									}
 								}}
 							/>
-							{hasOS && <p className="text-danger">Os não inserida</p>}
+							{hasOS && <p className="text-danger">OS não inserida</p>}
 						</div>
 						<div className="mb-3 col-1 col-md-1 align-qr-code">
 							<button
