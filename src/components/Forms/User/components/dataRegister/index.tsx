@@ -42,7 +42,6 @@ export default function DataRegister({
 			city,
 			status,
 		} = formData;
-		console.log(status);
 		if (confirmPassword !== password) {
 			setPasswordError(true);
 			return;
