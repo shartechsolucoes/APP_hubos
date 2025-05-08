@@ -46,6 +46,8 @@ export default function OrdersForm() {
 	const [isSaving, setSaving] = useState(false);
 	const [addressError, setAddressError] = useState(false);
 
+	const [hasOS, setHasOs] = useState(false);
+
 	const [openImage, setOpenImage] = useState('');
 	const imageModalRef = useRef<any>();
 
@@ -179,6 +181,10 @@ export default function OrdersForm() {
 			qr_code,
 			protocolNumber,
 		} = formData;
+
+		if (!qr_code) {
+			setHasOs(true);
+		}
 
 		const osStatus = status || 1;
 
@@ -424,6 +430,12 @@ export default function OrdersForm() {
 			setEndLoad(false);
 		}
 	};
+	const inputRef = useRef<HTMLInputElement>(null);
+	useEffect(() => {
+		if (hasOS && inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, [hasOS]);
 
 	return (
 		<div className="card form-container p-3 pb-3 mb-5">
@@ -456,6 +468,8 @@ export default function OrdersForm() {
 								id="qr_code"
 								value={formData.qr_code}
 								inputMode="numeric"
+								maxLength={7}
+								ref={inputRef}
 								onChange={(e) => {
 									const reg = new RegExp(/^\d*$/);
 									if (reg.test(e.target.value)) {
@@ -466,6 +480,7 @@ export default function OrdersForm() {
 									}
 								}}
 							/>
+							{hasOS && <p className="text-danger">Os não inserida</p>}
 						</div>
 						<div className="mb-3 col-1 col-md-1 align-qr-code">
 							<button
