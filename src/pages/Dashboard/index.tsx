@@ -82,7 +82,7 @@ export default function Dashboard() {
 
 	const getDashboardData = async () => {
 		const response = await api.get(`/dashboard?userId=${userId}`);
-		const { order, kit, user } = response.data;
+		const { kit, user } = response.data;
 		setTotalItems((prev) => ({
 			...prev,
 
