@@ -42,6 +42,7 @@ export default function DataRegister({
 			city,
 			status,
 		} = formData;
+		console.log(status);
 		if (confirmPassword !== password) {
 			setPasswordError(true);
 			return;
@@ -61,7 +62,10 @@ export default function DataRegister({
 					neighborhood,
 					state,
 					city,
-					status: status || status === 'true' || status === '' ? true : false,
+					status:
+						status === 'true' || status === '' || status === true
+							? true
+							: false,
 				});
 				setSuccess(true);
 				setOpenToast(true);
@@ -85,7 +89,10 @@ export default function DataRegister({
 					neighborhood,
 					state,
 					city,
-					status: status || status === 'true' || status === '' ? true : false,
+					status:
+						status === 'true' || status === '' || status === true
+							? true
+							: false,
 					picture: avatar,
 				});
 				setSuccess(true);
