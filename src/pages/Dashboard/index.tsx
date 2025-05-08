@@ -66,12 +66,16 @@ export default function Dashboard() {
 	const getOrders = async () => {
 		const today = new Date();
 		const formattedDate = format(today, 'yyyy-MM-dd');
-		const response = await api.get(
-			`/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}&userId=${userId}`
-		);
+
+		const baseUrl = `/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}`;
+		const url = accessLevel > 0 ? `${baseUrl}&userId=${userId}` : baseUrl;
+
+		const response = await api.get(url);
+
 		setOrders(response.data.orders);
 		setTotalItems((prev) => ({
 			...prev,
+			order: response.data.count.actives,
 			dayOrder: response.data.count.total,
 		}));
 	};
@@ -81,7 +85,7 @@ export default function Dashboard() {
 		const { order, kit, user } = response.data;
 		setTotalItems((prev) => ({
 			...prev,
-			order: order,
+
 			kit: kit,
 			user: user,
 		}));

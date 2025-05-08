@@ -42,6 +42,7 @@ export default function DataRegister({
 			city,
 			status,
 		} = formData;
+		console.log(status);
 		if (confirmPassword !== password) {
 			setPasswordError(true);
 			return;
@@ -61,7 +62,7 @@ export default function DataRegister({
 					neighborhood,
 					state,
 					city,
-					status,
+					status: status || status === 'true' || status === '' ? true : false,
 				});
 				setSuccess(true);
 				setOpenToast(true);
@@ -85,7 +86,7 @@ export default function DataRegister({
 					neighborhood,
 					state,
 					city,
-					status,
+					status: status || status === 'true' || status === '' ? true : false,
 					picture: avatar,
 				});
 				setSuccess(true);
@@ -199,13 +200,7 @@ export default function DataRegister({
 							className="form-select"
 							aria-label="Default select example"
 							id="status"
-							value={
-								formData.status !== ''
-									? formData.status === true || formData.status === '0'
-										? 0
-										: 1
-									: ''
-							}
+							value={`${formData.status}`}
 							onChange={(e) =>
 								setFormData((prev) => ({
 									...prev,
@@ -216,8 +211,8 @@ export default function DataRegister({
 							<option value="" selected disabled>
 								Status
 							</option>
-							<option value="0">Ativo</option>
-							<option value="1">Inativo</option>
+							<option value="true">Ativo</option>
+							<option value="false">Inativo</option>
 						</select>
 					</div>
 					<div className="mb-3 col-md-6">
