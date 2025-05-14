@@ -143,7 +143,7 @@ export default function Orders() {
 		} catch (error) {
 			console.error(error);
 			setSuccess(false);
-			setErrorMsg('Erro au duplicar OS');
+			setErrorMsg('Erro ao duplicar OS');
 			setOpenToast(true);
 			setTimeout(() => {
 				setOpenToast(false);
@@ -226,7 +226,7 @@ export default function Orders() {
 						Pesquisar
 					</a>
 
-					{accessLevel === 0 && (
+					{(accessLevel === 1 ||accessLevel === 0 )   && (
 						<div className="d-none d-md-flex d-flex flex-column position-relative">
 							<div className="dropdown">
 								<button
