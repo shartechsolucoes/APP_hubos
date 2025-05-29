@@ -5,6 +5,7 @@ import Materials from '../pages/Materials';
 import Orders from '../pages/Orders';
 import Report from '../pages/Reports';
 import ReportMaterial from '../pages/ReportsMaterial';
+import Services from '../pages/Services/indes';
 import Tags from '../pages/Tags';
 import Users from '../pages/Users';
 import Version from '../pages/Version';
@@ -48,6 +49,21 @@ export const privateRoutes = [
 				path: '/orders/report-materials',
 				component: ReportMaterial,
 				access: [0, 1],
+			},
+		],
+	},
+	{
+		name: 'Protocolo',
+		path: '/protocol',
+		icon: 'protocol',
+		component: Services,
+		access: [0, 1, 2],
+		children: [
+			{
+				name: 'Novo Protocolo',
+				path: '/protocol/form',
+				component: Form,
+				access: [0, 1, 2],
 			},
 		],
 	},
