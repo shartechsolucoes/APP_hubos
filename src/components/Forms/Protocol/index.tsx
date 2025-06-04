@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { api } from '../../../api';
+import { useSearchParams } from 'react-router';
 
 type User = {
 	id: string;
@@ -19,6 +20,8 @@ type Protocol = {
 };
 
 export default function ProtocolForm() {
+	const [searchParams] = useSearchParams();
+	const id = searchParams.get('id');
 	const [formData, setFormData] = useState<Protocol>({
 		protocolNumber: '',
 		address: '',
@@ -42,10 +45,28 @@ export default function ProtocolForm() {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log('Dados enviados:', formData);
-		api.post('services', formData);
+		if (!id) {
+			api.post('services', formData);
+			return;
+		}
+		api.put(`services/${id}`, formData);
 		// Aqui você pode enviar os dados para uma API ou serviço
 	};
+
+	async function getProtocol() {
+		try {
+			const response = await api.get(`services/${id}`);
+			setFormData(response.data);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	useEffect(() => {
+		if (id) {
+			getProtocol();
+		}
+	}, []);
 
 	return (
 		<div className="container card p-4 mt-4">

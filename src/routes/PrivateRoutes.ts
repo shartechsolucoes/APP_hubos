@@ -5,7 +5,7 @@ import Materials from '../pages/Materials';
 import Orders from '../pages/Orders';
 import Report from '../pages/Reports';
 import ReportMaterial from '../pages/ReportsMaterial';
-import Services from '../pages/Services/indes';
+import Services from '../pages/Services';
 import Tags from '../pages/Tags';
 import Users from '../pages/Users';
 import Version from '../pages/Version';

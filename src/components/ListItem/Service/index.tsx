@@ -1,21 +1,25 @@
-import { BsEyeFill, BsFillPencilFill } from 'react-icons/bs';
+import { BsEyeFill, BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
 import { Link } from 'react-router';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
 import Status from '../../StatusOS';
 import Image from '../../Forms/Image';
-import { FaPlay } from 'react-icons/fa';
+import { FaPen, FaPlay, FaPlus, FaTrash } from 'react-icons/fa';
 
 export type ListItemServiceProps = {
-	id: number | string;
+	id: number;
 	protocolNumber?: string;
 	address: string;
 	neighborhood: string;
 	city: string;
 	state: string;
 	status?: number;
+	userId?: string;
 	kit?: string;
 	userName?: string;
 	userPicture?: string;
+	startOs?: boolean;
+	deleteListItem?: () => void;
+	attachUser?: ({}) => void;
 };
 
 export default function ListItemService({
@@ -29,6 +33,10 @@ export default function ListItemService({
 	userName,
 	userPicture,
 	protocolNumber,
+	userId,
+	startOs,
+	deleteListItem,
+	attachUser,
 }: ListItemServiceProps) {
 	const { accessLevel } = useAccessLevelStore();
 
@@ -81,19 +89,51 @@ export default function ListItemService({
 					</div>
 				</div>
 				<div className="d-none d-md-flex col-md-1 d-flex justify-content-center align-items-center">
-					<Status statusOS={status} />
+					<Status statusOS={status ?? 0} />
 				</div>
-
 				<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">
+					{accessLevel === 0 && (
+						<a className="d-none d-md-flex action" onClick={deleteListItem}>
+							<BsFillTrashFill />
+						</a>
+					)}
+					{accessLevel === 0 && (
+						<Link to={`form?id=${id}`}>
+							<FaPen />
+						</Link>
+					)}
 					{(accessLevel === 2 || accessLevel === 0) && (
-						<Link to={`orders/view?id=${id}`}>
+						<Link to={`view?id=${id}`}>
 							<BsEyeFill />
 						</Link>
 					)}
-					{accessLevel === 0 && (
-						<Link to={`orders/form?id=${id}`}>
+					{accessLevel === 0 && startOs && (
+						<Link to={`/orders/form?&protocol=${id}`}>
 							<FaPlay />
 						</Link>
+					)}
+					{accessLevel === 0 && !userId && (
+						<a
+							className="d-none d-md-flex action"
+							onClick={() =>
+								attachUser?.({
+									address,
+									id,
+									neighborhood,
+									city,
+									state,
+									status,
+									kit,
+									userName,
+									userPicture,
+									protocolNumber,
+									userId,
+									startOs,
+								})
+							}
+						>
+							<FaPlus />
+						</a>
 					)}
 				</div>
 			</div>

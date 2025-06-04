@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Pagination from '../../components/Pagination';
-import ListItemOrders from '../../components/ListItem/OrdersDash';
 import Spinner from '../../components/Spiner';
 import useModalStore from '../../stores/modalStore';
 import Modal from '../../components/Modal';
@@ -26,6 +25,9 @@ export type ServiceType = {
 		email: string;
 		picture: string;
 	} | null;
+	order: {
+		status: number;
+	};
 };
 
 export default function Services() {
@@ -38,6 +40,7 @@ export default function Services() {
 	const [loading, setLoading] = useState(true);
 	const [deleteId, setDeleteId] = useState<unknown>(null);
 	const [services, setServices] = useState<ServiceType[]>();
+	const [myId, setMyId] = useState<string>('');
 
 	const totalPages =
 		totalServices < 10
@@ -50,7 +53,7 @@ export default function Services() {
 		setLoading(true);
 		setCurrentPage(page);
 		try {
-			const response = await api.get(`/services?page=${page}`);
+			const response = await api.get(`/services?page=${page}&userId=${myId}`);
 			setServices(response.data.data);
 			setTotalServices(response.data.meta.data.total);
 			setLoading(false);
@@ -66,29 +69,49 @@ export default function Services() {
 		closeModal();
 	};
 
+	const attachToUser = async (protocol: ServiceType) => {
+		try {
+			await api.put(`services/${protocol.id}`, { ...protocol, userId: userId });
+			getServices();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
 		getServices();
-	}, []);
+	}, [myId]);
+
 	return (
 		<div className="col-md-12">
-			<div className="d-flex justify-content-end align-items-end gap-3 my-4">
-				<div className="d-none d-md-flex d-flex flex-column ">
-					<input
-						className="form-control"
-						placeholder="Numero do Pedido"
-						value={searchService}
-						onChange={(e) => setSearchService(e.target.value)}
-					/>
-				</div>
-				{(accessLevel === 2 || accessLevel === 0) && (
-					<Link
-						to="form"
-						className="btn btn-info"
-						style={{ height: 'fit-content' }}
-					>
-						Nova
-					</Link>
-				)}
+			<div className="d-flex justify-content-between align-items-end gap-3 my-4">
+				<button
+					type="button"
+					className="btn btn-info"
+					style={{ height: 'fit-content' }}
+					onClick={() => (myId ? setMyId('') : setMyId(userId))}
+				>
+					{myId ? 'Todos' : 'Meus'}
+				</button>
+				<span className="d-flex justify-content-end align-items-end gap-3">
+					<div className="d-none d-md-flex d-flex flex-column ">
+						<input
+							className="form-control"
+							placeholder="Numero do Pedido"
+							value={searchService}
+							onChange={(e) => setSearchService(e.target.value)}
+						/>
+					</div>
+					{(accessLevel === 2 || accessLevel === 0) && (
+						<Link
+							to="form"
+							className="btn btn-info"
+							style={{ height: 'fit-content' }}
+						>
+							Nova
+						</Link>
+					)}
+				</span>
 			</div>
 			<div
 				className="card pb-0 mb-2 position-relative"
@@ -110,12 +133,16 @@ export default function Services() {
 									neighborhood={service.neighborhood}
 									state={service.state}
 									protocolNumber={service.protocolNumber}
-									// deleteListItem={() => {
-									// 	setDeleteId(service.id);
-									// 	openModal();
-									// }}
+									userId={service.user?.id}
+									startOs={service.user?.id === myId}
 									userName={service?.user?.name}
 									userPicture={service.user?.picture}
+									status={service.order?.status}
+									deleteListItem={() => {
+										setDeleteId(service.id);
+										openModal();
+									}}
+									attachUser={(protol) => attachToUser(protol)}
 								/>
 							</>
 						))}

@@ -14,11 +14,13 @@ import Image from '../Image';
 import ModalImage from './ModalImage';
 import { LiaSearchPlusSolid } from 'react-icons/lia';
 import Spinner from '../../Spiner';
+import { ServiceType } from '../../../pages/Services';
 
 export default function OrdersForm() {
 	const { userId, accessLevel } = useAccessLevelStore();
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get('id');
+	const protocol = searchParams.get('protocol');
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
 	const [selectedKit, setSelectedKit] = useState('');
 	const [listOfKits, setListOfKits] = useState<
@@ -50,6 +52,7 @@ export default function OrdersForm() {
 
 	const [openImage, setOpenImage] = useState('');
 	const imageModalRef = useRef<any>();
+	const [services, setServices] = useState<ServiceType>();
 
 	const [userLocation, setUserLocation] = useState<{
 		latitude: number;
@@ -110,9 +113,19 @@ export default function OrdersForm() {
 		});
 	};
 
-	// useEffect(() => {
-	// 	getUserLocation();
-	// }, []);
+	async function getProtocol() {
+		try {
+			const response = await api.get(`services/${protocol}`);
+			setServices(response.data);
+			setFormData((prev) => ({
+				...prev,
+				protocolNumber: response.data.protocolNumber,
+			}));
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	useEffect(() => {
 		if (kits.length === 0) {
 			getKits();
@@ -122,6 +135,11 @@ export default function OrdersForm() {
 		}
 	}, [kits]);
 
+	useEffect(() => {
+		if (formData) {
+			getProtocol();
+		}
+	}, []);
 	function handleKitList() {
 		const filteredKit = kits.filter((kit) => kit.id === parseInt(selectedKit));
 		if (
@@ -212,7 +230,7 @@ export default function OrdersForm() {
 					setSaving(false);
 				}, 1300);
 			} else {
-				await api.post('order', {
+				const response = await api.post('order', {
 					address,
 					neighborhood,
 					city,
@@ -227,6 +245,11 @@ export default function OrdersForm() {
 					userId,
 					photoEndWork: workImages.endWork,
 					photoStartWork: workImages.startWork,
+				});
+
+				await api.put(`services/${protocol}`, {
+					...services,
+					orderId: response.data.id,
 				});
 				setSuccess(true);
 				setOpenToast(true);
@@ -630,6 +653,18 @@ export default function OrdersForm() {
 								</option>
 							</select>
 						</div>
+						{services?.id && (
+							<div className="mb-3 px-4">
+								<div className="row alert alert-primary">
+									<p>Informações do protocolo</p>
+									<p className="col">Rua: {services.address}</p>
+									<p className="col">Bairro: {services.neighborhood}</p>
+									<p className="col">Cidade: {services.city}</p>
+									<p className="col">Estado: {services.state}</p>
+									<p className="col">Número do Poste: {services.numberPost}</p>
+								</div>
+							</div>
+						)}
 						{addressError && (
 							<div className="mb-3 alert alert-danger">
 								Tivemos um problema ao tentar achar sua localização, por favor
