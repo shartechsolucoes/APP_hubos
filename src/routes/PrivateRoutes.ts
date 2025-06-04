@@ -65,6 +65,12 @@ export const privateRoutes = [
 				component: Form,
 				access: [0, 1, 2],
 			},
+			{
+				name: 'Novo Protocolo',
+				path: '/protocol/view',
+				component: View,
+				access: [0, 1, 2],
+			},
 		],
 	},
 	{

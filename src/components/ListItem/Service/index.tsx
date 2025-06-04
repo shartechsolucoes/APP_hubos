@@ -28,7 +28,7 @@ export default function ListItemService({
 	neighborhood,
 	city,
 	state,
-	status,
+	status = 0,
 	kit,
 	userName,
 	userPicture,
@@ -92,21 +92,21 @@ export default function ListItemService({
 					<Status statusOS={status ?? 0} />
 				</div>
 				<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">
-					{accessLevel === 0 && (
+					{accessLevel === 0 && !startOs && (
 						<a className="d-none d-md-flex action" onClick={deleteListItem}>
 							<BsFillTrashFill />
 						</a>
 					)}
-					{accessLevel === 0 && (
+					{accessLevel === 0 && status === 0 && (
 						<Link to={`form?id=${id}`}>
 							<FaPen />
 						</Link>
 					)}
-					{(accessLevel === 2 || accessLevel === 0) && (
-						<Link to={`view?id=${id}`}>
-							<BsEyeFill />
-						</Link>
-					)}
+					{/* {(accessLevel === 2 || accessLevel === 0) && ( */}
+					<Link to={`view?id=${id}`}>
+						<BsEyeFill />
+					</Link>
+					{/* )} */}
 					{accessLevel === 0 && startOs && (
 						<Link to={`/orders/form?&protocol=${id}`}>
 							<FaPlay />
