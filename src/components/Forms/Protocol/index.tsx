@@ -33,6 +33,14 @@ export default function ProtocolForm() {
 		user: { id: '', name: '' },
 	});
 
+	const [errors, setErrors] = useState<{
+		protocolNumber?: string;
+		address?: string;
+		neighborhood?: string;
+		city?: string;
+		state?: string;
+	}>({});
+
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
@@ -41,17 +49,53 @@ export default function ProtocolForm() {
 			...prev,
 			[id]: id === 'numberPost' ? parseInt(value) : value,
 		}));
+
+		// Limpa o erro ao digitar
+		setErrors((prev) => ({ ...prev, [id]: undefined }));
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!id) {
-			api.post('services', formData);
-			return;
+
+		const newErrors: typeof errors = {};
+		if (!formData.protocolNumber.trim()) {
+			newErrors.protocolNumber = 'O número do protocolo é obrigatório.';
 		}
-		api.put(`services/${id}`, formData);
-		// Aqui você pode enviar os dados para uma API ou serviço
+		if (!formData.address.trim()) {
+			newErrors.address = 'O endereço é obrigatório.';
+		}
+		if (!formData.neighborhood.trim()) {
+			newErrors.neighborhood = 'O bairro é obrigatório.';
+		}
+		if (!formData.city.trim()) {
+			newErrors.city = 'A cidade é obrigatória.';
+		}
+		if (!formData.state.trim()) {
+			newErrors.state = 'O estado é obrigatório.';
+		}
+
+		setErrors(newErrors);
+
+		if (Object.keys(newErrors).length > 0) return;
+
+		try {
+			if (!id) {
+				await api.post('services', formData);
+			} else {
+				await api.put(`services/${id}`, formData);
+			}
+			alert('Dados salvos com sucesso!');
+		} catch (error) {
+			console.error(error);
+			alert('Erro ao salvar os dados.');
+		}
 	};
+
+	useEffect(() => {
+		if (id) {
+			getProtocol();
+		}
+	}, []);
 
 	async function getProtocol() {
 		try {
@@ -62,12 +106,6 @@ export default function ProtocolForm() {
 		}
 	}
 
-	useEffect(() => {
-		if (id) {
-			getProtocol();
-		}
-	}, []);
-
 	return (
 		<div className="container card p-4 mt-4">
 			<form className="card-body row" onSubmit={handleSubmit}>
@@ -77,11 +115,16 @@ export default function ProtocolForm() {
 					</label>
 					<input
 						type="text"
-						className="form-control"
+						className={`form-control ${
+							errors.protocolNumber ? 'is-invalid' : ''
+						}`}
 						id="protocolNumber"
 						value={formData.protocolNumber}
 						onChange={handleChange}
 					/>
+					{errors.protocolNumber && (
+						<div className="invalid-feedback">{errors.protocolNumber}</div>
+					)}
 				</div>
 
 				<div className="mb-3 col-12 col-md-6">
@@ -90,24 +133,14 @@ export default function ProtocolForm() {
 					</label>
 					<input
 						type="text"
-						className="form-control"
+						className={`form-control ${errors.address ? 'is-invalid' : ''}`}
 						id="address"
 						value={formData.address}
 						onChange={handleChange}
 					/>
-				</div>
-
-				<div className="mb-3 col-12 col-md-6">
-					<label htmlFor="numberPost" className="form-label">
-						Número
-					</label>
-					<input
-						type="number"
-						className="form-control"
-						id="numberPost"
-						value={formData.numberPost}
-						onChange={handleChange}
-					/>
+					{errors.address && (
+						<div className="invalid-feedback">{errors.address}</div>
+					)}
 				</div>
 
 				<div className="mb-3 col-12 col-md-6">
@@ -116,11 +149,16 @@ export default function ProtocolForm() {
 					</label>
 					<input
 						type="text"
-						className="form-control"
+						className={`form-control ${
+							errors.neighborhood ? 'is-invalid' : ''
+						}`}
 						id="neighborhood"
 						value={formData.neighborhood}
 						onChange={handleChange}
 					/>
+					{errors.neighborhood && (
+						<div className="invalid-feedback">{errors.neighborhood}</div>
+					)}
 				</div>
 
 				<div className="mb-3 col-12 col-md-6">
@@ -129,11 +167,12 @@ export default function ProtocolForm() {
 					</label>
 					<input
 						type="text"
-						className="form-control"
+						className={`form-control ${errors.city ? 'is-invalid' : ''}`}
 						id="city"
 						value={formData.city}
 						onChange={handleChange}
 					/>
+					{errors.city && <div className="invalid-feedback">{errors.city}</div>}
 				</div>
 
 				<div className="mb-3 col-12 col-md-6">
@@ -142,11 +181,14 @@ export default function ProtocolForm() {
 					</label>
 					<input
 						type="text"
-						className="form-control"
+						className={`form-control ${errors.state ? 'is-invalid' : ''}`}
 						id="state"
 						value={formData.state}
 						onChange={handleChange}
 					/>
+					{errors.state && (
+						<div className="invalid-feedback">{errors.state}</div>
+					)}
 				</div>
 
 				<div className="mb-3 col-12">
