@@ -102,7 +102,7 @@ export default function Services() {
 							onChange={(e) => setSearchService(e.target.value)}
 						/>
 					</div>
-					{(accessLevel === 2 || accessLevel === 0) && (
+					{(accessLevel === 1 || accessLevel === 0) && (
 						<Link
 							to="form"
 							className="btn btn-info"

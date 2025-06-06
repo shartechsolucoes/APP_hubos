@@ -107,14 +107,13 @@ export default function ListItemService({
 						<BsEyeFill />
 					</Link>
 					{/* )} */}
-					{accessLevel === 0 && startOs && status === 0 && (
+					{accessLevel === 2 && startOs && status === 0 && (
 						<Link to={`/orders/form?&protocol=${id}`}>
 							<FaPlay />
 						</Link>
 					)}
-					{accessLevel === 0 && !userId && (
+					{accessLevel === 2 && !userId && (
 						<a
-							className="d-none d-md-flex action"
 							onClick={() =>
 								attachUser?.({
 									address,
