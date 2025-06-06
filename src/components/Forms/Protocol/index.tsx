@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../../api';
-import { useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
+import Toast from '../../Toast';
 
 type User = {
 	id: string;
@@ -16,10 +17,12 @@ type Protocol = {
 	city: string;
 	state: string;
 	observation: string;
+	orderId: number | null;
 	user: User;
 };
 
 export default function ProtocolForm() {
+	const route = useNavigate();
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get('id');
 	const [formData, setFormData] = useState<Protocol>({
@@ -30,6 +33,7 @@ export default function ProtocolForm() {
 		city: '',
 		state: '',
 		observation: '',
+		orderId: null,
 		user: { id: '', name: '' },
 	});
 
@@ -40,6 +44,11 @@ export default function ProtocolForm() {
 		city?: string;
 		state?: string;
 	}>({});
+
+	const [openToast, setOpenToast] = useState(false);
+	const [success, setSuccess] = useState(true);
+	const [successMsg, setSuccessMsg] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -57,7 +66,7 @@ export default function ProtocolForm() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		const newErrors: typeof errors = {};
+		const newErrors: any = {};
 		if (!formData.protocolNumber.trim()) {
 			newErrors.protocolNumber = 'O número do protocolo é obrigatório.';
 		}
@@ -75,19 +84,36 @@ export default function ProtocolForm() {
 		}
 
 		setErrors(newErrors);
-
 		if (Object.keys(newErrors).length > 0) return;
 
 		try {
 			if (!id) {
 				await api.post('services', formData);
+				setSuccess(true);
+				setSuccessMsg('Protocolo criado com sucesso!');
 			} else {
 				await api.put(`services/${id}`, formData);
+				setSuccess(true);
+				setSuccessMsg('Protocolo atualizado com sucesso!');
 			}
-			alert('Dados salvos com sucesso!');
+
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+				setSuccessMsg('');
+				setErrorMsg('');
+				route('/protocol'); // ✅ redireciona apenas em caso de sucesso
+			}, 1300);
 		} catch (error) {
 			console.error(error);
-			alert('Erro ao salvar os dados.');
+			setSuccess(false);
+			setErrorMsg('Erro ao salvar os dados do protocolo.');
+			setOpenToast(true);
+			setTimeout(() => {
+				setOpenToast(false);
+				setSuccessMsg('');
+				setErrorMsg('');
+			}, 1300);
 		}
 	};
 
@@ -208,6 +234,9 @@ export default function ProtocolForm() {
 					Salvar
 				</button>
 			</form>
+			{openToast && (
+				<Toast success={success} msgSuccess={successMsg} msgError={errorMsg} />
+			)}
 		</div>
 	);
 }

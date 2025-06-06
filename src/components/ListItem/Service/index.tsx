@@ -97,7 +97,7 @@ export default function ListItemService({
 							<BsFillTrashFill />
 						</a>
 					)}
-					{accessLevel === 0 && status === 0 && (
+					{accessLevel === 0 && status === 0 && !startOs && (
 						<Link to={`form?id=${id}`}>
 							<FaPen />
 						</Link>
@@ -107,7 +107,7 @@ export default function ListItemService({
 						<BsEyeFill />
 					</Link>
 					{/* )} */}
-					{accessLevel === 0 && startOs && (
+					{accessLevel === 0 && startOs && status === 0 && (
 						<Link to={`/orders/form?&protocol=${id}`}>
 							<FaPlay />
 						</Link>

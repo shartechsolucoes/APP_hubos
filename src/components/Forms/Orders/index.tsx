@@ -181,9 +181,7 @@ export default function OrdersForm() {
 		statusEnd?: string,
 		startPhoto?: string
 	) => {
-		if (e) {
-			e.preventDefault();
-		}
+		if (e) e.preventDefault();
 
 		setSaving(true);
 
@@ -202,12 +200,15 @@ export default function OrdersForm() {
 
 		if (!qr_code) {
 			setHasOs(true);
+			setSaving(false);
+			return;
 		}
 
 		const osStatus = status || 1;
 
 		try {
 			if (id) {
+				// Atualizar ordem existente
 				await api.put(`order/${id}`, {
 					address,
 					neighborhood,
@@ -223,6 +224,7 @@ export default function OrdersForm() {
 					photoEndWork: afterPhoto || workImages.endWork,
 					photoStartWork: startPhoto || workImages.startWork,
 				});
+
 				setSuccess(true);
 				setOpenToast(true);
 				setTimeout(() => {
@@ -230,6 +232,7 @@ export default function OrdersForm() {
 					setSaving(false);
 				}, 1300);
 			} else {
+				// Criar nova ordem
 				const response = await api.post('order', {
 					address,
 					neighborhood,
@@ -247,10 +250,24 @@ export default function OrdersForm() {
 					photoStartWork: workImages.startWork,
 				});
 
-				await api.put(`services/${protocol}`, {
+				const newOrderId = response?.data?.id;
+
+				if (!newOrderId) {
+					throw new Error('Falha ao obter o ID da nova ordem.');
+				}
+				console.log(newOrderId);
+				console.log('Atualizando serviço com:', {
 					...services,
-					orderId: response.data.id,
+					orderId: newOrderId,
 				});
+				if (protocol && newOrderId) {
+					console.log(newOrderId);
+					await api.put(`services/${protocol}`, {
+						...services,
+						orderId: newOrderId,
+					});
+				}
+
 				setSuccess(true);
 				setOpenToast(true);
 				setTimeout(() => {
@@ -259,8 +276,11 @@ export default function OrdersForm() {
 					setSaving(false);
 				}, 1300);
 			}
-		} catch (e) {
-			console.error(e);
+		} catch (e: any) {
+			console.error(
+				'Erro ao salvar ordem ou atualizar serviço:',
+				e?.response?.data || e
+			);
 			setOpenToast(true);
 			setSuccess(false);
 			setTimeout(() => setOpenToast(false), 1000);
