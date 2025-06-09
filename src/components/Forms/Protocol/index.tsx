@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../../../api';
 import { useNavigate, useSearchParams } from 'react-router';
 import Toast from '../../Toast';
+import { estadosBrasileiros } from '../Orders/data';
+import useAccessLevelStore from '../../../stores/accessLevelStore';
 
 type User = {
 	id: string;
@@ -18,7 +20,7 @@ type Protocol = {
 	state: string;
 	observation: string;
 	orderId: number | null;
-	user: User;
+	userId?: string;
 };
 
 export default function ProtocolForm() {
@@ -34,8 +36,22 @@ export default function ProtocolForm() {
 		state: '',
 		observation: '',
 		orderId: null,
-		user: { id: '', name: '' },
+		userId: '',
 	});
+
+	const { accessLevel } = useAccessLevelStore();
+
+	const [users, setUsers] = useState<
+		Array<{
+			name: string;
+			id: string;
+			login: string;
+			access_level: number;
+			email: string;
+			status: boolean;
+			picture: string;
+		}>
+	>([]);
 
 	const [errors, setErrors] = useState<{
 		protocolNumber?: string;
@@ -120,6 +136,7 @@ export default function ProtocolForm() {
 	useEffect(() => {
 		if (id) {
 			getProtocol();
+			getUsers();
 		}
 	}, []);
 
@@ -131,6 +148,15 @@ export default function ProtocolForm() {
 			console.error(error);
 		}
 	}
+
+	const getUsers = async () => {
+		try {
+			const response = await api.get('/users');
+			setUsers(response.data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	return (
 		<div className="container card p-4 mt-4">
@@ -205,17 +231,62 @@ export default function ProtocolForm() {
 					<label htmlFor="state" className="form-label">
 						Estado
 					</label>
-					<input
-						type="text"
-						className={`form-control ${errors.state ? 'is-invalid' : ''}`}
+
+					<select
+						className="form-control"
 						id="state"
 						value={formData.state}
-						onChange={handleChange}
-					/>
+						onChange={(e) =>
+							setFormData((prev) => ({
+								...prev,
+								[e.target.id]: e.target.value,
+							}))
+						}
+					>
+						<option value={''} selected disabled>
+							Selecione uma UF
+						</option>
+						{estadosBrasileiros.map((state, index) => (
+							<option key={index} value={state.acronym}>
+								{state.state}
+							</option>
+						))}
+					</select>
 					{errors.state && (
 						<div className="invalid-feedback">{errors.state}</div>
 					)}
 				</div>
+
+				{accessLevel === 0 && (
+					<div className="mb-3 col-12">
+						<label htmlFor="state" className="form-label">
+							Adicionar técnico
+						</label>
+
+						<select
+							className="form-control"
+							id="technic"
+							value={formData.userId}
+							onChange={(e) =>
+								setFormData((prev) => ({
+									...prev,
+									userId: e.target.value,
+								}))
+							}
+						>
+							<option value={''} selected disabled>
+								Selecione um técnico
+							</option>
+							{users
+								.filter((user) => user.access_level === 2)
+								.map((user, index) => (
+									<option key={index} value={user.id}>
+										{user.name}
+									</option>
+								))}
+						</select>
+					</div>
+				)}
 
 				<div className="mb-3 col-12">
 					<label htmlFor="observation" className="form-label">

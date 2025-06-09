@@ -85,14 +85,18 @@ export default function Services() {
 	return (
 		<div className="col-md-12">
 			<div className="d-flex justify-content-between align-items-end gap-3 my-4">
-				<button
-					type="button"
-					className="btn btn-info"
-					style={{ height: 'fit-content' }}
-					onClick={() => (myId ? setMyId('') : setMyId(userId))}
-				>
-					{myId ? 'Todos' : 'Meus'}
-				</button>
+				{accessLevel === 2 ? (
+					<button
+						type="button"
+						className="btn btn-info"
+						style={{ height: 'fit-content' }}
+						onClick={() => (myId ? setMyId('') : setMyId(userId))}
+					>
+						{myId ? 'Todos' : 'Meus'}
+					</button>
+				) : (
+					<span />
+				)}
 				<span className="d-flex justify-content-end align-items-end gap-3">
 					<div className="d-none d-md-flex d-flex flex-column ">
 						<input
