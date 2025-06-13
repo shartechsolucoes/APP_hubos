@@ -20,6 +20,10 @@ export default function Sidebar() {
 		switch (icon) {
 			case 'dashboard':
 				return <MdDashboard className="menu-icon tf-icons bx bx-home-circle" />;
+			case 'protocol':
+				return (
+					<MdDocumentScanner className="menu-icon tf-icons bx bx-home-circle" />
+				);
 			case 'order':
 				return (
 					<MdDocumentScanner className="menu-icon tf-icons bx bx-home-circle" />
@@ -65,7 +69,10 @@ export default function Sidebar() {
 						<a href="#" className="app-brand-link">
 							<span className="app-brand-logo demo"></span>
 							<span className="app-brand-text demo menu-text fw-bolder ms-2 mt-3">
-								<img src="/public/assets/geoos_vertical.png" className="w-100"/>
+								<img
+									src="/public/assets/geoos_vertical.png"
+									className="w-100"
+								/>
 							</span>
 						</a>
 

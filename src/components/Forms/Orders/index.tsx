@@ -14,11 +14,13 @@ import Image from '../Image';
 import ModalImage from './ModalImage';
 import { LiaSearchPlusSolid } from 'react-icons/lia';
 import Spinner from '../../Spiner';
+import { ServiceType } from '../../../pages/Services';
 
 export default function OrdersForm() {
 	const { userId, accessLevel } = useAccessLevelStore();
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get('id');
+	const protocol = searchParams.get('protocol');
 	const [formData, setFormData] = useState<{ [key: string]: any }>({});
 	const [selectedKit, setSelectedKit] = useState('');
 	const [listOfKits, setListOfKits] = useState<
@@ -50,6 +52,7 @@ export default function OrdersForm() {
 
 	const [openImage, setOpenImage] = useState('');
 	const imageModalRef = useRef<any>();
+	const [services, setServices] = useState<ServiceType>();
 
 	const [userLocation, setUserLocation] = useState<{
 		latitude: number;
@@ -110,9 +113,19 @@ export default function OrdersForm() {
 		});
 	};
 
-	// useEffect(() => {
-	// 	getUserLocation();
-	// }, []);
+	async function getProtocol() {
+		try {
+			const response = await api.get(`services/${protocol}`);
+			setServices(response.data);
+			setFormData((prev) => ({
+				...prev,
+				protocolNumber: response.data.protocolNumber,
+			}));
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	useEffect(() => {
 		if (kits.length === 0) {
 			getKits();
@@ -122,6 +135,11 @@ export default function OrdersForm() {
 		}
 	}, [kits]);
 
+	useEffect(() => {
+		if (formData) {
+			getProtocol();
+		}
+	}, []);
 	function handleKitList() {
 		const filteredKit = kits.filter((kit) => kit.id === parseInt(selectedKit));
 		if (
@@ -163,9 +181,7 @@ export default function OrdersForm() {
 		statusEnd?: string,
 		startPhoto?: string
 	) => {
-		if (e) {
-			e.preventDefault();
-		}
+		if (e) e.preventDefault();
 
 		setSaving(true);
 
@@ -184,12 +200,15 @@ export default function OrdersForm() {
 
 		if (!qr_code) {
 			setHasOs(true);
+			setSaving(false);
+			return;
 		}
 
 		const osStatus = status || 1;
 
 		try {
 			if (id) {
+				// Atualizar ordem existente
 				await api.put(`order/${id}`, {
 					address,
 					neighborhood,
@@ -205,6 +224,7 @@ export default function OrdersForm() {
 					photoEndWork: afterPhoto || workImages.endWork,
 					photoStartWork: startPhoto || workImages.startWork,
 				});
+
 				setSuccess(true);
 				setOpenToast(true);
 				setTimeout(() => {
@@ -212,7 +232,8 @@ export default function OrdersForm() {
 					setSaving(false);
 				}, 1300);
 			} else {
-				await api.post('order', {
+				// Criar nova ordem
+				const response = await api.post('order', {
 					address,
 					neighborhood,
 					city,
@@ -228,6 +249,25 @@ export default function OrdersForm() {
 					photoEndWork: workImages.endWork,
 					photoStartWork: workImages.startWork,
 				});
+
+				const newOrderId = response?.data?.id;
+
+				if (!newOrderId) {
+					throw new Error('Falha ao obter o ID da nova ordem.');
+				}
+				console.log(newOrderId);
+				console.log('Atualizando serviço com:', {
+					...services,
+					orderId: newOrderId,
+				});
+				if (protocol && newOrderId) {
+					console.log(newOrderId);
+					await api.put(`services/${protocol}`, {
+						...services,
+						orderId: newOrderId,
+					});
+				}
+
 				setSuccess(true);
 				setOpenToast(true);
 				setTimeout(() => {
@@ -236,8 +276,11 @@ export default function OrdersForm() {
 					setSaving(false);
 				}, 1300);
 			}
-		} catch (e) {
-			console.error(e);
+		} catch (e: any) {
+			console.error(
+				'Erro ao salvar ordem ou atualizar serviço:',
+				e?.response?.data || e
+			);
 			setOpenToast(true);
 			setSuccess(false);
 			setTimeout(() => setOpenToast(false), 1000);
@@ -630,6 +673,18 @@ export default function OrdersForm() {
 								</option>
 							</select>
 						</div>
+						{services?.id && (
+							<div className="mb-3 px-4">
+								<div className="row alert alert-primary">
+									<p>Informações do protocolo</p>
+									<p className="col">Rua: {services.address}</p>
+									<p className="col">Bairro: {services.neighborhood}</p>
+									<p className="col">Cidade: {services.city}</p>
+									<p className="col">Estado: {services.state}</p>
+									<p className="col">Número do Poste: {services.numberPost}</p>
+								</div>
+							</div>
+						)}
 						{addressError && (
 							<div className="mb-3 alert alert-danger">
 								Tivemos um problema ao tentar achar sua localização, por favor
