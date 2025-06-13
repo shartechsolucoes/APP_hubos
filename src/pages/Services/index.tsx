@@ -52,10 +52,14 @@ export default function Services() {
 	const getServices = async (page = 0) => {
 		setLoading(true);
 		setCurrentPage(page);
+
+		console.log(page);
 		try {
-			const response = await api.get(`/services?page=${page}&userId=${myId}`);
+			const response = await api.get(
+				`/services?page=${page + 1}&userId=${myId}`
+			);
 			setServices(response.data.data);
-			setTotalServices(response.data.meta.data.total);
+			setTotalServices(response.data.meta.total);
 			setLoading(false);
 		} catch (error) {
 			console.error(error);
