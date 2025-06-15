@@ -5,11 +5,6 @@ import Toast from '../../Toast';
 import { estadosBrasileiros } from '../Orders/data';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
 
-type User = {
-	id: string;
-	name: string;
-};
-
 type Protocol = {
 	id?: number;
 	protocolNumber: string;

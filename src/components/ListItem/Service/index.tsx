@@ -1,9 +1,9 @@
-import { BsEyeFill, BsFillPencilFill, BsFillTrashFill } from 'react-icons/bs';
+import { BsEyeFill, BsFillTrashFill } from 'react-icons/bs';
 import { Link } from 'react-router';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
 import Status from '../../StatusOS';
 import Image from '../../Forms/Image';
-import { FaPen, FaPlay, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaPen, FaPlay, FaPlus } from 'react-icons/fa';
 
 export type ListItemServiceProps = {
 	id: number;
@@ -19,7 +19,7 @@ export type ListItemServiceProps = {
 	userPicture?: string;
 	startOs?: boolean;
 	deleteListItem?: () => void;
-	attachUser?: ({}) => void;
+	attachUser?: (e: unknown) => void;
 };
 
 export default function ListItemService({

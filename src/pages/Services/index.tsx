@@ -156,7 +156,9 @@ export default function Services() {
 										setDeleteId(service.id);
 										openModal();
 									}}
-									attachUser={(protol) => attachToUser(protol)}
+									attachUser={(protocol) =>
+										attachToUser(protocol as ServiceType)
+									}
 								/>
 							</>
 						))}

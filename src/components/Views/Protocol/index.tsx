@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BsFileEarmarkPdf } from 'react-icons/bs';
 import { useSearchParams } from 'react-router';
 import { useReactToPrint } from 'react-to-print';
@@ -60,7 +60,7 @@ export default function ProtocolView() {
 		}
 	}
 
-	async function getCoordinatesFromAddress(address: string) {
+	async function getCoordinatesFromAddress() {
 		try {
 			const fullAddress = `${formData.address}, ${formData.city}, ${formData.state}`;
 			const response = await fetch(
@@ -86,7 +86,7 @@ export default function ProtocolView() {
 
 	useEffect(() => {
 		if (formData.address) {
-			getCoordinatesFromAddress(formData.address);
+			getCoordinatesFromAddress();
 		}
 	}, [formData]);
 
