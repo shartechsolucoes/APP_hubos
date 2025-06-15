@@ -53,10 +53,9 @@ export default function Services() {
 		setLoading(true);
 		setCurrentPage(page);
 
-		console.log(page);
 		try {
 			const response = await api.get(
-				`/services?page=${page + 1}&userId=${myId}`
+				`/services?page=${page + 1}&userId=${myId}&search=${searchService}`
 			);
 			setServices(response.data.data);
 			setTotalServices(response.data.meta.total);
@@ -110,6 +109,13 @@ export default function Services() {
 							onChange={(e) => setSearchService(e.target.value)}
 						/>
 					</div>
+					<button
+						className="btn btn-info"
+						type="button"
+						onClick={() => getServices()}
+					>
+						Pesquisar
+					</button>
 					{(accessLevel === 1 || accessLevel === 0) && (
 						<Link
 							to="form"
