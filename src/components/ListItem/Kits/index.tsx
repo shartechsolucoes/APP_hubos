@@ -44,12 +44,12 @@ export default function ListItemOrders({
 				)}
 
 				<div className="col-md-2 d-flex justify-content-end align-items-center gap-3">
-					{accessLevel === 0 && (
+					{(accessLevel === 0  || accessLevel === 99)&& (
 						<Link to={`/kits/form?id=${id}`}>
 							<BsFillPencilFill />
 						</Link>
 					)}
-					{accessLevel === 0 && (
+					{(accessLevel === 0  || accessLevel === 99)&& (
 						<a className="" onClick={deleteListItem}>
 							<BsFillTrashFill />
 						</a>

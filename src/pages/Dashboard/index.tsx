@@ -31,6 +31,9 @@ const center = {
 
 export default function Dashboard() {
 	const { accessLevel, userId } = useAccessLevelStore();
+	const [selectedDate, setSelectedDate] = useState(
+		format(new Date(), "yyyy-MM-dd") // valor inicial = hoje
+	);
 	const [orders, setOrders] = useState<
 		Array<{
 			status: number;
@@ -64,10 +67,7 @@ export default function Dashboard() {
 	});
 
 	const getOrders = async () => {
-		const today = new Date();
-		const formattedDate = format(today, 'yyyy-MM-dd');
-
-		const baseUrl = `/orders?dateStart=${formattedDate}&dateEnd=${formattedDate}`;
+		const baseUrl = `/orders?dateStart=${selectedDate}&dateEnd=${selectedDate}`;
 		const url = accessLevel > 0 ? `${baseUrl}&userId=${userId}` : baseUrl;
 
 		const response = await api.get(url);
@@ -112,7 +112,7 @@ export default function Dashboard() {
 			getOrders();
 			getDashboardData();
 		}
-	}, [user]);
+	}, [user, selectedDate]);
 
 	useEffect(() => {
 		setUser(userId);
@@ -160,7 +160,7 @@ export default function Dashboard() {
 					</div>
 				</div>
 			</div>
-			{(accessLevel === 2 || accessLevel === 0) && (
+			{(accessLevel === 2 || accessLevel === 0 || accessLevel === 99) && (
 				<>
 					<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
 						<div className="card card-border-shadow-primary h-100">
@@ -202,8 +202,19 @@ export default function Dashboard() {
 			<div className="col-xxl-12 col-lg-12 mt-4">
 				<div className="card h-100">
 					<div className="card-header d-flex align-items-center justify-content-between">
-						<div className="card-title mb-0">
+						<div className="card-title d-flex justify-content-between  w-100 p-0 m-0">
+
 							<h5 className="m-0 me-2">Maps</h5>
+							<div className="">
+								{(accessLevel === 99 || accessLevel === 0) && (
+								<input
+									type="date"
+									className="form-control"
+									value={selectedDate}
+									onChange={(e) => setSelectedDate(e.target.value)}
+								/>
+								)}
+							</div>
 						</div>
 					</div>
 

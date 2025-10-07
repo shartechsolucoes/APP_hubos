@@ -20,12 +20,13 @@ export default function Orders() {
 	const [orders, setOrders] = useState<
 		Array<{
 			status: number;
-			active: boolean;
+			active: number;
 			address: string;
 			city: string;
 			id: number;
 			lat: string;
 			long: string;
+			duplicated: string;
 			neighborhood: string;
 			observations: string;
 			qr_code: string;
@@ -226,7 +227,7 @@ export default function Orders() {
 						Pesquisar
 					</a>
 
-					{(accessLevel === 1 ||accessLevel === 0 )   && (
+					{(accessLevel === 1 ||accessLevel === 0  ||accessLevel === 99 )   && (
 						<div className="d-none d-md-flex d-flex flex-column position-relative">
 							<div className="dropdown">
 								<button
@@ -256,7 +257,7 @@ export default function Orders() {
 						</div>
 					)}
 
-					{(accessLevel === 2 || accessLevel === 0) && (
+					{(accessLevel === 2 || accessLevel === 0  ||accessLevel === 99 ) && (
 						<Link
 							to="form"
 							className="btn btn-info"
@@ -268,7 +269,7 @@ export default function Orders() {
 				</div>
 				{/* //corrigir estilo */}
 				<div
-					className="card pb-0 mb-2 position-relative"
+					className=" pb-0 mb-2 position-relative"
 					style={{ minHeight: '8em' }}
 				>
 					{loading ? (
@@ -288,6 +289,8 @@ export default function Orders() {
 										neighborhood={order.neighborhood}
 										state={order.state}
 										status={order.status}
+										duplicated={order.duplicated}
+										active={order.active}
 										date={order.registerDay}
 										kit={order?.ordersKits ?? ''}
 										deleteListItem={() => {

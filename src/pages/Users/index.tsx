@@ -42,22 +42,23 @@ export default function Users() {
 			</div>
 
 			<div className="card list-height pb-0 mb-5 overflow-x-hidden overflow-y-scroll">
-				{users.map((item, index) => (
-					<>
-						<ListItemUsers
-							key={index}
-							title={item.name}
-							id={item.id}
-							login={item.login}
-							email={item.email}
-							access_level={item.access_level}
-							status={item.status}
-							picture={item.picture}
-							name={item.name}
-						/>
-						{users.length - 1 !== index}
-					</>
-				))}
+				{users
+					.filter((item) => item.login !== "root") // 👈 exclui o usuário root
+					.map((item, index, arr) => (
+						<div key={item.id}>
+							<ListItemUsers
+								title={item.name}
+								id={item.id}
+								login={item.login}
+								email={item.email}
+								access_level={item.access_level}
+								status={item.status}
+								picture={item.picture}
+								name={item.name}
+							/>
+							{arr.length - 1 !== index}
+						</div>
+					))}
 			</div>
 		</div>
 	);

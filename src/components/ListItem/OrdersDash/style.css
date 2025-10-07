@@ -1,0 +1,16 @@
+.card-orders{
+    display: flex;
+    background: white;
+    margin-top: 20px;
+    width: 100%;
+    background: #f3f3f7;
+    border-radius: 10px;
+}
+.action a{
+    background: #d4f0fa;
+    width: 30px;
+    height: 30px;
+    align-content: center;
+    text-align: center;
+    border-radius: 7px;
+}

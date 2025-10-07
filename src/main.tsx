@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Layout from './layout/index.tsx';
 import 'react-datepicker/dist/react-datepicker.css';
 
+// @ts-ignore
 createRoot(document.getElementById('root')!).render(
 	<BrowserRouter>
 		{/* <Routes>

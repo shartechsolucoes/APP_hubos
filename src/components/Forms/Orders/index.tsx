@@ -501,6 +501,30 @@ export default function OrdersForm() {
 				)}
 				<form onSubmit={saveOrder}>
 					<div className="row">
+						<div className="mb-3 col-2 col-md-2">
+							<label htmlFor="exampleInputEmail1" className="form-label">
+								Poste
+							</label>
+							<input
+								type="text"
+								className="form-control"
+								id="qr_code"
+								// value={formData.qr_code}
+								inputMode="numeric"
+								maxLength={7}
+								ref={inputRef}
+								onChange={(e) => {
+									const reg = new RegExp(/^\d*$/);
+									if (reg.test(e.target.value)) {
+										setFormData((prev) => ({
+											...prev,
+											[e.target.id]: `${e.target.value}`,
+										}));
+									}
+								}}
+							/>
+							{hasOS && <p className="text-danger">OS não inserida</p>}
+						</div>
 						<div className="mb-3 col-10 col-md-11">
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								Número da OS
@@ -525,6 +549,7 @@ export default function OrdersForm() {
 							/>
 							{hasOS && <p className="text-danger">OS não inserida</p>}
 						</div>
+
 						<div className="mb-3 col-1 col-md-1 align-qr-code">
 							<button
 								type="button"
@@ -533,6 +558,45 @@ export default function OrdersForm() {
 							>
 								<BsQrCode />
 							</button>
+						</div>
+						<div className="mb-3 col-6 col-md-6">
+							<label htmlFor="exampleInputEmail1" className="form-label">
+								Número do Protocolo
+							</label>
+							<input
+								type="text"
+								className="form-control"
+								id="protocolNumber"
+								value={formData.protocolNumber}
+								onChange={(e) =>
+									setFormData((prev) => ({
+										...prev,
+										[e.target.id]: e.target.value,
+									}))
+								}
+							/>
+						</div>
+						<div className="mb-3 col-6">
+							<label htmlFor="exampleInputEmail1" className="form-label">
+								Status
+							</label>
+							<select
+								id="status"
+								value={formData.status || 0}
+								className="form-control"
+								onChange={(e) =>
+									setFormData((prev) => ({
+										...prev,
+										[e.target.id]: e.target.value,
+									}))
+								}
+							>
+								<option value="0">Aberto</option>
+								<option value="1">Em trabalho</option>
+								<option selected value="2">
+									Finalizado
+								</option>
+							</select>
 						</div>
 						<div className="mb-3 col-12 col-md-6 d-flex flex-column">
 							<label htmlFor="exampleInputEmail1" className="form-label">
@@ -634,45 +698,7 @@ export default function OrdersForm() {
 								accept="image/*"
 							/>
 						</div>
-						<div className="mb-3 col-6 col-md-6">
-							<label htmlFor="exampleInputEmail1" className="form-label">
-								Número do Protocolo
-							</label>
-							<input
-								type="text"
-								className="form-control"
-								id="protocolNumber"
-								value={formData.protocolNumber}
-								onChange={(e) =>
-									setFormData((prev) => ({
-										...prev,
-										[e.target.id]: e.target.value,
-									}))
-								}
-							/>
-						</div>
-						<div className="mb-3 col-6">
-							<label htmlFor="exampleInputEmail1" className="form-label">
-								Status
-							</label>
-							<select
-								id="status"
-								value={formData.status || 0}
-								className="form-control"
-								onChange={(e) =>
-									setFormData((prev) => ({
-										...prev,
-										[e.target.id]: e.target.value,
-									}))
-								}
-							>
-								<option value="0">Aberto</option>
-								<option value="1">Em trabalho</option>
-								<option selected value="2">
-									Finalizado
-								</option>
-							</select>
-						</div>
+
 						{services?.id && (
 							<div className="mb-3 px-4">
 								<div className="row alert alert-primary">
@@ -769,8 +795,27 @@ export default function OrdersForm() {
 								))}
 							</select>
 						</div>
-						{accessLevel === 0 && (
+						{(accessLevel === 0 ||accessLevel === 99 )&& (
 							<>
+								{accessLevel === 99 && (
+									<div className="mb-3 col-12 col-md-6">
+										<label htmlFor="exampleInputEmail1" className="form-label">
+											Data de Cadastro
+										</label>
+										<input
+											type="text"
+											className="form-control"
+											id="lat"
+											value={formData.registerDay}
+											onChange={(e) =>
+												setFormData((prev) => ({
+													...prev,
+													[e.target.id]: e.target.value,
+												}))
+											}
+										/>
+									</div>
+								)}
 								<div className="mb-3 col-12 col-md-6">
 									<label htmlFor="exampleInputEmail1" className="form-label">
 										Latitude

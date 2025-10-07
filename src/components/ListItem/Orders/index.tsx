@@ -1,8 +1,8 @@
+import './order.css';
 import {
 	BsFillPencilFill,
 	BsEyeFill,
 	BsFillTrashFill,
-	BsCopy,
 } from 'react-icons/bs';
 import { Link } from 'react-router';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
@@ -11,38 +11,43 @@ import { ptBR } from 'date-fns/locale';
 
 import Status from '../../StatusOS/';
 import Image from '../../Forms/Image';
+import {IoDuplicate} from "react-icons/io5";
 
 export default function ListItemOrders({
-	id,
-	qrcode,
-	address,
-	neighborhood,
-	city,
-	state,
-	status,
-	date,
-	deleteListItem,
-	duplicateItem,
-	kit,
-	userName,
-	userPicture,
-}: {
+										   id,
+										   qrcode,
+										   address,
+										   neighborhood,
+										   city,
+										   state,
+										   active,
+										   status,
+										   date,
+										   deleteListItem,
+										   duplicateItem,
+										   kit,
+										   duplicated,
+										   userName,
+										   userPicture,
+									   }: {
 	qrcode?: string;
 	address?: string;
 	neighborhood?: string;
 	city?: string;
 	state?: string;
+	active?: number;
 	status: number;
 	id?: string | number;
 	date: Date;
 	deleteListItem?: () => void;
 	duplicateItem?: () => void;
 	kit?: string;
+	duplicated?: string;
 	userName?: string;
 	userPicture?: string;
 }) {
 	const { accessLevel } = useAccessLevelStore();
-	const formattedDate = date ? format(date, 'dd/MM/yy', { locale: ptBR }) : '';
+	const formattedDate = date ? format(date, "dd/MM/yyyy", { locale: ptBR }) : '';
 
 	function pegarPrimeirasLetras(completeName = '') {
 		if (!completeName) {
@@ -57,74 +62,72 @@ export default function ListItemOrders({
 
 	return (
 		<>
-			<div className="" style={{ borderBottom: '1px solid #f1efef' }}>
-				<div className="row px-4 py-3">
-					<div className="col-6 col-sm-6 col-md-1 d-flex justify-content-start align-items-center">
-						<a href="">
-							<span className="text-os">#{qrcode}</span>
-						</a>
+			<div
+				className={`card mb-2 order 
+				${duplicated ? "duplicated" : ""} 
+				${active === 0 ? "inactive" : ""}`}
+			>
+				<div className="row">
+					<div className="col-12 col-sm-4 col-md-2 qrcode">
+						<p>{qrcode}</p>
+						<Status statusOS={status} />
 					</div>
-					<div className="col-6 col-sm-6 col-md-1 d-flex justify-content-end justify-content-md-end align-items-center">
-						<span className="text-truncate d-flex align-items-center text-heading text-date">
-							{formattedDate}
-						</span>
-					</div>
-					<div className="d-none d-md-flex col-sm-6 col-md-2 d-flex justify-content-center align-items-center">
-						<span className="text-truncate d-flex align-items-center text-heading">
-							{kit}
-						</span>
-					</div>
-					<div className="d-none d-md-flex col-md-2 d-flex justify-content-start align-items-center">
-						<div className="d-flex justify-content-start align-items-center">
-							<div className="avatar-wrapper">
-								<div className="avatar avatar-sm me-3">
-									<span className="avatar-initial rounded-circle bg-label-dark overflow-hidden">
-										{userPicture ? (
-											<Image image={userPicture} />
-										) : (
-											<span>{pegarPrimeirasLetras(userName)}</span>
-										)}
-									</span>
-								</div>
-							</div>
-							<div className="d-flex flex-column">
-								<span className="fw-medium">{userName}</span>
-							</div>
-						</div>
-					</div>
-
-					<div className="col-sm-12 col-md-4 d-flex flex-column justify-content-start align-items-start">
-						<div className="d-flex flex-column">
+					<div className="col-12 col-sm-6 col-md-3 d-flex justify-content-center align-items-center">
+						<div>
 							<h6 className=" mb-0">{address}</h6>
 							<small className="text-truncate">
 								{neighborhood} - {city}/{state}
 							</small>
 						</div>
 					</div>
-					<div className="d-none d-md-flex col-md-1 d-flex justify-content-center align-items-center">
-						<Status statusOS={status} />
+					<div className="col-12 col-sm-1 d-flex justify-content-center align-items-center">
+						<p className='day'>{ formattedDate}</p>
 					</div>
-					<div className="col-md-1 d-flex justify-content-end align-items-center gap-1 ">
-						{(accessLevel === 2 || accessLevel === 1 || accessLevel === 0) && (
-							<Link to={`view?id=${id}`} className="d-none d-md-flex action">
+					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center">
+						{kit}
+					</div>
+					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center">
+						<div className="avatar-wrapper">
+							<div className="avatar avatar-sm me-3">
+              <span className="avatar-initial rounded-circle bg-label-dark overflow-hidden">
+                {userPicture ? (
+					<Image image={userPicture} />
+				) : (
+					<span>{pegarPrimeirasLetras(userName)}</span>
+				)}
+              </span>
+							</div>
+						</div>
+						<div className="d-flex flex-column">
+							<span className="fw-medium">{userName}</span>
+						</div>
+					</div>
+					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center gap-1 ">
+						{(accessLevel === 2 ||
+							accessLevel === 1 ||
+							accessLevel === 0 ||
+							accessLevel === 99) && (
+							<Link to={`view?id=${id}`} className="">
 								<BsEyeFill />
 							</Link>
 						)}
 
-						{(accessLevel === 0 || (accessLevel === 2 && status !== 2)) && (
+						{(accessLevel === 0 ||
+							(accessLevel === 2 && status !== 2) ||
+							accessLevel === 99) && (
 							<Link to={`form?id=${id}`}>
 								<BsFillPencilFill />
 							</Link>
 						)}
 
-						{accessLevel === 0 && (
-							<a className="d-none d-md-flex action" onClick={deleteListItem}>
+						{(accessLevel === 0 || accessLevel === 99) && (
+							<a className="" onClick={deleteListItem}>
 								<BsFillTrashFill />
 							</a>
 						)}
-						{accessLevel === 0 && (
-							<a className="d-none d-md-flex action" onClick={duplicateItem}>
-								<BsCopy />
+						{(accessLevel === 0 || accessLevel === 99) && (
+							<a className="" onClick={duplicateItem}>
+								<IoDuplicate />
 							</a>
 						)}
 					</div>

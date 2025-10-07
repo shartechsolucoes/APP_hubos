@@ -88,7 +88,7 @@ export default function Services() {
 	return (
 		<div className="col-md-12">
 			<div className="d-flex justify-content-between align-items-end gap-3 my-4">
-				{accessLevel === 2 ? (
+				{(accessLevel === 2 || accessLevel === 99)? (
 					<button
 						type="button"
 						className="btn btn-info"
@@ -116,7 +116,7 @@ export default function Services() {
 					>
 						Pesquisar
 					</button>
-					{(accessLevel === 1 || accessLevel === 0) && (
+					{(accessLevel === 1 || accessLevel === 0 || accessLevel === 99) && (
 						<Link
 							to="form"
 							className="btn btn-info"
