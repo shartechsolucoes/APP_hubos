@@ -11,7 +11,7 @@ import { api } from '../../api';
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import { Link } from 'react-router';
 import useAccessLevelStore from '../../stores/accessLevelStore.ts';
-import {Util} from "leaflet";
+// import {Util} from "leaflet";
 import indexOf = Util.indexOf;
 
 const containerStyle = {
