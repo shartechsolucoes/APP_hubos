@@ -7,6 +7,8 @@ import { SiProtondrive } from "react-icons/si";
 import { motion, AnimatePresence } from "framer-motion";
 
 import loginImg from "../../assets/login.png";
+import loginImg02 from "../../assets/login-02.png";
+import loginImg03 from "../../assets/login-03.png";
 import dashboardImg from "../../assets/dashboard.png";
 import ordensImg from "../../assets/ordens.png";
 import relatoriosImg from "../../assets/relatorios.png";
@@ -37,20 +39,20 @@ const SECTIONS: Record<string, Section> = {
       {
         title: "Abrir o sistema",
         description: "Abra o navegador e acesse a URL do GeoOS fornecida pela sua organização.",
-        bullets: ["Ex.: https://geoos.sua.prefeitura.gov.br", "Recomendado: usar Chrome/Edge atualizados"],
+        bullets: ["Ex.: https://app.geoos.com.br", "Recomendado: usar Chrome/Edge atualizados"],
         image: loginImg,
       },
       {
         title: "Inserir credenciais",
         description: "Preencha usuário e senha nos campos correspondentes.",
         bullets: ["Usuário: seu e-mail institucional", "Senha: senha fornecida pelo setor de TI"],
-        image: loginImg,
+        image: loginImg02,
       },
       {
         title: "Primeiro acesso / trocar senha",
         description: "Ao primeiro acesso, você pode ser solicitado a trocar a senha.",
         tip: "Se for solicitado, crie uma senha forte e anote em local seguro.",
-        image: loginImg,
+        image: loginImg03,
       },
     ],
   },

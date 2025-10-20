@@ -9,12 +9,12 @@
   color: #243746;
 }
 
-/* Sidebar (seções) */
 .ps-step-image-wrap img {
-  width: 22%;
+  width: 100%;
   height: 10%;
   object-fit: cover;
   object-position: center;
+
 }
 .ps-sidebar {
   width: 260px;
@@ -208,7 +208,7 @@
 /* Controles */
 .ps-step-controls {
   display: flex;
-  gap: 10px;
+  gap: 50px;
   margin-top: 12px;
 }
 
@@ -231,6 +231,7 @@
 .ps-step-right {
   width: 240px;
   flex-shrink: 0;
+
 }
 
 .ps-steps-list {
