@@ -230,6 +230,21 @@ export default function Manual() {
         </div>
 
         <div className="ps-step-area">
+        <aside className="ps-step-right">
+                    <div className="ps-steps-list">
+                      {steps.map((s, idx) => (
+                        <button
+                          key={idx}
+                          className={`ps-mini-step ${idx === stepIndex ? "current" : ""}`}
+                          onClick={() => setStepIndex(idx)}
+                          aria-label={`Ir para passo ${idx + 1}`}
+                        >
+                          <span className="ps-mini-num">{idx + 1}</span>
+                          <span className="ps-mini-title">{s.title}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </aside>
           <div className="ps-step-left">
             <AnimatePresence mode="wait">
               <motion.div
@@ -274,21 +289,7 @@ export default function Manual() {
             </div>
           </div>
 
-          <aside className="ps-step-right">
-            <div className="ps-steps-list">
-              {steps.map((s, idx) => (
-                <button
-                  key={idx}
-                  className={`ps-mini-step ${idx === stepIndex ? "current" : ""}`}
-                  onClick={() => setStepIndex(idx)}
-                  aria-label={`Ir para passo ${idx + 1}`}
-                >
-                  <span className="ps-mini-num">{idx + 1}</span>
-                  <span className="ps-mini-title">{s.title}</span>
-                </button>
-              ))}
-            </div>
-          </aside>
+
         </div>
       </main>
     </div>
