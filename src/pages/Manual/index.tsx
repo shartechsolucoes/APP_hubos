@@ -16,6 +16,8 @@ import protocolosImg from "../../assets/protocolos.png";
 import dicasImg from "../../assets/dicas.png";
 import suporteImg from "../../assets/suporte.png";
 
+/* ✅ IMPORTAÇÃO ADICIONADA — arquivo PDF da pasta assets */
+import tutorialPDF from "../../assets/Tutorial.pdf";
 
 type SubStep = {
   title: string;
@@ -159,12 +161,10 @@ export default function Manual() {
   const current = steps[stepIndex];
 
   useEffect(() => {
-    // Reset step quando troca de seção
     setStepIndex(0);
   }, [sectionKey]);
 
   useEffect(() => {
-    // Atalhos teclado (← and →)
     const handler = (ev: KeyboardEvent) => {
       if (ev.key === "ArrowRight") {
         goNext();
@@ -189,7 +189,6 @@ export default function Manual() {
     <div className="ps-manual-container">
       <aside className="ps-sidebar">
         <div className="ps-brand">
-          {/* se quiser, coloque logo aqui */}
           <strong>Manual GeoOS</strong>
         </div>
 
@@ -209,11 +208,16 @@ export default function Manual() {
           ))}
         </ul>
 
-        <div className="ps-sidebar-footer">
-          <button onClick={() => window.print()} className="ps-print-btn" aria-label="Imprimir manual">
+                <div className="ps-sidebar-footer">
+          <button
+            onClick={() => window.open(tutorialPDF, "_blank")}
+            className="ps-print-btn"
+            aria-label="Abrir manual em PDF"
+          >
             Imprimir
           </button>
         </div>
+
       </aside>
 
       <main className="ps-content">
@@ -221,7 +225,10 @@ export default function Manual() {
           <h1>{section.label}</h1>
           <div className="ps-progress">
             <div className="ps-progress-bar" aria-hidden>
-              <div className="ps-progress-fill" style={{ width: `${progress}%` }} />
+              <div
+                className="ps-progress-fill"
+                style={{ width: `${progress}%` }}
+              />
             </div>
             <div className="ps-progress-text">
               Passo {stepIndex + 1} de {steps.length} — {progress}%
@@ -230,21 +237,22 @@ export default function Manual() {
         </div>
 
         <div className="ps-step-area">
-        <aside className="ps-step-right">
-                    <div className="ps-steps-list">
-                      {steps.map((s, idx) => (
-                        <button
-                          key={idx}
-                          className={`ps-mini-step ${idx === stepIndex ? "current" : ""}`}
-                          onClick={() => setStepIndex(idx)}
-                          aria-label={`Ir para passo ${idx + 1}`}
-                        >
-                          <span className="ps-mini-num">{idx + 1}</span>
-                          <span className="ps-mini-title">{s.title}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </aside>
+          <aside className="ps-step-right">
+            <div className="ps-steps-list">
+              {steps.map((s, idx) => (
+                <button
+                  key={idx}
+                  className={`ps-mini-step ${idx === stepIndex ? "current" : ""}`}
+                  onClick={() => setStepIndex(idx)}
+                  aria-label={`Ir para passo ${idx + 1}`}
+                >
+                  <span className="ps-mini-num">{idx + 1}</span>
+                  <span className="ps-mini-title">{s.title}</span>
+                </button>
+              ))}
+            </div>
+          </aside>
+
           <div className="ps-step-left">
             <AnimatePresence mode="wait">
               <motion.div
@@ -257,7 +265,11 @@ export default function Manual() {
               >
                 {current.image && (
                   <div className="ps-step-image-wrap">
-                    <img src={current.image} alt={current.title} className="ps-step-image" />
+                    <img
+                      src={current.image}
+                      alt={current.title}
+                      className="ps-step-image"
+                    />
                   </div>
                 )}
 
@@ -280,16 +292,22 @@ export default function Manual() {
             </AnimatePresence>
 
             <div className="ps-step-controls">
-              <button onClick={goPrev} disabled={stepIndex === 0} aria-label="Passo anterior">
+              <button
+                onClick={goPrev}
+                disabled={stepIndex === 0}
+                aria-label="Passo anterior"
+              >
                 ← Anterior
               </button>
-              <button onClick={goNext} disabled={stepIndex === steps.length - 1} aria-label="Próximo passo">
+              <button
+                onClick={goNext}
+                disabled={stepIndex === steps.length - 1}
+                aria-label="Próximo passo"
+              >
                 Próximo →
               </button>
             </div>
           </div>
-
-
         </div>
       </main>
     </div>

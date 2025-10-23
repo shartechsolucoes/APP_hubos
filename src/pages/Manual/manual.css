@@ -9,29 +9,38 @@
   color: #243746;
 }
 
-.ps-step-image-wrap img {
+.ps-step-image-wrap {
   width: 100%;
-  height: 10%;
-  object-fit: cover;
-  object-position: center;
-
-}
-.ps-sidebar {
-  width: 260px;
-  flex-shrink: 0;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 8px 20px rgba(12, 24, 36, 0.06);
+  height: 320px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  background: #f3f6f9;
+  transition: opacity 0.3s ease;
+}
+
+.ps-step-image-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: opacity 0.3s ease;
 }
 
 .ps-brand {
   font-weight: 700;
-  margin-bottom: 12px;
+  margin: 2px 0 20px 0;
   color: #0e72ca;
+  font-size: 15px;
+}
+
+.ps-sections {
+  list-style: none;
+  margin: 0;
+  padding-top: 2px;
 }
 
 .ps-sections {
@@ -101,7 +110,7 @@
   color: #0e72ca;
 }
 
-/* Conteúdo principal */
+
 .ps-content {
   flex: 1;
   background: #f9fbfd;
@@ -124,7 +133,7 @@
   color: #102a43;
 }
 
-/* Barra de progresso */
+
 .ps-progress {
   max-width: 55%;
 }
@@ -149,7 +158,6 @@
   color: #425a70;
 }
 
-/* Área do passo e lista lateral de passos */
 .ps-step-area {
   display: flex;
   gap: 18px;
@@ -164,21 +172,7 @@
   border-radius: 10px;
   padding: 16px;
   box-shadow: 0 6px 18px rgba(12, 24, 36, 0.04);
-}
-
-.ps-step-image-wrap {
-  width: 100%;
-  max-height: 260px;
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 14px;
-}
-
-.ps-step-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  min-height: 560px;
 }
 
 .ps-step-title {
@@ -205,7 +199,7 @@
   border-left: 3px solid #f4c152;
 }
 
-/* Controles */
+
 .ps-step-controls {
   display: flex;
   gap: 50px;
@@ -227,11 +221,10 @@
   background: #c9dff7;
 }
 
-/* Lista lateral de passos (índice) */
+
 .ps-step-right {
   width: 240px;
   flex-shrink: 0;
-
 }
 
 .ps-steps-list {
@@ -273,7 +266,7 @@
   font-weight: 700;
 }
 
-/* Responsividade */
+
 @media (max-width: 900px) {
   .ps-manual-container {
     flex-direction: column;
@@ -297,6 +290,10 @@
   .ps-step-right {
     width: 100%;
   }
+
+  .ps-step-image-wrap {
+    height: 260px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -311,11 +308,18 @@
   .ps-step-controls button {
     width: 100%;
   }
+
+  .ps-step-image-wrap {
+    height: 220px;
+  }
 }
 
-/* Impressão */
+
 @media print {
-  .ps-sidebar, .ps-step-controls, .ps-sidebar-footer, .ps-progress-text {
+  .ps-sidebar,
+  .ps-step-controls,
+  .ps-sidebar-footer,
+  .ps-progress-text {
     display: none;
   }
 
