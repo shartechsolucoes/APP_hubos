@@ -37,19 +37,23 @@ export default function Dashboard() {
 	const [orders, setOrders] = useState<
 		Array<{
 			status: number;
-			active: boolean;
+			active: number;
 			address: string;
 			city: string;
 			id: number;
 			lat: string;
 			long: string;
+			duplicated: string;
 			neighborhood: string;
 			observations: string;
 			qr_code: string;
-			registerDay: string;
+			registerDay: Date;
 			state: string;
 			ordersKits: string;
-			user: { name: string; picture: string };
+			user: {
+				name: string;
+				picture: string;
+			};
 		}>
 	>([]);
 	const [user, setUser] = useState('');
@@ -244,22 +248,25 @@ export default function Dashboard() {
 				</div>
 			</div>
 			<div className="col-xxl-12 col-lg-12 mt-4">
-				<div className="card mb-6">
+				<div className="mb-6">
 					{orders.map((order) => (
 						<>
 							<ListItemOrdersDash
-								userPicture={order.user.picture}
 								key={order.id}
-								qrcode={order.qr_code}
-								register={order.registerDay}
+								qrcode={order?.qr_code}
 								id={order.id}
-								status={order.status}
 								address={order.address}
-								neighborhood={order.neighborhood}
 								city={order.city}
+								neighborhood={order.neighborhood}
 								state={order.state}
-								kit={order?.ordersKits || ''}
+								status={order.status}
+								duplicated={order.duplicated}
+								active={order.active}
+								date={order.registerDay}
+								kit={order?.ordersKits ?? ''}
+
 								userName={order.user.name}
+								userPicture={order.user.picture}
 							/>
 						</>
 					))}

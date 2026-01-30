@@ -1,10 +1,11 @@
-import Dashboard from '../pages/DashboardMaps';
+import Dashboard from '../pages/Dashboard';
 import Form from '../pages/Form';
 import Kits from '../pages/Kits';
 import Materials from '../pages/Materials';
 import Orders from '../pages/Orders';
 import Report from '../pages/Reports';
 import ReportMaterial from '../pages/ReportsMaterial';
+import ReportOS from '../pages/ReportsOS';
 import Services from '../pages/Services';
 import Tags from '../pages/Tags';
 import Users from '../pages/Users';
@@ -149,6 +150,13 @@ export const privateRoutes = [
 				access: [99],
 			},
 		],
+	},
+	{
+		name: 'Relatório',
+		path: '/ReportOS',
+		icon: 'report',
+		component: ReportOS,
+		access: [99],
 	},
 	{
 		name: 'Versão',

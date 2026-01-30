@@ -1,0 +1,49 @@
+.order{
+    padding:10px;
+    box-shadow: none!important;
+}
+.order .qrcode{
+    border-right: 1px solid #dddde1;
+    align-content: center;
+    text-align: center;
+}
+
+.order .day{
+    align-content: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+.qrcode p{
+    font-size: 26px;
+    font-weight: bold;
+    margin: 0;
+}
+.order a{
+    background: #d4f0fa;
+    width: 30px;
+    height: 30px;
+    align-content: center;
+    text-align: center;
+    border-radius: 7px;
+}
+.order svg{
+    color: #2563b1;
+    margin-top: -2px;
+}
+.card.duplicated {
+    border-left: 5px solid #16c5ec; /* borda preta */
+}
+.card.inactive{
+    background: #e3e3e3;
+}
+.card.inactive .bg-label-info{
+    background: #f3f3f7 !important;
+    color: #68798c !important;
+}
+
+.card.inactive .svg{
+    background: #f3f3f7 !important;
+    color: #68798c !important;
+}

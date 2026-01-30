@@ -501,7 +501,7 @@ export default function OrdersForm() {
 				)}
 				<form onSubmit={saveOrder}>
 					<div className="row">
-						<div className="mb-3 col-2 col-md-2">
+						<div className="mb-3 col-2 col-md-2 d-none">
 							<label htmlFor="exampleInputEmail1" className="form-label">
 								Poste
 							</label>

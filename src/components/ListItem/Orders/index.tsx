@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router';
 import useAccessLevelStore from '../../../stores/accessLevelStore';
 import { format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 import { ptBR } from 'date-fns/locale';
 
 import Status from '../../StatusOS/';
@@ -48,7 +49,9 @@ export default function ListItemOrders({
 }) {
 	const { accessLevel } = useAccessLevelStore();
 	const formattedDate = date ? format(date, "dd/MM/yyyy", { locale: ptBR }) : '';
-
+	const formattedTime = date
+		? formatInTimeZone(date, 'UTC', 'HH:mm', { locale: ptBR })
+		: '';
 	function pegarPrimeirasLetras(completeName = '') {
 		if (!completeName) {
 			return '';
@@ -81,7 +84,14 @@ export default function ListItemOrders({
 						</div>
 					</div>
 					<div className="col-12 col-sm-1 d-flex justify-content-center align-items-center">
-						<p className='day'>{ formattedDate}</p>
+						<p className='day'>
+							{(	accessLevel === 0 ||
+								accessLevel === 99) && (
+								formattedTime
+							)}
+							<br/>
+							{ formattedDate}
+						</p>
 					</div>
 					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center">
 						{kit}
