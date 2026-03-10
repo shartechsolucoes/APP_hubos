@@ -2,3 +2,38 @@ input[type='checkbox']{
     margin: 39px;
     position: absolute;
 }
+
+.form-check-input {
+    /*background: none!important;*/
+    /*border: none!important;*/
+    /*margin-top: -1px!important;*/
+    /*margin-left: -4px!important;*/
+    width: 21px!important;;
+    height: 21px!important;;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 50%!important;
+    color: red!important;;
+}
+
+/* hover */.form-check-input:hover {
+    border: none;
+    background-color: #0d6efd!important;
+}
+
+/* marcado */
+.form-check-input:checked {
+    background-color: #0d6efd!important;
+    border-color: #0d6efd;
+}
+
+/* remove sombra padrão do bootstrap */
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+/* desabilitado */
+.form-check-input:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}

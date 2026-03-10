@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './styles.css';
-import { FaSearch } from 'react-icons/fa';
-import { IoMenu } from 'react-icons/io5';
+import {IoAddCircleOutline, IoMenu} from 'react-icons/io5';
 import { useNavigate } from 'react-router';
 import useAccessLevelStore from '../../stores/accessLevelStore';
 
@@ -40,9 +39,9 @@ export default function Navbar() {
 	}, [userAvatar]);
 
 	return (
-		<>
+		<div className="zindex-999">
 			<nav
-				className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+				className="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
 				id="layout-navbar"
 			>
 				<div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -60,16 +59,10 @@ export default function Navbar() {
 					className="navbar-nav-right d-flex align-items-center"
 					id="navbar-collapse"
 				>
-					<div className="navbar-nav align-items-center">
+					<div className="navbar-nav align-items-center add">
 						<div className="nav-item d-flex align-items-center">
-							<FaSearch />
+							<a href="/orders/form"><IoAddCircleOutline /></a>
 
-							<input
-								type="text"
-								className="form-control border-0 shadow-none"
-								placeholder="Search..."
-								aria-label="Search..."
-							/>
 						</div>
 					</div>
 					<ul className="navbar-nav flex-row align-items-center ms-auto">
@@ -82,13 +75,12 @@ export default function Navbar() {
 								onClick={() => setToggleDropdown((prev) => !prev)}
 							>
 								<div
-									className="avatar rounded-circle d-flex"
-									style={{ overflow: 'hidden' }}
+									className="avatar d-flex"
 								>
 									{hasavatar ? (
 										<img src={userAvatar} className="w-px-40 h-auto " />
 									) : (
-										<div className="fw-medium h-100 w-100 d-flex align-items-center justify-content-center bg-label-dark">
+										<div className="text">
 											{getInitialsNames(userName)}
 										</div>
 									)}
@@ -120,6 +112,6 @@ export default function Navbar() {
 					</ul>
 				</div>
 			</nav>
-		</>
+		</div>
 	);
 }

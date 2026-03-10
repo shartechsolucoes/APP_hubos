@@ -29,8 +29,8 @@ export default function ListItemOrders({
 	return (
 		<>
 			<div className="" style={{ borderBottom: '1px solid #f1efef' }}>
-				<div className="row px-4 py-3">
-					<div className="col-sm-4 col-md-4 d-flex justify-content-start align-items-center">
+				<div className="d-flex align-content-center justify-content-between px-4 py-3">
+					<div className="">
 						<span>{title}</span>
 					</div>
 					<div className="col-sm-4 col-md-1 d-flex justify-content-center align-items-center">

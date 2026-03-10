@@ -108,11 +108,11 @@ function Login() {
 									Fale com a gente
 								</a>
 							</h5>
-
+							<a href="/manual">Manual do usuário</a>
 							<p>
 								<i className="bi bi-lock margem_direita"></i>Desenvolvido por
 								<a href="https://www.shartech.com.br" target="_blank"> Shartech</a>
-								<br />© 2021-2025
+								<br />
 							</p>
 						</form>
 					</div>
@@ -142,6 +142,7 @@ function Login() {
 							<p>
 								Com o GeoOS, você pode gerenciar toda a rede de iluminação pública de forma inteligente e integrada.
 							</p>
+
 						</div>
 					</div>
 				</div>

@@ -15,7 +15,7 @@ export default function QRCodeScanner({
 		}
 	};
 	return (
-		<div className="position-fixed z-3 h-100 w-100 top-0 start-0 d-flex flex-column align-items-center justify-content-center bg-dark">
+		<div className="position-fixed z-3 h-100 w-100 top-0 start-0 d-flex flex-column align-items-center justify-content-center bg-dark qrcode">
 			<button
 				onClick={() => closeQR()}
 				className="btn btn-transparent position-absolute top-0 end-0 m-3"

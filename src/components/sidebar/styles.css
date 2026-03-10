@@ -1,3 +1,10 @@
+.layout-menu{
+  background: white;
+  /*border-right: 1px solid #e3e5e9;;*/
+}
+.menu-item .menu-link{
+  color: #3d3d3d;
+}
 .menu-item a.active:before {
   content: "";
   position: absolute;

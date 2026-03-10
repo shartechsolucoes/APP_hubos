@@ -1,23 +1,36 @@
-import ListItem from '../../components/ListItem/Tags';
-import './index.css';
 import { useEffect, useRef, useState } from 'react';
-import { api } from '../../api';
-import Pagination from '../../components/Pagination';
 import QRCode from 'react-qr-code';
 import { useReactToPrint } from 'react-to-print';
 
-export default function Tags() {
-	const [tags, setTags] = useState<
-		Array<{
-			id: number;
-			referenceCode: string;
-			qr_code: string;
-			date: Date;
-			registerDay: Date;
-		}>
-	>([]);
+import ListItem from '../../components/ListItem/Tags';
+import Pagination from '../../components/Pagination';
+import { api } from '../../api';
 
-	const [tagsInput, setTagsInput] = useState<{ start: string; end: string }>({
+import './index.css';
+import {LuPrinter} from "react-icons/lu";
+
+/* ===================== TYPES ===================== */
+
+type Tag = {
+	id: number;
+	referenceCode: string;
+	qr_code: string;
+	date: Date;
+	registerDay: Date;
+};
+
+type TagsInput = {
+	start: string;
+	end: string;
+};
+
+type PaperType = 'A4_12' | 'A4_20' | 'A4_24';
+
+/* ===================== COMPONENT ===================== */
+
+export default function Tags() {
+	const [tags, setTags] = useState<Tag[]>([]);
+	const [tagsInput, setTagsInput] = useState<TagsInput>({
 		start: '',
 		end: '',
 	});
@@ -25,13 +38,15 @@ export default function Tags() {
 	const [totalItems, setTotalItems] = useState(0);
 	const [waitingTag, setWaitingTag] = useState(false);
 	const [printTagList, setPrintTagList] = useState<string[]>([]);
+	const [paperType, setPaperType] = useState<PaperType>('A4_12');
+
+	/** REF QUE IMPRIME (NÃO MEXER) */
+	const contentRef = useRef<HTMLDivElement>(null);
 
 	const totalPages =
-		totalItems < 10
-			? 1
-			: (totalItems / 10) % 1 > 0.5
-			? Math.ceil(totalItems / 10)
-			: Math.ceil(totalItems / 10);
+		totalItems < 10 ? 1 : Math.ceil(totalItems / 10);
+
+	/* ===================== API ===================== */
 
 	const getTags = async () => {
 		const response = await api.get('tags', { params: { page } });
@@ -45,149 +60,160 @@ export default function Tags() {
 			const response = await api.post(
 				'tags',
 				{},
-				{
-					params: { start: tagsInput.start, end: tagsInput.end },
-				}
+				{ params: tagsInput }
 			);
-			const arrayList = response.data.map((tg: any) => tg.referenceCode);
-			setPrintTagList((prevState) => [...prevState, ...arrayList]);
+
+			const codes = response.data.map(
+				(tg: any) => tg.referenceCode
+			);
+
+			setPrintTagList((prev) => [...prev, ...codes]);
 			getTags();
-			setWaitingTag(false);
-		} catch (error) {
-			console.error(error);
+		} finally {
 			setWaitingTag(false);
 		}
 	};
 
-	const setInList = (tag: string) => {
-		const hasTag = printTagList.some((t) => t === tag);
-		if (hasTag) {
-			const slicedList = printTagList;
-			slicedList.splice(slicedList.indexOf(tag), 1);
+	/* ===================== SELECTION ===================== */
 
-			setPrintTagList((prevState) => prevState.filter((item) => item !== tag));
-		} else {
-			setPrintTagList((prev) => [...prev, tag]);
-		}
+	const setInList = (code: string) => {
+		setPrintTagList((prev) =>
+			prev.includes(code)
+				? prev.filter((c) => c !== code)
+				: [...prev, code]
+		);
 	};
 
-	const contentRef = useRef<HTMLDivElement>(null);
-	const reactToPrintFn = useReactToPrint({ contentRef });
+	/* ===================== PRINT ===================== */
+
+	const reactToPrintFn = useReactToPrint({
+		contentRef,
+	});
 
 	useEffect(() => {
 		getTags();
 	}, [page]);
 
+	/* ===================== RENDER ===================== */
+
 	return (
 		<>
+			<div className="d-flex justify-content-between align-items-center">
+				<div className="header-page">
+					<h3 className="mb-0">Etiquetas</h3>
+					<p>Etiquetas / Gerar</p>
+				</div>
+
+				<div className="d-flex align-items-center gap-2">
+					<input
+						className="form-control"
+						placeholder="Início"
+						value={tagsInput.start}
+						onChange={(e) => {
+							setTagsInput((p) => ({
+								...p,
+								start: e.target.value,
+							}));
+						}}
+					/>
+
+					<input
+						className="form-control"
+						placeholder="Fim"
+						value={tagsInput.end}
+						onChange={(e) => {
+							setTagsInput((p) => ({
+								...p,
+								end: e.target.value,
+							}));
+						}}
+					/>
+
+					<select
+						className="form-select"
+						value={paperType}
+						onChange={(e) =>
+							setPaperType(e.target.value as PaperType)
+						}
+					>
+						<option value="A4_12">A4 – 12 etiquetas (3x4)</option>
+						<option value="A4_20">A4 – 20 etiquetas (4x5)</option>
+						<option value="A4_24">A4 – 24 etiquetas (4x6)</option>
+					</select>
+
+					<button
+						className="btn btn-primary"
+						disabled={waitingTag}
+						onClick={generateTags}
+					>
+						Gerar
+					</button>
+
+					<button
+						className="btn btn-primary"
+						onClick={() => reactToPrintFn()}
+						disabled={!printTagList.length}
+					>
+						Imprimir
+					</button>
+				</div>
+			</div>
+			<div className="card mt-5">
+				<div className="card-body">
 			<div className="row">
-				<div className="col-3">
-					<div className="card list-height overflow-y-auto pb-0 mb-5">
-						<div className="card-header">
-							<p className="card-title">Gerar Etiqueta</p>
-						</div>
-						<div className="card-body d-grid">
-							<div className="mb-3 ">
-								<input
-									value={tagsInput.start}
-									type="text"
-									placeholder="Inicio"
-									className="form-control"
-									onChange={(e) =>
-										setTagsInput((prev) => ({ ...prev, start: e.target.value }))
-									}
-								/>
-							</div>
-							<div className="mb-3 ">
-								<input
-									value={tagsInput.end}
-									type="text"
-									placeholder="Fim"
-									className="form-control"
-									onChange={(e) =>
-										setTagsInput((prev) => ({ ...prev, end: e.target.value }))
-									}
-								/>
-							</div>
-							<button
-								disabled={waitingTag}
-								type="button"
-								className="btn btn-primary"
-								onClick={generateTags}
-							>
-								Gerar
-							</button>
-						</div>
-					</div>
-				</div>
-				<div className="col-9">
-					<div className="card  pb-0 mb-5">
-						<div className="card-header d-flex justify-content-between">
-							<p className="card-title">Etiqueta</p>
-							<button
-								type="button"
-								className="btn btn-primary"
-								onClick={() => reactToPrintFn()}
-							>
-								Imprimir
-							</button>
-						</div>
-						<div
-							className=" tag-list card-body d-flex flex-wrap justify-content-center print-media overflow-y-auto "
-							style={{ gap: '5em !important' }}
-							ref={contentRef}
-						>
-							{printTagList.map((tl) => (
-								<>
-									<div
-										key={tl}
-										className="tag-qr position-relative flex-grow-1 d-flex gap-4 flex-column align-items-center m-4"
-										style={{ maxHeight: '360px', maxWidth: '360px' }}
-									>
-										<QRCode
-											size={256}
-											style={{
-												height: 'auto',
-												maxWidth: '100%',
-												width: '100%',
-											}}
-											value={tl}
-											viewBox={`0 0 24 24`}
-										/>
-										<p className="d-flex justify-content-center m-4">
-											OS: {tl}
-										</p>
-									</div>
-								</>
-							))}
-						</div>
-					</div>
-				</div>
-				<div className="card list-height">
-					{tags.map((tag) => (
-						<>
+				<div className="col-md-4">
+
+						{tags.map((tag) => (
 							<ListItem
 								key={tag.id}
 								title={tag.referenceCode}
 								used={!!tag.qr_code}
 								date={tag.date}
 								registeredDay={tag.registerDay}
-								deleteItem={function (): void {
-									throw new Error('Function not implemented.');
-								}}
+								deleteItem={() => {}}
 								selectedList={printTagList}
-								selectItem={(e) => setInList(e)}
+								selectItem={setInList}
 							/>
-						</>
-					))}
-					<Pagination
-						totalPages={totalPages}
-						totalItems={totalItems}
-						currentPage={page}
-						toggleList={(p) => setPage(p)}
-					/>
+						))}
+					</div>
+
+
+				<div className="col-md-8">
+					<div className="preview">
+						<div className="preview-header d-flex justify-content-between align-items-center">
+							<h5>Preview</h5>
+							<LuPrinter />
+						</div>
+						<div className="order-view">
+							<div className="row">
+								<div className="p-0 m-0">
+									<div
+										ref={contentRef}
+										className={`tag-list paper-${paperType}`}
+									>
+										{printTagList.map((code) => (
+											<div key={code} className="tag-qr">
+												<QRCode value={code} size={120} />
+												<p>OS: {code}</p>
+											</div>
+										))}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+				</div>
+			</div>
+
+
+			<Pagination
+				totalPages={totalPages}
+				totalItems={totalItems}
+				currentPage={page}
+				toggleList={setPage}
+			/>
 		</>
 	);
 }

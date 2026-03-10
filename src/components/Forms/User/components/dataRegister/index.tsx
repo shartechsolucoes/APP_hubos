@@ -265,6 +265,7 @@ export default function DataRegister({
 							<option value="1">Administrativo</option>
 							<option value="2">Funcionário</option>
 							<option value="3">Externo</option>
+							<option value="4">Gerencia</option>
 						</select>
 					</div>
 					{!id && (

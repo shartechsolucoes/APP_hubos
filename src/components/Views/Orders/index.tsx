@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../../../api';
-import { useSearchParams } from 'react-router';
+import { useSearchParams} from 'react-router';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { BsFileEarmarkPdf } from 'react-icons/bs';
@@ -14,7 +14,9 @@ export default function OrdersView() {
 			id: number;
 			quantity: string;
 			description: string;
-			materials?: { material: { description: string; quantity: string } }[];
+			materials?: {
+				materialQuantity:string;
+				material: { description: string; } }[];
 		}>
 	>([]);
 	const [kits, setKits] = useState<
@@ -33,7 +35,7 @@ export default function OrdersView() {
 
 	const getOrder = async () => {
 		const response = await api.get(`/order/${id}`);
-		response.data.ordersKits.map((ok: { kit_id: number; quantity: string }) => {
+		response.data.ordersKits.map((ok: { kit_id: number; quantity: string; }) => {
 			const kitInfo = kits.filter((kit) => kit.id === ok.kit_id);
 			setListOfKits((prev) => [...prev, kitInfo[0]]);
 		});
@@ -65,12 +67,20 @@ export default function OrdersView() {
 	const reactToPrintFn = useReactToPrint({ contentRef });
 	const today = format(new Date(), 'dd/MM/yyyy');
 	return (
-		<>
-			<div className="d-flex p-2 pt-0 justify-content-end gap-3">
-				<button type="button" onClick={() => reactToPrintFn()} className="btn">
-					<BsFileEarmarkPdf /> Baixar PDF
-				</button>
+		<div>
+			<div className="d-flex justify-content-between align-items-center">
+				<div className="header-page">
+					<h3 className="mb-0">Resumo OS {formData.qr_code}</h3>
+					<p className=''>Ordem de Serviço / Lista / OS {formData.qr_code}</p>
+				</div>
+				<div className="d-flex p-2 pt-0 justify-content-end gap-3">
+					<button type="button" onClick={() => reactToPrintFn()} className="btn">
+						<BsFileEarmarkPdf /> Baixar PDF
+					</button>
+				</div>
 			</div>
+
+			<div className="m-auto">
 			<div className="card p-3 pb-3 mb-5">
 				<div className="card-body" ref={contentRef}>
 					<div className="d-flex gap-4 mb-4">
@@ -148,7 +158,7 @@ export default function OrdersView() {
 						<hr />
 						<table className="mt-2">
 							<tr>
-								<th>Descrição</th>
+								<th>Kit</th>
 								<th>Materiais</th>
 								<th className="text-center">Quantidade</th>
 							</tr>
@@ -161,7 +171,7 @@ export default function OrdersView() {
 											<td>
 												{kit?.materials?.map((material) => (
 													<div className="ms-3 my-2">
-														({material.material.quantity}){' '}
+														({material.materialQuantity}){' '}
 														{material.material.description}
 													</div>
 												))}
@@ -180,6 +190,7 @@ export default function OrdersView() {
 					</div>
 				</div>
 			</div>
-		</>
+			</div>
+		</div>
 	);
 }

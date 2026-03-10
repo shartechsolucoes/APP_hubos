@@ -10,7 +10,7 @@ import loginImg from "../../assets/login.png";
 import loginImg02 from "../../assets/login-02.png";
 import loginImg03 from "../../assets/login-03.png";
 import dashboardImg from "../../assets/dashboard.png";
-import ordensImg from "../../assets/ordens.png";
+import ordensImg from "../../assets/OS.png";
 import relatoriosImg from "../../assets/relatorios.png";
 import protocolosImg from "../../assets/protocolos.png";
 import dicasImg from "../../assets/dicas.png";
@@ -186,7 +186,7 @@ export default function Manual() {
   const progress = Math.round(((stepIndex + 1) / steps.length) * 100);
 
   return (
-    <div className="ps-manual-container">
+    <div className="ps-manual-container container">
       <aside className="ps-sidebar">
         <div className="ps-brand">
           <strong>Manual GeoOS</strong>

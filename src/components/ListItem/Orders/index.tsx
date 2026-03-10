@@ -30,6 +30,7 @@ export default function ListItemOrders({
 										   duplicated,
 										   userName,
 										   userPicture,
+										   photoEndWork,
 									   }: {
 	qrcode?: string;
 	address?: string;
@@ -46,6 +47,7 @@ export default function ListItemOrders({
 	duplicated?: string;
 	userName?: string;
 	userPicture?: string;
+	photoEndWork?: string;
 }) {
 	const { accessLevel } = useAccessLevelStore();
 	const formattedDate = date ? format(date, "dd/MM/yyyy", { locale: ptBR }) : '';
@@ -66,12 +68,23 @@ export default function ListItemOrders({
 	return (
 		<>
 			<div
-				className={`card mb-2 order 
+				className={`card mb-2 order p-2
 				${duplicated ? "duplicated" : ""} 
 				${active === 0 ? "inactive" : ""}`}
 			>
+
 				<div className="row">
-					<div className="col-12 col-sm-4 col-md-2 qrcode">
+					<div className="col-12 col-sm-4 col-md-1 align-content-center justify-content-center d-flex" style={{ borderRight: "1px solid #dddde1" }} >
+					<div className="thumbnail">
+						<Image
+							image={photoEndWork}
+							height="240px"
+							orientation="from-image"
+						/>
+					</div>
+					</div>
+					<div className="col-12 col-sm-4 col-md-1 qrcode">
+
 						<p>{qrcode}</p>
 						<Status statusOS={status} />
 					</div>
@@ -83,35 +96,53 @@ export default function ListItemOrders({
 							</small>
 						</div>
 					</div>
+					{(	accessLevel === 4 ) && (
+					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center">
+						<p className='day'>
+							{formattedTime}
+						</p>
+					</div>
+								)}
 					<div className="col-12 col-sm-1 d-flex justify-content-center align-items-center">
 						<p className='day'>
 							{(	accessLevel === 0 ||
 								accessLevel === 99) && (
-								formattedTime
+									<>
+										{formattedTime}
+										<br/>
+									</>
+
 							)}
-							<br/>
+
 							{ formattedDate}
 						</p>
 					</div>
 					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center">
 						{kit}
 					</div>
+
+					{(accessLevel === 2 ||
+						accessLevel === 1 ||
+						accessLevel === 0 ||
+						accessLevel === 99) && (
 					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center">
 						<div className="avatar-wrapper">
 							<div className="avatar avatar-sm me-3">
-              <span className="avatar-initial rounded-circle bg-label-dark overflow-hidden">
+								<span className="avatar-initial bg-label-dark overflow-hidden d-flex align-items-center justify-content-center ">
+
                 {userPicture ? (
 					<Image image={userPicture} />
 				) : (
 					<span>{pegarPrimeirasLetras(userName)}</span>
 				)}
-              </span>
+								</span>
 							</div>
 						</div>
 						<div className="d-flex flex-column">
 							<span className="fw-medium">{userName}</span>
 						</div>
 					</div>
+					)}
 					<div className="col-12 col-sm-2 d-flex justify-content-center align-items-center gap-1 ">
 						{(accessLevel === 2 ||
 							accessLevel === 1 ||

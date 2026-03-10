@@ -30,7 +30,6 @@ export default function Orders() {
 			neighborhood: string;
 			observations: string;
 			qr_code: string;
-			photoEndWork: string;
 			registerDay: Date;
 			state: string;
 			ordersKits: string;
@@ -232,7 +231,7 @@ export default function Orders() {
 						Pesquisar
 					</a>
 
-					{(accessLevel === 1 ||accessLevel === 0  ||accessLevel === 99  ||accessLevel === 4 )   && (
+					{(accessLevel === 1 ||accessLevel === 0  ||accessLevel === 99 )   && (
 						<div className="d-none d-md-flex d-flex flex-column position-relative">
 							<div className="dropdown">
 								<button
@@ -309,7 +308,6 @@ export default function Orders() {
 										duplicateItem={() => duplicateItem(order.id)}
 										userName={order.user.name}
 										userPicture={order.user.picture}
-										photoEndWork={order.photoEndWork}
 									/>
 								</>
 							))}

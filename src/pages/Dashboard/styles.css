@@ -1,3 +1,38 @@
+.header{
+   position: relative;
+   top: 0;
+   left: 0;
+   overflow: auto;
+   /*background: rgba(18, 18, 18, 0.35);*/
+   /*border-radius: 15px;*/
+   z-index: 999999999999999999999;
+   /*background: rgba(246, 243, 243, 0.5);*/
+   margin: 0 40px 20px 40px;
+ }
+
+
+.maps{
+  position: absolute;
+  /*top: -25px;*/
+  right: 0px;
+  /*height: 50vh;*/
+  /*width: 100%;*/
+  width: 100%;
+  border-radius: 15px;
+  /*overflow: hidden;*/
+  z-index: 99;
+  margin-left: -50px;
+}
+.maps .maps-frame{
+  position: absolute;
+  top: -40px;
+  width: 100%;
+  height: 100vh;
+}
+.maps .card-header{
+  background: none!important;
+}
+
 .pin-label {
   background-color: #4285F4;
   border: 1px solid #f8f8f8;
@@ -19,4 +54,47 @@
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-top: 8px solid #4285F4;
+}
+
+.order-list{
+  position: relative;
+  margin-top: 20px;
+  /*overflow: auto;*/
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 15px;
+  z-index: 999999999999999999999;
+  /*background: rgba(255, 99, 71, 0.5);*/
+  height: 600px;
+}
+
+
+
+.scroll-box{
+  overflow:auto;
+  /*scrollbar-width:thin;*/
+  scrollbar-color:#0d6efd #ffffff;
+  height:580px;
+  padding-right: 10px;
+}
+
+.scroll-box::-webkit-scrollbar{
+  width:8px;
+  margin-left: -20px;
+}
+
+.scroll-box::-webkit-scrollbar-track{
+  background:#f0f0f0;
+  margin-left: -20px;
+}
+
+.scroll-box::-webkit-scrollbar-thumb{
+  background:#0d6efd;
+  border-radius:20px;
+  margin-left: -20px;
+}
+
+.scroll-box::-webkit-scrollbar-thumb:hover{
+  background:#084298;
+  margin-left: -20px;
 }

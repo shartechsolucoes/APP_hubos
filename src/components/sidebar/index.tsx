@@ -5,6 +5,7 @@ import useAccessLevelStore from '../../stores/accessLevelStore';
 import Navbar from 'react-bootstrap/Navbar';
 import {
 	MdDashboard,
+	MdAnalytics,
 	MdSupervisorAccount,
 	MdSubject,
 	MdOutlineQrCode2,
@@ -38,6 +39,8 @@ export default function Sidebar() {
 				);
 			case 'materials':
 				return <MdHardware className="menu-icon tf-icons bx bx-home-circle" />;
+			case 'report':
+				return <MdAnalytics className="menu-icon tf-icons bx bx-home-circle" />;
 			case 'users':
 				return (
 					<MdSupervisorAccount className="menu-icon tf-icons bx bx-home-circle" />
@@ -71,7 +74,7 @@ export default function Sidebar() {
 							<span className="app-brand-text demo menu-text fw-bolder ms-2 mt-3">
 								<img
 									src="/public/assets/geoos_vertical.png"
-									className="w-100"
+									width={140}
 								/>
 							</span>
 						</a>

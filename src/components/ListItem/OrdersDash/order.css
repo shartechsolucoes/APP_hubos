@@ -1,6 +1,8 @@
-.order{
-    padding:10px;
-    box-shadow: none!important;
+.orders{
+    /*background: #fbfbfb;*/
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    /*border-radius: 15px;*/
 }
 .order .qrcode{
     border-right: 1px solid #dddde1;
@@ -11,12 +13,12 @@
 .order .day{
     align-content: center;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     margin: 0;
 }
 .qrcode p{
-    font-size: 26px;
+    font-size: 22px;
     font-weight: bold;
     margin: 0;
 }

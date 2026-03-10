@@ -26,8 +26,8 @@ const containerStyle = {
 };
 
 const center = {
-	lat: -25.2587551,
-	lng: -49.2962303,
+	lat: -25.3074528,
+	lng: -49.2688092,
 };
 
 export default function Dashboard() {
@@ -147,14 +147,10 @@ export default function Dashboard() {
 	return (
 		<>
 
-			<div className="maps order-0 order-md-1">
-				<div className="header order-1 order-md-0 d-flex justify-content-between">
-					<div className="header-page ">
-						<h3 className="mb-0">Dashboard</h3>
-						<p className="">Ordem de Serviço / Lista</p>
-					</div>
-					<div className='w-25'>
-						{(accessLevel === 99 || accessLevel === 0 || accessLevel === 4) && (
+			<div className="maps">
+				<div className="">
+					<div className="position-absolute">
+						{(accessLevel === 99 || accessLevel === 0) && (
 							<input
 								type="date"
 								className="form-control"
@@ -163,9 +159,6 @@ export default function Dashboard() {
 							/>
 						)}
 					</div>
-
-				</div>
-				<div className="maps-frame">
 					{isLoaded && (
 						<GoogleMap
 							mapContainerStyle={containerStyle}
@@ -190,124 +183,143 @@ export default function Dashboard() {
 						</GoogleMap>
 					)}
 				</div>
-
-				<div className="row mx-4">
-					<div className="d-block d-sm-none col-sm-6">
-						<Link to={`orders/form`} className="btn btn-info w-100 mb-3">
-							Criar nova OS
-						</Link>
-					</div>
-					<div className="col-lg-3 col-md-3 col-sm-12">
-						<div className="card card-border-shadow-primary h-100">
-							<div className="card-body">
-								<div className="d-flex align-items-center mb-2">
-									<div className="icon me-4">
+			</div>
+			<div className="row">
+				<div className="col-12 col-md-3 order-md-0 order-sm-1">
+					<div className="box-os">
+					<div className="card ">
+						<div className="card-body">
+							<div className="d-flex align-items-center mb-2">
+								<div className="icon me-4">
 								<span className="bg-label-primary">
 									<Link to={`orders`}>
 										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
 									</Link>
 								</span>
-									</div>
-									<h4 className="mb-0">{totalItems.dayOrder}</h4>
 								</div>
-								<p className="mb-2">Ordem de Serviços Hoje</p>
+								<h4 className="mb-0">Lista de OS</h4>
 							</div>
+						<div className="">
+							{(accessLevel === 99 || accessLevel === 0) && (
+								<input
+									type="date"
+									className="form-control"
+									value={selectedDate}
+									onChange={(e) => setSelectedDate(e.target.value)}
+								/>
+							)}
 						</div>
+							<div className="">
+						{orders.map((order) => (
+							<>
+								<ListItemOrdersDash
+									key={order.id}
+									qrcode={order?.qr_code}
+									id={order.id}
+									address={order.address}
+									city={order.city}
+									neighborhood={order.neighborhood}
+									state={order.state}
+									status={order.status}
+									photoEndWork={order.photoEndWork}
+									duplicated={order.duplicated}
+									active={order.active}
+									date={order.registerDay}
+									kit={order?.ordersKits ?? ''}
+									userName={order.user.name}
+									userPicture={order.user.picture}
+								/>
+							</>
+						))}
+							</div>
 					</div>
-
-					<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
-						<div className="card card-border-shadow-primary h-100">
-							<div className="card-body">
-								<div className="d-flex align-items-center mb-2">
-									<div className="icon me-4">
+					</div>
+					</div>
+				</div>
+				<div className="col-9 order-md-1 order-sm-0">
+					<div className="row">
+						<div className="d-block d-sm-none col-sm-6">
+							<Link to={`orders/form`} className="btn btn-info w-100 mb-3">
+								Criar nova OS
+							</Link>
+						</div>
+						<div className="col-lg-3 col-md-3 col-sm-12">
+							<div className="card card-border-shadow-primary h-100">
+								<div className="card-body">
+									<div className="d-flex align-items-center mb-2">
+										<div className="icon me-4">
 								<span className="bg-label-primary">
 									<Link to={`orders`}>
 										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
 									</Link>
 								</span>
+										</div>
+										<h4 className="mb-0">{totalItems.dayOrder}</h4>
 									</div>
-									<h4 className="mb-0">{totalItems.order}</h4>
+									<p className="mb-2">Ordem de Serviços Hoje</p>
 								</div>
-								<p className="mb-2">Ordem de Serviços - Total</p>
 							</div>
 						</div>
-					</div>
-					{(accessLevel === 2 || accessLevel === 0 || accessLevel === 99) && (
-						<>
-							<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
-								<div className="card card-border-shadow-primary h-100">
-									<div className="card-body">
-										<div className="d-flex align-items-center mb-2">
-											<div className="icon me-4">
+
+						<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
+							<div className="card card-border-shadow-primary h-100">
+								<div className="card-body">
+									<div className="d-flex align-items-center mb-2">
+										<div className="icon me-4">
+								<span className="bg-label-primary">
+									<Link to={`orders`}>
+										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									</Link>
+								</span>
+										</div>
+										<h4 className="mb-0">{totalItems.order}</h4>
+									</div>
+									<p className="mb-2">Ordem de Serviços - Total</p>
+								</div>
+							</div>
+						</div>
+						{(accessLevel === 2 || accessLevel === 0 || accessLevel === 99) && (
+							<>
+								<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
+									<div className="card card-border-shadow-primary h-100">
+										<div className="card-body">
+											<div className="d-flex align-items-center mb-2">
+												<div className="icon me-4">
 										<span className="bg-label-primary">
 											<Link to={`kits`}>
 												<BsTools className="icon-base bx bxs-truck icon-lg" />
 											</Link>
 										</span>
+												</div>
+												<h4 className="mb-0">{totalItems.kit}</h4>
 											</div>
-											<h4 className="mb-0">{totalItems.kit}</h4>
+											<p className="mb-2">Kist's Cadastrados</p>
 										</div>
-										<p className="mb-2">Kist's Cadastrados</p>
 									</div>
 								</div>
-							</div>
 
-							<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
-								<div className="card card-border-shadow-primary h-100">
-									<div className="card-body">
-										<div className="d-flex align-items-center mb-2">
-											<div className="icon me-4">
+								<div className="col-lg-3 col-md-3 col-sm-6 d-none d-md-block">
+									<div className="card card-border-shadow-primary h-100">
+										<div className="card-body">
+											<div className="d-flex align-items-center mb-2">
+												<div className="icon me-4">
 										<span className="bg-label-primary">
 											<Link to={`users`}>
 												<BsPersonBadgeFill className="icon-base bx bxs-truck icon-lg" />
 											</Link>
 										</span>
+												</div>
+												<h4 className="mb-0">{totalItems.user}</h4>
 											</div>
-											<h4 className="mb-0">{totalItems.user}</h4>
+											<p className="mb-2">Usuários Ativos</p>
 										</div>
-										<p className="mb-2">Usuários Ativos</p>
 									</div>
 								</div>
-							</div>
-						</>
-					)}
-
-				</div>
-				{orders?.length > 0 && (
-					<div className="row mx-4">
-						<div className="col-lg-3 col-md-3 col-sm-3 d-md-block">
-							<div className="order-list scroll-wrapper">
-								<div className="scroll-box">
-									{orders.map((order) => (
-										<ListItemOrdersDash
-											key={order.id}
-											qrcode={order?.qr_code}
-											id={order.id}
-											address={order.address}
-											city={order.city}
-											neighborhood={order.neighborhood}
-											state={order.state}
-											status={order.status}
-											photoEndWork={order.photoEndWork}
-											duplicated={order.duplicated}
-											active={order.active}
-											date={order.registerDay}
-											kit={order?.ordersKits ?? ""}
-											userName={order.user.name}
-											userPicture={order.user.picture}
-										/>
-									))}
-								</div>
-							</div>
-						</div>
+							</>
+						)}
 					</div>
-				)}
-
-
+				</div>
 			</div>
-
-
-
 		</>
 	);
 }

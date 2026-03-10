@@ -1,11 +1,15 @@
-import ListItem from '../../components/ListItem/Materials';
+// import ListItem from '../../components/ListItem/Materials';
 import './styles.css';
-import { NavLink } from 'react-router';
+import {Link, NavLink} from 'react-router';
 import { useEffect, useState } from 'react';
 import { api } from '../../api';
 import useModalStore from '../../stores/modalStore';
-import Modal from '../../components/Modal';
+// import Modal from '../../components/Modal';
 import Toast from '../../components/Toast';
+// import DatePicker from "react-datepicker";
+import {BsClipboardDataFill} from "react-icons/bs";
+import ListItem from "../../components/ListItem/Materials";
+import Modal from "../../components/Modal";
 
 export default function Materials() {
 	const [materials, setMaterials] = useState<
@@ -72,55 +76,145 @@ export default function Materials() {
 						msgSuccess={messageSuccess}
 					/>
 				)}
-				<div className="d-flex py-4 gap-4 pt-0 justify-content-end align-items-center">
-					<div className="d-none d-md-flex d-flex flex-column ">
-						<input
-							className="form-control"
-							placeholder="Nome do material"
-							value={searchMaterial}
-							onChange={(e) => setSearchMaterial(e.target.value)}
-						/>
+
+				<div className="d-flex justify-content-between align-items-center">
+					<div className="header-page">
+						<h3 className="mb-0">Lista de materiais</h3>
+						<p className=''>Materiais / Lista</p>
 					</div>
-					<a
-						onClick={() => getMaterials()}
-						className=" d-none d-md-flex d-flex flex-column btn btn-info"
-						style={{ height: 'fit-content' }}
-					>
-						Pesquisar
-					</a>
-					<NavLink to="form" className="btn btn-info">
-						Novo
-					</NavLink>
-				</div>
-				<div className="card pb-0 mb-5">
-					{materials.map((material) => (
-						<>
-							<ListItem
-								group={material.group}
-								id={material.id}
-								title={material.description}
-								unit={material.unit}
-								status={material.status}
-								showMedida={true}
-								showStatus={true}
-								deleteItem={() => {
-									setDeleteId(material.id);
-									openModal();
-								}}
+					<div className="d-flex justify-content-end align-items-end gap-3 my-4">
+						<div className="d-none d-md-flex d-flex flex-column ">
+							<input
+								className="form-control"
+								placeholder="Nome do material"
+								value={searchMaterial}
+								onChange={(e) => setSearchMaterial(e.target.value)}
 							/>
-						</>
-					))}
+						</div>
+						<a
+							onClick={() => getMaterials()}
+							className=" d-none d-md-flex d-flex flex-column btn btn-info"
+							style={{ height: 'fit-content' }}
+						>
+							Pesquisar
+						</a>
+						<NavLink to="form" className="btn btn-info">
+							Novo
+						</NavLink>
+					</div>
+
+				</div>
+				<div className="row mt-3 d-none">
+					<div className="col-lg-3 col-md-3 col-sm-12">
+						<div className="card card-border-shadow-primary h-100">
+							<div className="card-body">
+								<div className="d-flex align-items-center mb-2">
+									<div className="icon me-4">
+								<span className="bg-label-primary">
+									<Link to={`orders`}>
+										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									</Link>
+								</span>
+									</div>
+									<h4 className="mb-0"></h4>
+								</div>
+								<p className="mb-2">Ordem de Serviços Hoje</p>
+							</div>
+						</div>
+					</div>
+					<div className="col-lg-3 col-md-3 col-sm-12">
+						<div className="card card-border-shadow-primary h-100">
+							<div className="card-body">
+								<div className="d-flex align-items-center mb-2">
+									<div className="icon me-4">
+								<span className="bg-label-primary">
+									<Link to={`orders`}>
+										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									</Link>
+								</span>
+									</div>
+									<h4 className="mb-0"></h4>
+								</div>
+								<p className="mb-2">Ordem de Serviços Hoje</p>
+							</div>
+						</div>
+					</div>
+					<div className="col-lg-3 col-md-3 col-sm-12">
+						<div className="card card-border-shadow-primary h-100">
+							<div className="card-body">
+								<div className="d-flex align-items-center mb-2">
+									<div className="icon me-4">
+								<span className="bg-label-primary">
+									<Link to={`orders`}>
+										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									</Link>
+								</span>
+									</div>
+									<h4 className="mb-0"></h4>
+								</div>
+								<p className="mb-2">Ordem de Serviços Hoje</p>
+							</div>
+						</div>
+					</div>
+					<div className="col-lg-3 col-md-3 col-sm-12">
+						<div className="card card-border-shadow-primary h-100">
+							<div className="card-body">
+								<div className="d-flex align-items-center mb-2">
+									<div className="icon me-4">
+								<span className="bg-label-primary">
+									<Link to={`orders`}>
+										<BsClipboardDataFill className="icon-base bx bxs-truck icon-lg" />
+									</Link>
+								</span>
+									</div>
+									<h4 className="mb-0"></h4>
+								</div>
+								<p className="mb-2">Ordem de Serviços Hoje</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					{openToast && (
+						<Toast
+							success={success}
+							msgError={messageError}
+							msgSuccess={messageSuccess}
+						/>
+					)}
+
+
+					<div className="card pb-0 mb-5 mt-4">
+						{materials.map((material) => (
+							<>
+								<ListItem
+									group={material.group}
+									id={material.id}
+									title={material.description}
+									unit={material.unit}
+									status={material.status}
+									showMedida={true}
+									showStatus={true}
+									deleteItem={() => {
+										setDeleteId(material.id);
+										openModal();
+									}}
+								/>
+							</>
+						))}
+					</div>
+				</div>
+				<div>
+					<Modal
+						cancelCopy="Cancelar"
+						copy="Deseja remover o item selecionado ?"
+						saveCopy="Apagar"
+						toggleCancel={closeModal}
+						toggleSave={() => deleteMaterial(deleteId || 0)}
+					/>
 				</div>
 			</div>
-			<div>
-				<Modal
-					cancelCopy="Cancelar"
-					copy="Deseja remover o item selecionado ?"
-					saveCopy="Apagar"
-					toggleCancel={closeModal}
-					toggleSave={() => deleteMaterial(deleteId || 0)}
-				/>
-			</div>
+
 		</>
 	);
 }

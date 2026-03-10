@@ -49,7 +49,7 @@ export default function UserForm() {
 
 	return (
 		<div className="row">
-			<div className="col-xl-4 col-lg-5 order-1 order-md-0">
+			<div className="col-xl-2 col-lg-4 order-1 order-md-0">
 				<SideInfo formData={formData} id={id || ''} />
 			</div>
 			<div className="col-xl-8 col-lg-7 order-0 order-md-1">

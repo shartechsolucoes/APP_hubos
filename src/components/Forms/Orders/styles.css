@@ -21,3 +21,34 @@
     overflow-y: unset;
   }
 }
+.img-box{
+  border: 1px #345eab dashed;
+  padding: 10px;
+}
+
+.preview{
+  padding: 30px;
+  background: #f0f3f7;
+  /*border-radius: 15px;*/
+  height: 100vh!important;
+}
+
+.order-view{
+  font-size: 12px;
+  padding: 60px;
+  background: #fff;
+  height: 90vh!important;
+}
+.order-view p{
+  font-size: 12px;
+  line-height: 14px;
+}
+.order-view .title{
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.order-view .map{
+  overflow: hidden;
+  height: 200px;
+  width: 100%;
+}

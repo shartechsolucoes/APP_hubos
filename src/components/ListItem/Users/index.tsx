@@ -63,7 +63,7 @@ export default function ListItemOrders({
 							{/*/>*/}
 							<div className="avatar-wrapper">
 								<div className="avatar avatar-sm me-3">
-									<span className="avatar-initial rounded-circle bg-label-dark overflow-hidden d-flex align-items-center justify-content-center ">
+									<span className="avatar-initial bg-label-dark overflow-hidden d-flex align-items-center justify-content-center ">
 										{picture ? (
 											<Image image={picture} />
 										) : (

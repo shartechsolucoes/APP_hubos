@@ -1,4 +1,4 @@
-import Dashboard from '../pages/Dashboard';
+import Dashboard from '../pages/Dashboard/';
 import Form from '../pages/Form';
 import Kits from '../pages/Kits';
 import Materials from '../pages/Materials';
@@ -12,7 +12,6 @@ import Users from '../pages/Users';
 import Version from '../pages/Version';
 import Poles from '../pages/Post';
 import View from '../pages/View';
-import Manual from '../pages/Manual';
 
 export const privateRoutes = [
 	{
@@ -20,14 +19,14 @@ export const privateRoutes = [
 		path: '/',
 		icon: 'dashboard',
 		component: Dashboard,
-		access: [0, 1, 2, 99],
+		access: [0, 1, 2, 99, 4],
 	},
 	{
 		name: 'Ordem de Serviço',
 		path: '/orders',
 		icon: 'order',
 		component: Orders,
-		access: [0, 1, 2, 99],
+		access: [0, 1, 2, 99, 4],
 		children: [
 			{
 				name: 'Nova Ordem de Serviço',
@@ -45,13 +44,13 @@ export const privateRoutes = [
 				name: 'Relatório Ordens de Serviço do dia',
 				path: '/orders/report',
 				component: Report,
-				access: [0, 1, 99],
+				access: [0, 1, 99, 4],
 			},
 			{
 				name: 'Relatório Materiais Utilizados',
 				path: '/orders/report-materials',
 				component: ReportMaterial,
-				access: [0, 1, 99],
+				access: [0, 1, 99, 4],
 			},
 		],
 	},
@@ -96,7 +95,7 @@ export const privateRoutes = [
 		path: '/materials',
 		icon: 'materials',
 		component: Materials,
-		access: [0, 99],
+		access: [0, 99, 4],
 		children: [
 			{
 				name: 'Novo Material',
@@ -163,7 +162,6 @@ export const privateRoutes = [
 		path: '/version',
 		icon: 'version',
 		component: Version,
-		access: [0,99],
+		access: [0,99,4],
 	},
-	{ name: 'manual', path: '/manual', component: Manual },
 ];

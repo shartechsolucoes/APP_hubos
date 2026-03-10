@@ -1,24 +1,52 @@
-.tag-qr svg {
-    font-size: 150px;
-}
+/* ================= BASE ================= */
 
 .tag-list {
-    max-height: 30vh;
-    padding: 0 5% !important
+    display: grid;
+    gap: 10mm;
+    padding: 10mm;
+    background: #fff;
 }
 
+.tag-qr {
+    border: 1px solid #000;
+    padding: 8mm;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+.order-view {
+    padding: 16px;
+    max-height: 70vh;
+    overflow: auto;
+}
+/* ================= PAPÉIS ================= */
+/* ================= PAPERS ================= */
+
+.paper-A4_12 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.paper-A4_20 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.paper-A4_24 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* ================= PRINT ================= */
 
 @media print {
-    .print-media {
-        margin: 3em;
-        display: block;
+    body {
+        margin: 0;
     }
 
-    .tag-list {
-        max-height: fit-content;
+    .preview {
+        border: none;
+    }
+
+    .order-view {
+        max-height: none;
+        overflow: visible;
     }
 }
-
-/* @page {
-    margin-top: .5in;
-} */
