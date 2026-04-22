@@ -41,6 +41,8 @@ export default function Sidebar() {
 				return <MdHardware className="menu-icon tf-icons bx bx-home-circle" />;
 			case 'report':
 				return <MdAnalytics className="menu-icon tf-icons bx bx-home-circle" />;
+			case 'log':
+				return <MdAnalytics className="menu-icon tf-icons bx bx-home-circle" />;
 			case 'users':
 				return (
 					<MdSupervisorAccount className="menu-icon tf-icons bx bx-home-circle" />

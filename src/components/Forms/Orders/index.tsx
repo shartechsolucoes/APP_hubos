@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { api } from '../../../api';
-import { BsQrCode } from 'react-icons/bs';
+import { BsQrCode} from 'react-icons/bs';
 import { useNavigate, useSearchParams } from 'react-router';
 import QRCodeScanner from '../../QRCodeScanner';
 import axios from 'axios';
@@ -16,6 +16,8 @@ import useAccessLevelStore from '../../../stores/accessLevelStore';
 import ModalImage from './ModalImage';
 import { ServiceType } from '../../../pages/Services';
 import {GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
+import Image from "../Image";
+import { format, parse } from 'date-fns';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyCLYeK1ksPfWhPxgZZ687Vdi-eDFLFRCr0';
 
@@ -119,11 +121,7 @@ export default function OrdersForm() {
 		// 🔴 AJUSTE AQUI: converter registerDay para datetime-local
 		setFormData({
 			...response.data,
-			registerDay: response.data.registerDay
-				? new Date(response.data.registerDay)
-					.toISOString()
-					.slice(0, 16)
-				: '',
+			registerDay: formatRegisterDayForDisplay(response.data.registerDay),
 		});
 
 		// Mantém imagens
@@ -506,8 +504,42 @@ export default function OrdersForm() {
 
 	const normalizeRegisterDay = (value?: string) => {
 		if (!value) return null;
+
+		const parsedBrDate = parse(value, 'dd/MM/yyyy HH:mm', new Date());
+		if (!isNaN(parsedBrDate.getTime())) {
+			return parsedBrDate.toISOString();
+		}
+
 		const date = new Date(value);
 		return isNaN(date.getTime()) ? null : date.toISOString();
+	};
+
+	const formatRegisterDayForDisplay = (value?: string) => {
+		if (!value) return '';
+		const date = new Date(value);
+		return isNaN(date.getTime()) ? '' : format(date, 'dd/MM/yyyy HH:mm');
+	};
+
+	const handleRegisterDayChange = (value: string) => {
+		let formattedValue = value.replace(/\D/g, '').slice(0, 12);
+
+		if (formattedValue.length > 2) {
+			formattedValue = `${formattedValue.slice(0, 2)}/${formattedValue.slice(2)}`;
+		}
+		if (formattedValue.length > 5) {
+			formattedValue = `${formattedValue.slice(0, 5)}/${formattedValue.slice(5)}`;
+		}
+		if (formattedValue.length > 10) {
+			formattedValue = `${formattedValue.slice(0, 10)} ${formattedValue.slice(10)}`;
+		}
+		if (formattedValue.length > 13) {
+			formattedValue = `${formattedValue.slice(0, 13)}:${formattedValue.slice(13)}`;
+		}
+
+		setFormData((prev) => ({
+			...prev,
+			registerDay: formattedValue,
+		}));
 	};
 
 	const [coordinates, setCoordinates] = useState<{
@@ -591,7 +623,7 @@ export default function OrdersForm() {
 							/>
 						)}
 						<div className="row">
-							<div className="col-md-5">
+							<div className="col-md-6 ">
 								<div className="row">
 									<div className="mb-3 col-2 col-md-2 d-none">
 										<label htmlFor="exampleInputEmail1" className="form-label">
@@ -828,17 +860,15 @@ export default function OrdersForm() {
 													Data de Cadastro
 												</label>
 												<input
-													type="datetime-local"
+													type="text"
 													className="form-control"
 													id="registerDay"
 													value={formData.registerDay || ''}
-													onChange={(e) =>
-														setFormData((prev) => ({
-															...prev,
-															registerDay: e.target.value,
-														}))
-													}
+													inputMode="numeric"
+													placeholder="dd/mm/aaaa hh:mm"
+													onChange={(e) => handleRegisterDayChange(e.target.value)}
 												/>
+												<small className="text-muted">Formato: 21/04/2026 20:56</small>
 											</div>
 
 											<div className="mb-3 col-12 col-md-6">
@@ -917,32 +947,146 @@ export default function OrdersForm() {
 									</button>
 								</div>
 							</div>
-							<div className="col-7 box">
-								{isLoaded ? (
-									coordinates ? (
-										<div style={{ height: '20%', width: '100%' }}>
-											<GoogleMap
-												center={coordinates}
-												zoom={16}
-												mapContainerStyle={{ height: '100%', width: '100%' }}
-												options={{
-													disableDefaultUI: true, // Remove toda a UI (controles de zoom, etc.)
-													draggable: false, // Impede arrastar
-													zoomControl: false, // Impede zoom manual
-													scrollwheel: false, // Impede zoom com o scroll do mouse
-													disableDoubleClickZoom: true,
-													gestureHandling: 'none', // Impede qualquer gesto
-												}}
-											>
-												<Marker position={coordinates} />
-											</GoogleMap>
-										</div>
-									) : (
-										<p>Endereço não encontrado no mapa.</p>
-									)
-								) : (
-									<p>Carregando mapa...</p>
+							<div className="col-6 box p-5">
+
+								<div>
+									<div className="card-body">
+										{isLoaded ? (
+											coordinates ? (
+												<div style={{ height: '20%', width: '100%' }}>
+													<GoogleMap
+														center={coordinates}
+														zoom={16}
+														mapContainerStyle={{ height: '100%', width: '100%' }}
+														options={{
+															disableDefaultUI: true, // Remove toda a UI (controles de zoom, etc.)
+															draggable: false, // Impede arrastar
+															zoomControl: false, // Impede zoom manual
+															scrollwheel: false, // Impede zoom com o scroll do mouse
+															disableDoubleClickZoom: true,
+															gestureHandling: 'none', // Impede qualquer gesto
+														}}
+													>
+														<Marker position={coordinates} />admin
+
+													</GoogleMap>
+												</div>
+											) : (
+												<p>Endereço não encontrado no mapa.</p>
+											)
+										) : (
+											<p>Carregando mapa...</p>
+										)}
+												<div className="d-flex gap-4 mb-4">
+													<img
+														alt="logo da prefeitura"
+														className="m-4"
+														src="/src/assets/prefeitura_logo.png"
+														height={70}
+														width={50}
+													/>
+													<span className="flex-fill text-center">
+							<h2 className="m-3 mt-5 fw-bolder">
+								Ordem de Serviço #{formData.qr_code}
+							</h2>
+														{<p>Executado em {formData.registerDay}</p>}
+						</span>
+													<p className="m-4">{formData.today}</p>
+												</div>
+
+												<div className="m-3 row">
+
+													<h4 className="">Endereço</h4>
+													<hr />
+													<div className="col-6 mt-2">
+														<strong>Rua:</strong> {formData.address}
+													</div>
+													<div className="col-6 mt-2">
+														<strong>Bairro:</strong> {formData.neighborhood}
+													</div>
+													<div className="col-6 mt-2">
+														<strong>Município:</strong> {formData.city}
+													</div>
+													<div className="col-6 mt-2">
+														<strong>UF:</strong> {formData.state}
+													</div>
+													<div className="col-md-6 mt-2">
+														<strong>Latitude:</strong> {formData.lat}
+													</div>
+													<div className="col-6 mt-2">
+														<strong>Longitude:</strong> {formData.long}
+													</div>
+
+													<h4 className="mt-4">Obs:</h4>
+													<hr />
+													<div className="mb-3">{formData.observations}</div>
+
+													<h4 className="mt-4">Fotos</h4>
+													<hr />
+													<div className="mb-3 d-flex gap-4 justify-content-center">
+							<span className="d-flex flex-column fw-bold align-items-center">
+								{formData.photoStartWork && (
+									<>
+										<label className="mb-3">Inicio</label>
+										<Image
+											image={formData.photoStartWork}
+											height="240px"
+											orientation="from-image"
+										/>
+									</>
 								)}
+							</span>
+														<span className="d-flex flex-column fw-bold align-items-center">
+								{formData.photoEndWork && (
+									<>
+										<label className="mb-3">Fim</label>
+										<Image
+											image={formData.photoEndWork}
+											height="240px"
+											orientation="from-image"
+										/>
+									</>
+								)}
+							</span>
+													</div>
+
+													<h4 className="mt-4">Kit(s)</h4>
+													<hr />
+													<table className="mt-2">
+														<tr>
+															<th>Kit</th>
+															<th>Materiais</th>
+															<th className="text-center">Quantidade</th>
+														</tr>
+
+														{listOfKits.length > 0 && (
+															<>
+																{listOfKits.map((kit) => (
+																	<tr>
+																		<td>{kit.description}</td>
+																		<td>
+																			{kit?.materials?.map((material) => (
+																				<div className="ms-3 my-2">
+																					{material.material.description}
+																				</div>
+																			))}
+																		</td>
+																		<td className="text-center">
+																			{kitAndQuantity.some((kq) => kq.kit_id === kit.id)
+																				? kitAndQuantity.filter((k) => k.kit_id === kit.id)[0]
+																					.quantity
+																				: ''}
+																		</td>
+																	</tr>
+																))}
+															</>
+														)}
+													</table>
+												</div>
+											</div>
+
+								</div>
+
 							</div>
 						</div>
 
